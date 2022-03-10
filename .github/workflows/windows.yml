@@ -1,0 +1,49 @@
+name: Build MAUI-Windows
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+    DOTNETVERSION:  6.0.200
+    MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    name: Windows Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+          include-prerelease: true
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-prerelease: true
+
+      - name: Install MAUI Workloads
+        run: |
+          dotnet workload install maui --ignore-failed-sources
+
+      - name: Restore Dependencies
+        run: dotnet restore src/VisualLogger/VisualLogger.csproj
+
+      - name: Build MAUI Windows
+        run: msbuild src/VisualLogger/VisualLogger.csproj /restore /t:Publish /p:TargetFramework=net6.0-windows10.0.19041 /p:configuration=Release /p:GenerateAppxPackageOnBuild=true /p:Platform=x64 /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint=${{secrets.THUMBPRINT}} /p:PackageCertificatePassword=${{secrets.PASSWORD}}
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: windows-ci-build
+          path: src/VisualLogger/bin/Release/net6.0-windows*/**/VisualLogger*.msix

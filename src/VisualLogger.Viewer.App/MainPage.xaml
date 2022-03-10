@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:VisualLogger.Viewer.App"
+             x:Class="VisualLogger.Viewer.App.MainPage"
+             xmlns:web="clr-namespace:VisualLogger.Viewer.Web;assembly=VisualLogger.Viewer.Web"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <BlazorWebView HostPage="wwwroot/indexMaui.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent Selector="#app" ComponentType="{x:Type web:App}" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
+
+</ContentPage>

@@ -1,0 +1,122 @@
+﻿@inject SearchService SearchService;
+
+<MDialog Value="_dialog"
+         Dark
+         ValueChanged="DialogChanged"
+         MaxWidth="1200">
+    <MCard>
+        <MToolbar Dark>
+            <MAutocomplete @bind-Value="_select"
+                           Loading="_loading"
+                           Items="_itemsFilter"
+                           OnSearchInputUpdate="QuerySelections"
+                           Flat
+                           Dense
+                           Outlined
+                           ItemValue="r=>r"
+                           ItemText="r=>r"
+                           HideDetails="true"
+                           Label="Enter word to filter"
+                           SoloInverted>
+                <NoDataContent>
+                    <MButton Small Icon>
+                        <MIcon>mdi-format-letter-matches</MIcon>
+                    </MButton>
+                </NoDataContent>
+                <CounterContent>
+                    <MButton XSmall Icon>
+                        <MIcon>mdi-format-letter-case</MIcon>
+                    </MButton>
+                    <MButton XSmall Icon>
+                        <MIcon Dense>mdi-regex</MIcon>
+                    </MButton>
+                    <MButton XSmall Icon>
+                        <MIcon Dense>mdi-cog-outline</MIcon>
+                    </MButton>
+                </CounterContent>
+                <LabelContent>
+                    <MButton XSmall Icon>
+                        <MIcon Dense>mdi-regex</MIcon>
+                    </MButton>
+                    <MButton XSmall Icon>
+                        <MIcon Dense>mdi-cog-outline</MIcon>
+                    </MButton>
+                </LabelContent>
+            </MAutocomplete>
+            <MButton Icon>
+                <MIcon>mdi-clipboard-text-search-outline</MIcon>
+            </MButton>
+        </MToolbar>
+        <MVirtualScroll Height=300 OverscanCount=1 ItemHeight=64 Items="_items1">
+            <ItemContent>
+                <MListItem Dense>
+                    <MListItemAction>
+                        <MCheckbox Value="@context.Enbale"></MCheckbox>
+                    </MListItemAction>
+                    <MTextField SingleLine Value="@context.Text"
+                                HideDetails="@("auto")"
+                                TValue="string"
+                                Dense
+                                Label="Set filter condition." />
+                    <MListItemIcon>
+                        <MButton Fab
+                                 @onclick="Show"
+                                 XSmall
+                                 Dark>
+                            <MIcon>mdi-palette</MIcon>
+                        </MButton>
+                    </MListItemIcon>
+                    <MListItemIcon>
+                        <MButton Fab
+                                 @onclick=@context.MatchCaseClick
+                                 Color=@(context.IsMatchCase?"blue":"transparent")
+                                 XSmall
+                                 Dark>
+                            <MIcon>mdi-format-letter-matches</MIcon>
+                        </MButton>
+                    </MListItemIcon>
+                    <MListItemIcon>
+                        <MButton Fab
+                                 @onclick=@context.MatchWholeWordClick
+                                 Color=@(context.IsMatchWholeWord?"blue":"transparent")
+                                 XSmall
+                                 Dark>
+                            <MIcon>mdi-format-letter-case</MIcon>
+                        </MButton>
+                    </MListItemIcon>
+                    <MListItemIcon>
+                        <MButton Fab
+                                 @onclick=@context.UseRegularExpressionClick
+                                 Color=@(context.IsUseRegularExpression?"blue":"transparent")
+                                 XSmall
+                                 Dark>
+                            <MIcon>mdi-regex</MIcon>
+                        </MButton>
+                    </MListItemIcon>
+                    <MListItemIcon>
+                        <MButton Color="red"
+                                 Fab
+                                 XSmall
+                                 Dark>
+                            <MIcon>mdi-delete-forever-outline</MIcon>
+                        </MButton>
+                    </MListItemIcon>
+                </MListItem>
+                <MDivider Inset></MDivider>
+            </ItemContent>
+        </MVirtualScroll>
+    </MCard>
+</MDialog>
+
+<MMenu @bind-Value="showMenu"
+       PositionX="X"
+       PositionY="Y"
+       Absolute
+       Dark
+       NudgeWidth=200>
+    <ChildContent>
+        <MCard Width="175">
+            <RowColorPicker />
+        </MCard>
+    </ChildContent>
+</MMenu>

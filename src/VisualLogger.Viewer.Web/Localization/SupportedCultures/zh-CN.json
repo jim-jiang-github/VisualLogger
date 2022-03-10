@@ -1,0 +1,23 @@
+﻿{
+  "Main": {
+    "Title": "Visual啊 log viewer"
+  },
+  "User": {
+    "Name": "Name啊",
+    "Age": "Age啊",
+    "Age1": "Age1啊",
+    "User1": {
+      "Name1": "Name1xxxxxxxxx啊xxx",
+      "Age1": "Ag啊e1"
+    }
+  },
+  "Goods": {
+    "Name": "Na啊me",
+    "Price": "P啊rice"
+  },
+  "Home": "Ho啊me",
+  "Docs": "Do啊cs",
+  "Blog": "Bl啊og",
+  "Team": "Te啊am",
+  "Search": "Sea啊rch"
+}

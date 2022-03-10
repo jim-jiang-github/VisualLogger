@@ -1,0 +1,65 @@
+{
+  "Name": "Rcv Android log",
+  "ExtensionNames": [
+    "txt",
+    "log"
+  ],
+  "Convertors": [],
+  "Blocks": [
+    {
+      "RegexStart": "app: (RoomsController)/(.*?)/(SHA\\(.*\\))",
+      "RegexEnd": "^(?!\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}).*",
+      "RegexContent": "app: (RoomsController)/(.*?)/(SHA\\(.*\\))[\\r|\\n]*os: (.*?)/(.*?)[\\r|\\n]",
+      "Name": "Header",
+      "Cells": [
+        {
+          "RegexGroupIndex": 1,
+          "Name": "Type"
+        },
+        {
+          "RegexGroupIndex": 2,
+          "Name": "Version"
+        },
+        {
+          "RegexGroupIndex": 3,
+          "Name": "EncryptKey"
+        },
+        {
+          "RegexGroupIndex": 4,
+          "Name": "OS"
+        },
+        {
+          "RegexGroupIndex": 5,
+          "Name": "OSVersion"
+        }
+      ]
+    }
+  ],
+  "ColumnHeadTemplate": {
+    "RegexStart": "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3})",
+    "RegexEnd": "^(?!\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}).*",
+    "RegexContent": "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}) : (.*?) : \\[(.*?)\\] \\[(.*?)\\] (.*)",
+    "Cells": [
+      {
+        "RegexGroupIndex": 1,
+        "Name": "Time"
+      },
+      {
+        "RegexGroupIndex": 2,
+        "Name": "Level"
+      },
+      {
+        "RegexGroupIndex": 3,
+        "Name": "Module"
+      },
+      {
+        "RegexGroupIndex": 4,
+        "Name": "Thread"
+      },
+      {
+        "RegexGroupIndex": 5,
+        "Name": "Msg"
+      }
+    ]
+  }
+}

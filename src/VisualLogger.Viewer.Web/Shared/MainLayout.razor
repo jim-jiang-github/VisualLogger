@@ -1,0 +1,144 @@
+﻿@inherits LayoutComponentBase
+@inject SearchService SearchService;
+@inject HotKeys HotKeys
+
+<MApp>
+    <MAppBar App
+             Height="48"
+             Dark
+             Dense
+             ClippedLeft>
+        <MMenu OffsetY>
+            <ActivatorContent>
+                <MButton Icon @onclick="AppBarNavIconClick" @attributes="@context.Attrs">
+                    <MBadge OverLap Bordered Color="green" Content="6">
+                        <MIcon>mdi-menu</MIcon>
+                    </MBadge>
+                </MButton>
+            </ActivatorContent>
+
+            <ChildContent>
+                <MList>
+                    @foreach (var item in menuitems)
+                    {
+                        <MListItem>
+                            <MListItemContent>
+                                <MListItemTitle>
+                                    @item
+                                </MListItemTitle>
+                            </MListItemContent>
+                        </MListItem>
+                    }
+                </MList>
+            </ChildContent>
+        </MMenu>
+        <MToolbarTitle>@I18nKeys.Main.Title</MToolbarTitle>
+        <MSpacer></MSpacer>
+        <MMenu OffsetY>
+            <ActivatorContent>
+                <MTextField SingleLine
+                            Rounded
+                            HideDetails="@("auto")"
+                            TValue="string"
+                            Dense
+                            Outlined
+                            Filled
+                            @attributes="@context.Attrs"
+                            Label="Set filter condition.">
+                    <AppendContent>
+                        <MButton Small Icon>
+                            <MIcon>mdi-format-letter-matches</MIcon>
+                        </MButton>
+                        <MButton Small Icon>
+                            <MIcon>mdi-format-letter-case</MIcon>
+                        </MButton>
+                        <MButton Small Icon>
+                            <MIcon>mdi-regex</MIcon>
+                        </MButton>
+                        <MButton Small Icon>
+                            <MIcon>mdi-filter-plus</MIcon>
+                        </MButton>
+                        <MButton Small Icon @onclick="()=>SearchService.Show()">
+                            <MBadge OverLap Bordered Color="green" Content="6">
+                                <MIcon>mdi-filter-multiple</MIcon>
+                            </MBadge>
+                        </MButton>
+                    </AppendContent>
+                </MTextField>
+            </ActivatorContent>
+
+            <ChildContent>
+                <MList>
+                    @foreach (var item in menuitems)
+                    {
+                        <MListItem>
+                            <MListItemContent>
+                                <MListItemTitle>
+                                    @item
+                                </MListItemTitle>
+                            </MListItemContent>
+                        </MListItem>
+                    }
+                </MList>
+            </ChildContent>
+        </MMenu>
+        <MButton Icon @onclick="()=>SearchService.Show()">
+            <MBadge OverLap Bordered Color="green" Content="6">
+                <MIcon>mdi-filter-multiple</MIcon>
+            </MBadge>
+        </MButton>
+        <MButton Icon @onclick="()=>SearchService.Show()">
+            <MIcon>mdi-recycle-variant</MIcon>
+        </MButton>
+        <MSpacer></MSpacer>
+        <MSpacer></MSpacer>
+        <MButton Icon>
+            <MIcon>mdi-keyboard-settings-outline</MIcon>
+        </MButton>
+        <MProgressCircular Value="100" Size="40" Color="indigo">
+            <MButton Icon>
+                <MIcon>mdi-share-variant-outline</MIcon>
+            </MButton>
+        </MProgressCircular>
+        <MButton Icon>
+            <MIcon>mdi-cog-outline</MIcon>
+        </MButton>
+        <MButton Icon Href=@I18nKeys.GithubRepo>
+            <MIcon XLarge>mdi-github</MIcon>
+        </MButton>
+    </MAppBar>
+    <MNavigationDrawer @bind-Value="_drawer"
+                       Width="500"
+                       Dark
+                       Absolute
+                       Temporary>
+        <MCard Dark Class="mx-auto">
+            <MList Dense Dark Shaped>
+                <MSubheader Dark Style="user-select: none;">REPORTS</MSubheader>
+                <MListItemGroup @bind-Values="model"
+                                Multiple>
+                    @foreach (var item in items1)
+                    {
+                        <MListItem Value="item" ActiveClass="deep-purple--text text--accent-4">
+                            <ItemContent>
+                                <MListItemContent>
+                                    <MListItemTitle>@item</MListItemTitle>
+                                </MListItemContent>
+                                <MListItemAction>
+                                    <MCheckbox Value="@context.Active" Color="deep-purple accent-4"></MCheckbox>
+                                </MListItemAction>
+                            </ItemContent>
+                        </MListItem>
+                    }
+                </MListItemGroup>
+            </MList>
+        </MCard>
+    </MNavigationDrawer>
+    <MMain>
+        <MContainer Fluid Style="padding:0;height:calc(100vh - 48px)">
+            <CascadingValue Value="this">
+                @Body
+            </CascadingValue>
+        </MContainer>
+    </MMain>
+</MApp>

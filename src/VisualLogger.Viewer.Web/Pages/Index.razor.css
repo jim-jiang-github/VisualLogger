@@ -1,0 +1,10 @@
+﻿.log_table {
+    white-space: nowrap;
+    background-color: rgb(54,54,54);
+}
+
+.log_table_select {
+    white-space: nowrap;
+    color: blue !important;
+    background-color: yellow;
+}
