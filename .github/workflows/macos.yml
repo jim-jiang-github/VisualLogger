@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-mac:
-    runs-on: macos-11
+    runs-on: macos-12
     name: MacCatalyst Build
     steps:
       - name: Checkout
@@ -34,7 +34,7 @@ jobs:
         run: dotnet restore src/VisualLogger/VisualLogger.csproj
 
       - name: Build MAUI MacCatalyst
-        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-maccatalyst --no-restore
+        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-maccatalyst
 
       - name: Upload MacCatalyst Artifact
         uses: actions/upload-artifact@v2.3.1
