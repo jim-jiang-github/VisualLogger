@@ -1,29 +1,29 @@
-  build-mac:
-    runs-on: macos-11
-    name: MacCatalyst Build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+build-mac:
+  runs-on: macos-11
+  name: MacCatalyst Build
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Setup .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-          include-prerelease: true
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        include-prerelease: true
 
-      - name: Install MAUI Workloads
-        run: |
-          dotnet workload install maccatalyst --ignore-failed-sources
-          dotnet workload install maui --ignore-failed-sources
+    - name: Install MAUI Workloads
+      run: |
+        dotnet workload install maccatalyst --ignore-failed-sources
+        dotnet workload install maui --ignore-failed-sources
 
-      - name: Restore Dependencies
-        run: dotnet restore src/VisualLogger/VisualLogger.csproj
+    - name: Restore Dependencies
+      run: dotnet restore src/VisualLogger/VisualLogger.csproj
 
-      - name: Build MAUI MacCatalyst
-        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-maccatalyst --no-restore
+    - name: Build MAUI MacCatalyst
+      run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-maccatalyst --no-restore
 
-      - name: Upload MacCatalyst Artifact
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: macos-ci-build
-          path: src/VisualLogger/bin/Release/net6.0-maccatalyst/**/*.app/
+    - name: Upload MacCatalyst Artifact
+      uses: actions/upload-artifact@v2.3.1
+      with:
+        name: macos-ci-build
+        path: src/VisualLogger/bin/Release/net6.0-maccatalyst/**/*.app/
