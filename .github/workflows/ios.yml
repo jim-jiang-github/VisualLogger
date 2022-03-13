@@ -1,4 +1,4 @@
-name: Build MacCatalyst
+name: Build iOS
 # https://github.com/actions/virtual-environments
 
 on:
