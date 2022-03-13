@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-mac:
-    runs-on: macos-12
+    runs-on: macos-11
     name: MacCatalyst Build
     steps:
       - name: Checkout
@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           name: macos-ci-build
-          path: src/VisualLogger/bin/Release/net6.0-maccatalyst/**/*.app/
+          path: src/VisualLogger/bin/Release/net6.0-maccatalyst/**/
