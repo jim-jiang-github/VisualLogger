@@ -1,0 +1,43 @@
+name: Build MacCatalyst
+# https://github.com/actions/virtual-environments
+
+on:
+  push:
+    tags:
+      - '*'
+
+  workflow_dispatch:
+
+env:
+    DOTNETVERSION:  6.0.200
+    MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
+
+jobs:
+  build-mac:
+    runs-on: macos-11
+    name: iOS Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Install MAUI Workloads
+        run: |
+          dotnet workload install ios --ignore-failed-sources
+          dotnet workload install maui --ignore-failed-sources
+
+      - name: Restore Dependencies
+        run: dotnet restore src/VisualLogger/VisualLogger.csproj
+
+      - name: Build MAUI iOS
+        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-ios
+
+      - name: Upload iOS Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: macos-ci-build
+          path: src/VisualLogger/bin/Release/net6.0-ios/**/*.app/
