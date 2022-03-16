@@ -34,10 +34,10 @@ jobs:
         run: dotnet restore src/VisualLogger/VisualLogger.csproj
 
       - name: Build MAUI MacCatalyst
-        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Release -f net6.0-maccatalyst /p:CreatePackage=true
+        run: dotnet build src/VisualLogger/VisualLogger.csproj -c Debug -f net6.0-maccatalyst /p:CreatePackage=true
 
       - name: Upload MacCatalyst Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: macos-ci-build
-          path: src/VisualLogger/bin/Release/net6.0-maccatalyst/**/*.app
+          path: src/VisualLogger/bin/Debug/net6.0-maccatalyst/**/*.app
