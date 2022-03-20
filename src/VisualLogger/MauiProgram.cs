@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using VisualLogger.Data;
-
 namespace VisualLogger;
 
 public static class MauiProgram
@@ -17,7 +15,6 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddBlazorWebView();
-		builder.Services.AddSingleton<WeatherForecastService>();
 
 		return builder.Build();
 	}
