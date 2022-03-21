@@ -1,4 +1,5 @@
 #if NET5_0
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,10 @@ namespace WebApplication1
     }
 }
 
-#else
+#endif
+
+#if NET6_0
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VisualLogger.Wasm;
