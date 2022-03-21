@@ -9,5 +9,8 @@
     -webkit-box-align: center;
     align-items: center;
     display: flex;
-    background: #fff
+    background:#1e1858
+}
+.css-1j8o68f {
+    touch-action: none;
 }
