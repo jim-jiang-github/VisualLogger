@@ -4,9 +4,26 @@
              xmlns:local="clr-namespace:VisualLogger"
              xmlns:wasm="clr-namespace:VisualLogger.Wasm;assembly=VisualLogger.Wasm"
              x:Class="VisualLogger.MainPage"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource SecondaryColor}">
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Quit" />
+        </MenuBarItem>
+        <MenuBarItem Text="Locations">
+            <MenuFlyoutSubItem Text="Change Location">
+                <MenuFlyoutItem Text="Boston, MA"/>
+                <MenuFlyoutItem Text="Redmond, WA"/>
+                <MenuFlyoutItem Text="St. Louis, MO"/>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutItem Text="Add a Location" />
+        </MenuBarItem>
+        <MenuBarItem Text="View">
+            <MenuFlyoutItem Text="Refresh" />
+            <MenuFlyoutItem Text="Toggle Light/Dark Mode" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
 
-    <b:BlazorWebView HostPage="wwwroot/index.html">
+    <b:BlazorWebView Grid.Row="1" HostPage="wwwroot/index.html">
         <b:BlazorWebView.RootComponents>
             <b:RootComponent Selector="#app" ComponentType="{x:Type wasm:App}" />
         </b:BlazorWebView.RootComponents>
