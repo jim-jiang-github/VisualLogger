@@ -1,9 +1,28 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @foreach (var columnName in virtualizeTable.ColumnNames)
+            {
+                <th>@columnName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Items="virtualizeTable.Rows">
+            <tr>
+                @foreach (var c in context)
+                {
+                    <td>
+                        <div class="table-cell is-ellips is-resizable">
+                            <div generateelement="false">
+                                @c
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+        </Virtualize>
+    </tbody>
+</table>

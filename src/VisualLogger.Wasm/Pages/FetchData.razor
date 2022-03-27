@@ -2,7 +2,6 @@
 
 <Table Height=800
        TItem="TestData"
-       PageItems=23
        Items=Lines
        IsBordered="true"
        AllowResizing=true
@@ -12,18 +11,3 @@
         <TableColumn @bind-Field="@context.Name" TextEllipsis=true />
     </TableColumns>
 </Table>
-
-@code {
-
-    private IEnumerable<TestData> Lines { get; } = Enumerable.Range(0, 100000)
-    .Select(i => $"{i}------{Guid.NewGuid()}")
-    .Select(s => new TestData()
-        {
-            Name = s
-        }).ToArray();
-
-    public class TestData
-    {
-        public string Name { get; set; }
-    }
-}

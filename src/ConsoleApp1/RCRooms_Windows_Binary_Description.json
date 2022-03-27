@@ -1,0 +1,115 @@
+{
+    "objects": [
+        {
+            "name": "LogFileHeader",
+            "properties": [
+                {
+                    "name": "Signature",
+                    "type": "StringUTF8",
+                    "length": 3
+                },
+                {
+                    "type": "Skip",
+                    "length": 5
+                },
+                {
+                    "name": "MagicNumber",
+                    "type": "Int"
+                },
+                {
+                    "name": "EncryptKey",
+                    "type": "Int"
+                },
+                {
+                    "name": "SummarySize",
+                    "type": "Int"
+                },
+                {
+                    "name": "FileMaxSize",
+                    "type": "Int"
+                },
+                {
+                    "name": "FileCurSize",
+                    "type": "Int"
+                },
+                {
+                    "type": "Skip",
+                    "length": 32
+                }
+            ]
+        },
+        {
+            "name": "LogSummary",
+            "properties": [
+                {
+                    "name": "TimeZone",
+                    "type": "Int"
+                },
+                {
+                    "type": "Skip",
+                    "length": 4
+                },
+                {
+                    "name": "StartTime",
+                    "type": "Long"
+                },
+                {
+                    "name": "StartTimeMS",
+                    "type": "UInt"
+                },
+                {
+                    "name": "ProcessName",
+                    "type": "StringUTF8",
+                    "length": 256
+                },
+                {
+                    "name": "ProcessId",
+                    "type": "Int"
+                },
+                {
+                    "name": "ItemCount",
+                    "type": "Int"
+                },
+                {
+                    "type": "Skip",
+                    "length": 36
+                }
+            ]
+        },
+        {
+            "array": {
+                "fromobjectname": "LogSummary",
+                "frompropertyname": "ItemCount",
+                "arrayitem": {
+                    "name": "LogItem",
+                    "properties": [
+                        {
+                            "name": "TickOffset",
+                            "type": "Long"
+                        },
+                        {
+                            "name": "ModuleName",
+                            "type": "StringUTF8WithIntHead"
+                        },
+                        {
+                            "name": "ThreadId",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "Level",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "Hint",
+                            "type": "StringUTF8WithIntHead"
+                        },
+                        {
+                            "name": "Msg",
+                            "type": "StringUTF8WithIntHead"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

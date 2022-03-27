@@ -63,6 +63,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Resources\Images\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\VisualLogger.Wasm\VisualLogger.Wasm.csproj" />
 	</ItemGroup>
 
