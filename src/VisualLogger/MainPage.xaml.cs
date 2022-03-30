@@ -1,9 +1,10 @@
-﻿namespace VisualLogger;
-
-public partial class MainPage : ContentPage
+﻿namespace VisualLogger
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public partial class MainPage : ContentPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VisualLogger.Wasm.Pages
+namespace VisualLogger.Pages
 {
     public sealed partial class Index
     {

@@ -1,10 +1,12 @@
-﻿namespace VisualLogger;
-
-public partial class App : Application
+﻿namespace VisualLogger
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
-        MainPage = new NavigationPage(new MainPage());
+        public App()
+        {
+            InitializeComponent();
+
+            MainPage = new MainPage();
+        }
     }
 }
