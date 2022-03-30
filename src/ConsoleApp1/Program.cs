@@ -7,9 +7,13 @@ using System.Text;
 using static ConsoleApp1.Program;
 using System.Runtime.Remoting;
 using System.IO.Pipes;
+using System.Linq;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApp1
 {
@@ -48,6 +52,13 @@ namespace ConsoleApp1
         private static IntPtr addr;       //共享内存地址
         static void Main(string[] args)
         {
+            Regex regex = new Regex(@"^((https)?:\/\/)cdn.filestackcontent.com/[^\s]+");
+            var qq = regex.IsMatch("https://cdn.filestackcontent.com/IIjjaxf0T5K9JPKcU2tj");
+            var a = regex.Match("https://cdn.filestackcontent.com/IIjjaxf0T5K9JPKcU2tj");
+            WebClient webClient = new WebClient();
+            webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+            webClient.DownloadFileAsync(new Uri("https://cdn.filestackcontent.com/WsZFgC9ATAuKwUrNIt3S"), "xxxxx.zip");
+
             //Console.WriteLine("Hello World!");
             //ShareMemLib shareMemLib = new ShareMemLib();
             //if (shareMemLib.Init(SHARE_MEMORY_NAME, 306084) == 0)
@@ -70,22 +81,36 @@ namespace ConsoleApp1
             //m_Write.Release();
             //var pipe = new NamedPipeClientStream(".", "lindexi", PipeDirection.InOut, PipeOptions.None);
 
-            using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(@"C:\Users\Jim.Jiang\Downloads\mmf\RoomsHost-20220321112105.rcvlog");
+            var jsonFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Description.json";
+            var logFile = @"C:\Users\Jim.Jiang\Downloads\mmf\RoomsHost-20220321112105.rcvlog";
+            var b = BinaryLogLoader.Load(jsonFile);
 
-            using var stream = memoryMappedFile.CreateViewStream();
-            var path = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Description.json";
-            var binaryLoader = BinaryLoader.LoadFromBinaryDescription(path);
-            binaryLoader.LoadFromStream(stream);
-            var a = binaryLoader.Objects;
-            BinaryReader binaryReader = new BinaryReader(stream);
-            var logFileHeader = LogFileHeader.LoadFromStream(binaryReader);
-            var logSummary = LogSummary.LoadFromStream(binaryReader);
-            for (int i = 0; i < logSummary.ItemCount; i++)
-            {
-                var itemData = LogItem.LoadFromStream(binaryReader);
+            //using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(logFile);
 
-            }
+            //using var stream = memoryMappedFile.CreateViewStream();
+
+            //var binaryDescription = BinaryDescription.LoadFromJsonFile(jsonFile);
+
+            //var binaryObject = BinaryObject.LoadFromBinaryDescription(binaryDescription);
+            //binaryObject.LoadFromStream(stream);
+            //var a1 = binaryObject.GetValueFromRecursivePath("Root.LogSummary");
+            //var a2 = binaryObject.GetValueFromRecursivePath("Root.LogContent");
+
+            //BinaryReader binaryReader = new BinaryReader(stream);
+            //var logFileHeader = LogFileHeader.LoadFromStream(binaryReader);
+            //var logSummary = LogSummary.LoadFromStream(binaryReader);
+            //for (int i = 0; i < logSummary.ItemCount; i++)
+            //{
+            //    var itemData = LogItem.LoadFromStream(binaryReader);
+
+            //}
+            Console.ReadKey();
         }  //不安全的代码在项目生成的选项中选中允许不安全代码
+
+        private static void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+        }
+
         static unsafe void byteCopy(byte[] dst, IntPtr src)
         {
             fixed (byte* pDst = dst)

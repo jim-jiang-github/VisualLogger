@@ -8,7 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Wasm", "Visual
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Wasm.Net5", "VisualLogger.Wasm\VisualLogger.Wasm.Net5.csproj", "{0133160D-805F-4F8A-AF5F-55161DDCB9CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{D97FE385-B49B-4010-B1B7-1604BAD9C034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{D97FE385-B49B-4010-B1B7-1604BAD9C034}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceModule", "InterfaceModule\InterfaceModule.csproj", "{0D122F9D-E5A8-45C8-8452-70A9D2AB91F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{D97FE385-B49B-4010-B1B7-1604BAD9C034}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D97FE385-B49B-4010-B1B7-1604BAD9C034}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D97FE385-B49B-4010-B1B7-1604BAD9C034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D122F9D-E5A8-45C8-8452-70A9D2AB91F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D122F9D-E5A8-45C8-8452-70A9D2AB91F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D122F9D-E5A8-45C8-8452-70A9D2AB91F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D122F9D-E5A8-45C8-8452-70A9D2AB91F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
