@@ -37,9 +37,14 @@ namespace VisualLogger.Shared
 
         private static List<BootstrapBlazor.Components.MenuItem> GetIconSideMenuItems()
         {
+            var openMenus = new List<BootstrapBlazor.Components.MenuItem>
+            {
+                new BootstrapBlazor.Components.MenuItem() { Text = "Download", Icon = "fa fa-fw fa-home"},
+                new BootstrapBlazor.Components.MenuItem() { Text = "Pick", Icon = "fa fa-fw fa-home"}
+            };
             var menus = new List<BootstrapBlazor.Components.MenuItem>
             {
-                new BootstrapBlazor.Components.MenuItem() { Text = "返回组件库", Icon = "fa fa-fw fa-home", Url = "https://www.blazor.zone/components" },
+                new BootstrapBlazor.Components.MenuItem() { Text = "Open", Icon = "fa fa-fw fa-home",Items=openMenus},
                 new BootstrapBlazor.Components.MenuItem() { Text = "Index", Icon = "fa fa-fw fa-fa", Url = "/" , Match = NavLinkMatch.All},
                 new BootstrapBlazor.Components.MenuItem() { Text = "Counter", Icon = "fa fa-fw fa-check-square-o", Url = "/counter" },
                 new BootstrapBlazor.Components.MenuItem() { Text = "FetchData", Icon = "fa fa-fw fa-database", Url = "fetchdata" },

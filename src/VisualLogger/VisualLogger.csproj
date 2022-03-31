@@ -69,4 +69,8 @@
 	  <PackageReference Include="BootstrapBlazor" Version="6.4.9" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\InterfaceModule\InterfaceModule.csproj" />
+	</ItemGroup>
+
 </Project>

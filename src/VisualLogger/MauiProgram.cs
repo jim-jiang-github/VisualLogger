@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components.Web;
+using VisualLogger.LogModules;
+using InterfaceModule;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace VisualLogger
 {
@@ -12,24 +15,26 @@ namespace VisualLogger
             builder
                 .RegisterBlazorMauiWebView()
                 .UseMauiApp<App>()
+//                .ConfigureLifecycleEvents(events =>
+//                {
+//#if WINDOWS
+//                  events.AddWindows(windows => windows
+//                         .OnWindowCreated(window =>
+//                         {
+//                         }));
+//#endif
+//                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
             builder.Services.AddBlazorWebView();
             builder.Services.AddBootstrapBlazor();
-            builder.Services.AddSingleton<IErrorBoundaryLogger>(new C());
+            builder.Services.AddSingleton<IErrorBoundaryLogger>(new ErrorBoundaryLoggerImpl());
+            builder.Services.AddSingleton<ILogPicker>(new LogPickers.LogPickerLocalFiles());
+            builder.Services.AddSingleton<ILogDownloader>(new LogDownloaders.LogDownloaderUrl());
 
             return builder.Build();
-        }
-    }
-
-    public class C : IErrorBoundaryLogger
-    {
-        public ValueTask LogErrorAsync(Exception exception)
-        {
-            return new ValueTask();
         }
     }
 }

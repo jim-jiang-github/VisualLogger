@@ -17,8 +17,25 @@ namespace VisualLogger.WinUI
         public App()
         {
             this.InitializeComponent();
+
+            //Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
+            //{
+            //    var nativeWindow = handler.PlatformView;
+
+            //    nativeWindow.Activate();
+            //    IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(nativeWindow);
+            //    //WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+            //    //AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            //    ////TODO: this is hardcoded stuff for fullhd
+            //    //appWindow.MoveAndResize(new Windows.Graphics.RectInt32((1920 / 2) - width / 2, (1080 / 2) - height / 2, width, height));
+            //});
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            base.OnLaunched(e);
+        }
     }
 }
