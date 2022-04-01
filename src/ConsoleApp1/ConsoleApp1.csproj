@@ -13,8 +13,4 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\InterfaceModule\InterfaceModule.csproj" />
-  </ItemGroup>
-
 </Project>
