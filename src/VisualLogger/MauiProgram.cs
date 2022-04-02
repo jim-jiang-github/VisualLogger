@@ -2,7 +2,7 @@
 using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components.Web;
 using VisualLogger.LogModules;
-using InterfaceModule;
+using InterfaceModules;
 using Microsoft.Maui.LifecycleEvents;
 
 namespace VisualLogger

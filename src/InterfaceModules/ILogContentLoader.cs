@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace InterfaceModule
+namespace InterfaceModules
 {
     public interface ILogContentLoader
     {
