@@ -1,5 +1,15 @@
 ﻿@page "/"
+@inject IStringLocalizer<Strings> Localizer;
 
+<label>@Localizer["DownloadFromUrl"]</label>
+<Select Value="@SelectedCulture" OnSelectedItemChanged="@SetCulture">
+    <Options>
+        @foreach (var kv in Cultures)
+        {
+            <SelectOption Text="@kv.Key" Value="@kv.Value" />
+        }
+    </Options>
+</Select>
 <table class="table table-bordered">
     <thead>
         <tr>

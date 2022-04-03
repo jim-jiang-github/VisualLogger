@@ -1,5 +1,9 @@
-﻿using System;
+﻿using BootstrapBlazor.Components;
+using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Microsoft.JSInterop;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,12 +24,33 @@ namespace VisualLogger.Pages
                     $"C2:{s}",
                     $"C3:{s}",
                 }).ToArray();
+            Cultures = new Dictionary<string, string>();
+            Cultures.Add("en-US", "en-US");
+            Cultures.Add("zh-CN", "zh-CN");
         }
-        
+
         public class VirtualizeTable
         {
             public string[] ColumnNames { get; set; }
             public string[][] Rows { get; set; }
+        }
+        public Dictionary<string, string> Cultures { get; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+        private string SelectedCulture { get; set; } = CultureInfo.CurrentUICulture.Name;
+
+        private async Task SetCulture(SelectedItem item)
+        {
+            if (item.Value != CultureInfo.CurrentUICulture.Name)
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(item.Value);
+                CultureInfo.CurrentUICulture = new CultureInfo(item.Value);
+                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(item.Value);
+                CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(item.Value);
+                NavigationManager.NavigateTo("/", true);
+            }
         }
     }
 }
