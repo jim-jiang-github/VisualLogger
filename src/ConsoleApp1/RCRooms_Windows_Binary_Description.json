@@ -87,7 +87,7 @@
     {
       "name": "LogContent",
       "array": {
-        "lengthdescription": "Root.LogSummary.ItemCount",
+        "lengthparser": "Root.LogSummary.ItemCount",
         "arrayitem": {
           "name": "LogItem",
           "properties": [

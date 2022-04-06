@@ -1,10 +1,11 @@
-﻿using InterfaceModule;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ConsoleApp1.LogContent;
 
 namespace ConsoleApp1
 {
@@ -37,10 +38,20 @@ namespace ConsoleApp1
         {
             using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(logPath);
             using var stream = memoryMappedFile.CreateViewStream();
-            _binaryObject.LoadFromStream(stream);
-            var logContent = _binaryObject.GetValueFromRecursivePath("Root.LogContent") as IEnumerable<IEnumerable<object>>;
-            LogContent content = new LogContent(_columns, logContent.Select(x => new LogContent.LogItem(x)));
-            return content;
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            _binaryObject.LoadFromStream(memoryStream);
+            var logContent = _binaryObject.GetValueFromRecursivePath("Root.LogContent") as IEnumerable<StreamDataBlock[]>;
+            LogContent content = new LogContent(_columns, logContent.Select(x => new LogItem(x)).ToArray());
+            var a = content.ToArray();
+            foreach (var item in content)
+            {
+                foreach (var data in item.Datas)
+                {
+                    var aa = data.GetData();
+                }
+            }
+            return null;
         }
     }
 }

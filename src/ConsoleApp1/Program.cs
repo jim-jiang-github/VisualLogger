@@ -55,9 +55,9 @@ namespace ConsoleApp1
             Regex regex = new Regex(@"^((https)?:\/\/)cdn.filestackcontent.com/[^\s]+");
             var qq = regex.IsMatch("https://cdn.filestackcontent.com/IIjjaxf0T5K9JPKcU2tj");
             var a = regex.Match("https://cdn.filestackcontent.com/IIjjaxf0T5K9JPKcU2tj");
-            WebClient webClient = new WebClient();
-            webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
-            webClient.DownloadFileAsync(new Uri("https://cdn.filestackcontent.com/WsZFgC9ATAuKwUrNIt3S"), "xxxxx.zip");
+            //WebClient webClient = new WebClient();
+            //webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+            //webClient.DownloadFileAsync(new Uri("https://cdn.filestackcontent.com/WsZFgC9ATAuKwUrNIt3S"), "xxxxx.zip");
 
             //Console.WriteLine("Hello World!");
             //ShareMemLib shareMemLib = new ShareMemLib();
@@ -84,7 +84,7 @@ namespace ConsoleApp1
             var jsonFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Description.json";
             var logFile = @"C:\Users\Jim.Jiang\Downloads\mmf\RoomsHost-20220321112105.rcvlog";
             var b = BinaryLogLoader.Load(jsonFile);
-
+            var c = b.LoadLogContent(logFile);
             //using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(logFile);
 
             //using var stream = memoryMappedFile.CreateViewStream();

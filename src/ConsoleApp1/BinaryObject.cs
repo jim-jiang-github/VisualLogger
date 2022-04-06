@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static ConsoleApp1.LogContent;
 
 namespace ConsoleApp1
 {
@@ -18,7 +19,7 @@ namespace ConsoleApp1
             private int? _parameter;
 
             public string Name { get; private set; }
-            public object Value { get; private set; }
+            public StreamDataBlock Value { get; private set; }
 
             public BinaryProperty(BinaryObject rootObject, BinaryParser.PropertyParser propertyParser)
             {
@@ -36,8 +37,8 @@ namespace ConsoleApp1
                     case BinaryType.Skip:
                         if (_parameter is int count)
                         {
-                            binaryReader.ReadBytes(count);
-                            Value = $"Skip {count} byte.";
+                            binaryReader.BaseStream.Position += count;
+                            Value = null;
                         }
                         else
                         {
@@ -45,49 +46,46 @@ namespace ConsoleApp1
                         }
                         break;
                     case BinaryType.Boolean:
-                        Value = binaryReader.ReadBoolean();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 1, typeof(bool));
+                        binaryReader.BaseStream.Position += 1;
                         break;
                     case BinaryType.Byte:
-                        Value = binaryReader.ReadByte();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 1, typeof(byte));
+                        binaryReader.BaseStream.Position += 1;
                         break;
                     case BinaryType.Char:
-                        Value = binaryReader.ReadChar();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 1, typeof(char));
+                        binaryReader.BaseStream.Position += 1;
                         break;
                     case BinaryType.Decimal:
-                        Value = binaryReader.ReadDecimal();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 16, typeof(decimal));
+                        binaryReader.BaseStream.Position += 16;
                         break;
                     case BinaryType.Double:
-                        Value = binaryReader.ReadDouble();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 8, typeof(double));
+                        binaryReader.BaseStream.Position += 8;
                         break;
                     case BinaryType.Float:
-                        Value = binaryReader.ReadSingle();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 4, typeof(float));
+                        binaryReader.BaseStream.Position += 4;
                         break;
                     case BinaryType.Int:
-                        Value = binaryReader.ReadInt32();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 4, typeof(int));
+                        binaryReader.BaseStream.Position += 4;
                         break;
                     case BinaryType.Long:
-                        Value = binaryReader.ReadInt64();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 8, typeof(long));
+                        binaryReader.BaseStream.Position += 8;
                         break;
                     case BinaryType.Short:
-                        Value = binaryReader.ReadInt16();
-                        break;
-                    case BinaryType.StringUnicode:
-                        if (_parameter is int stringUnicodeLength)
-                        {
-                            Value = Encoding.Unicode.GetString(binaryReader.ReadBytes(stringUnicodeLength)).Trim();
-                        }
-                        else
-                        {
-                            Debug.Assert(_parameter != null, "Parameter should not be null.");
-                        }
-                        break;
-                    case BinaryType.StringUnicodeWithIntHead:
-                        Value = Encoding.Unicode.GetString(binaryReader.ReadBytes(binaryReader.ReadInt32())).Trim();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 2, typeof(short));
+                        binaryReader.BaseStream.Position += 2;
                         break;
                     case BinaryType.StringUTF8:
                         if (_parameter is int stringUTF8Length)
                         {
-                            Value = Encoding.UTF8.GetString(binaryReader.ReadBytes(stringUTF8Length)).Trim();
+                            Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, stringUTF8Length, typeof(string));
+                            binaryReader.BaseStream.Position += stringUTF8Length;
                         }
                         else
                         {
@@ -95,16 +93,21 @@ namespace ConsoleApp1
                         }
                         break;
                     case BinaryType.StringUTF8WithIntHead:
-                        Value = Encoding.UTF8.GetString(binaryReader.ReadBytes(binaryReader.ReadInt32())).Trim();
+                        var length = binaryReader.ReadInt32();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, length, typeof(string));
+                        binaryReader.BaseStream.Position += length;
                         break;
                     case BinaryType.UInt:
-                        Value = binaryReader.ReadUInt32();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 4, typeof(uint));
+                        binaryReader.BaseStream.Position += 4;
                         break;
                     case BinaryType.ULong:
-                        Value = binaryReader.ReadUInt64();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 8, typeof(ulong));
+                        binaryReader.BaseStream.Position += 8;
                         break;
                     case BinaryType.UShort:
-                        Value = binaryReader.ReadUInt16();
+                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 2, typeof(ushort));
+                        binaryReader.BaseStream.Position += 2;
                         break;
                     default:
                         Debug.Assert(false, "Can not match any type.");
@@ -153,6 +156,7 @@ namespace ConsoleApp1
         public void LoadFromStream(Stream stream)
         {
             Name = ROOT_NAME;
+            stream.Position = 0;
             BinaryReader binaryReader = new BinaryReader(stream);
             foreach (var subObject in _subObjects)
             {
@@ -168,7 +172,10 @@ namespace ConsoleApp1
                 {
                     var binaryProperty = new BinaryProperty(_rootObject, propertyDescription);
                     binaryProperty.Load(binaryReader);
-                    _properties.Add(binaryProperty);
+                    if (binaryProperty.Value != null)
+                    {
+                        _properties.Add(binaryProperty);
+                    }
                 }
             }
             else
@@ -182,7 +189,7 @@ namespace ConsoleApp1
                 else
                 {
                     var value = GetValueFromRecursivePath(lengthDescription);
-                    if (value is int lengthFromPath)
+                    if (value is StreamDataBlock[] streamDataBlocks && streamDataBlocks.Length > 0 && streamDataBlocks[0].PopData() is int lengthFromPath)
                     {
                         arrayLength = lengthFromPath;
                     }
@@ -214,11 +221,11 @@ namespace ConsoleApp1
                 {
                     if (parentObject.Properties.Count == 0)
                     {
-                        return parentObject.SubObjects.Select(o => o.Properties.Select(x => x.Value));
+                        return parentObject.SubObjects.Select(o => o.Properties.Select(x => x.Value).ToArray());
                     }
                     else
                     {
-                        return parentObject.Properties.Select(x => x.Value);
+                        return parentObject.Properties.Select(x => x.Value).ToArray();
                     }
                 }
             }
@@ -231,7 +238,7 @@ namespace ConsoleApp1
                 var subObject = parentObject._subObjects.FirstOrDefault(x => x.Name == path);
                 if (subObject == null)
                 {
-                    return parentObject._properties.FirstOrDefault(x => x.Name == path)?.Value;
+                    return new StreamDataBlock[] { parentObject._properties.FirstOrDefault(x => x.Name == path)?.Value };
                 }
                 else
                 {
