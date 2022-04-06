@@ -2,6 +2,8 @@
 @inject ILogPicker LogPicker;
 @inject ILogDownloader LogDownloader;
 @inject DialogService DialogService;
+@inject FileDownloadService FileDownloadService;
+@inject ILogger<FetchData> Logger;
 
 <button class="btn btn-primary" @onclick="OnResultDialogClick">Click me</button>
 <Table Height=800

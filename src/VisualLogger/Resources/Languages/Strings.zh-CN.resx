@@ -120,6 +120,9 @@
   <data name="DownloadFromUrl" xml:space="preserve">
     <value>从Url下载。</value>
   </data>
+  <data name="LogDownloader.Name" xml:space="preserve">
+    <value>Filestacka</value>
+  </data>
   <data name="PleaseSelectLanguage" xml:space="preserve">
     <value>请选择语言</value>
   </data>

@@ -1,4 +1,4 @@
-﻿using InterfaceModules;
+﻿using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.LogPickers
 {
@@ -11,5 +11,7 @@ namespace VisualLogger.LogPickers
             var a = await FilePicker.PickMultipleAsync();
             return null;
         }
+
+        //Load Logs
     }
 }

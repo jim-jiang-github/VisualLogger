@@ -1,10 +1,7 @@
 ﻿using BootstrapBlazor.Components;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using VisualLogger.LogDownloaders;
+using Microsoft.Extensions.Logging;
+using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.Pages
 {
@@ -20,28 +17,19 @@ namespace VisualLogger.Pages
         public FetchData()
         {
         }
-
         public async Task OpenFiles()
         {
-            await DialogService.Show(new DialogOption() 
+            await DialogService.Show(new DialogOption()
             {
             });
             return;
-            var a = LogDownloader.GetLogs("");
             var a1 = await LogPicker.PickerLogs();
         }
         private int DemoValue1 { get; set; } = 1;
         private async Task OnResultDialogClick()
         {
-            var result = await DialogService.ShowModal<LogDownloaderPage>(new ResultDialogOption()
-            {
-                Title = "带返回值模态弹出框",
-                ComponentParamters = new Dictionary<string, object>
-                {
-                    [nameof(LogDownloaderPage.Value)] = DemoValue1,
-                    [nameof(LogDownloaderPage.ValueChanged)] = EventCallback.Factory.Create<int>(this, v => DemoValue1 = v)
-                }
-            });
+            Logger.LogDebug("LogDebug");
+            var a = await LogDownloader.DownloadLogs();
 
         }
 

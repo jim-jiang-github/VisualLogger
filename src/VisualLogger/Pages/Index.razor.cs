@@ -43,10 +43,10 @@ namespace VisualLogger.Pages
 
         private async Task SetCulture(SelectedItem item)
         {
-            if (item.Value != CultureInfo.CurrentUICulture.Name)
+            if (item.Value != Thread.CurrentThread.CurrentUICulture.Name)
             {
-                CultureInfo.CurrentCulture = new CultureInfo(item.Value);
-                CultureInfo.CurrentUICulture = new CultureInfo(item.Value);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(item.Value);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(item.Value);
                 CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(item.Value);
                 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(item.Value);
                 NavigationManager.NavigateTo("/", true);

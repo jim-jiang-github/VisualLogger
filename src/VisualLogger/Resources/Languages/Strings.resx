@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DownloadFromUrl" xml:space="preserve">
-    <value>Download from url.</value>
+  <data name="LogDownloader.Name" xml:space="preserve">
+    <value>Filestack</value>
   </data>
-  <data name="PleaseSelectLanguage" xml:space="preserve">
-    <value>Please select language.</value>
+  <data name="LogDownloader.Title" xml:space="preserve">
+    <value>Download log from {0}.</value>
+  </data>
+  <data name="LogDownloader.WaterMark" xml:space="preserve">
+    <value>Please enter filestack download url.</value>
+  </data>
+  <data name="PleaseSelectLanguage1" xml:space="preserve">
+    <value />
   </data>
 </root>

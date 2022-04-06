@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualLogger.InterfaceModules;
 
-namespace VisualLogger.LogDownloaders
+namespace VisualLogger.InterfaceImplModules.ILogDownloaders
 {
     public partial class LogDownloaderPage : ComponentBase, IResultDialog
     {
+        [Parameter]
+        public string WaterMark { get; set; }
         /// <summary>
         /// 
         /// </summary>

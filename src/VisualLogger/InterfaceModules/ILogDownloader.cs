@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterfaceModules
+namespace VisualLogger.InterfaceModules
 {
     public interface ILogDownloader
     {
+        string Name { get; }
         string RegexPattern { get; }
-        string[] GetLogs(string logUrl);
+        Task<string[]> DownloadLogs();
     }
 }

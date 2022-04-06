@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace InterfaceModules
+namespace VisualLogger.InterfaceModules
 {
     public interface ILogContentLoader
     {

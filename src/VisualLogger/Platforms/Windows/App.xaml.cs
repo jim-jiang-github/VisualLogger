@@ -1,4 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.Maui.Handlers;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,17 +22,17 @@ namespace VisualLogger.WinUI
         {
             this.InitializeComponent();
 
-            //Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
-            //{
-            //    var nativeWindow = handler.PlatformView;
+            Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
+            {
+                var nativeWindow = handler.PlatformView;
 
-            //    nativeWindow.Activate();
-            //    IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(nativeWindow);
-            //    //WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
-            //    //AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-            //    ////TODO: this is hardcoded stuff for fullhd
-            //    //appWindow.MoveAndResize(new Windows.Graphics.RectInt32((1920 / 2) - width / 2, (1080 / 2) - height / 2, width, height));
-            //});
+                IntPtr hWnd = WindowNative.GetWindowHandle(nativeWindow);
+                WindowId windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+                AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
+                //appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+                //appWindow.TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
+                //appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+            });
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

@@ -61,20 +61,38 @@ namespace VisualLogger.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download from url..
+        ///   Looks up a localized string similar to Filestack.
         /// </summary>
-        internal static string DownloadFromUrl {
+        internal static string LogDownloader_Name {
             get {
-                return ResourceManager.GetString("DownloadFromUrl", resourceCulture);
+                return ResourceManager.GetString("LogDownloader.Name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select language..
+        ///   Looks up a localized string similar to Download log from {0}..
         /// </summary>
-        internal static string PleaseSelectLanguage {
+        internal static string LogDownloader_Title {
             get {
-                return ResourceManager.GetString("PleaseSelectLanguage", resourceCulture);
+                return ResourceManager.GetString("LogDownloader.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter filestack download url..
+        /// </summary>
+        internal static string LogDownloader_WaterMark {
+            get {
+                return ResourceManager.GetString("LogDownloader.WaterMark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string PleaseSelectLanguage1 {
+            get {
+                return ResourceManager.GetString("PleaseSelectLanguage1", resourceCulture);
             }
         }
     }
