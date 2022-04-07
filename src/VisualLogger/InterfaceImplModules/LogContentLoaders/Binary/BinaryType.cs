@@ -21,9 +21,6 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         Float,
         Double,
         Decimal,
-        StringUTF8,
-        StringUnicode,
-        StringUTF8WithIntHead,
-        StringUnicodeWithIntHead,
+        String,
     }
 }

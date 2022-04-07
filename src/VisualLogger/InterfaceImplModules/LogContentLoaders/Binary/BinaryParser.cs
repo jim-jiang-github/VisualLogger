@@ -15,20 +15,20 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         {
             public override string ConvertName(string name) => name.ToLower();
         }
-        public class ArrayParser
+        public class SubObjectsParser
         {
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
             public string LengthParser { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-            public ObjectParser ArrayItem { get; set; }
+            public ObjectParser Object { get; set; }
         }
         public class ObjectParser
         {
             public string Name { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-            public List<PropertyParser> Properties { get; set; }
+            public PropertyParser[] Properties { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-            public ArrayParser Array { get; set; }
+            public SubObjectsParser SubObjects { get; set; }
         }
         public class PropertyParser
         {
@@ -37,11 +37,11 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             [JsonConverter(typeof(JsonStringEnumConverter))]
             public BinaryType Type { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-            public int? Length { get; set; } = null;
+            public string Parameter { get; set; }
 
             public override string ToString()
             {
-                return $"{Name}-{Type}";
+                return $"Name:{Name}-Type:{Type}";
             }
         }
 
@@ -53,149 +53,61 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //Columns = new string[] { "Time", "Module", "Thread", "Level", "Hint", "Msg" };
             //var logFileHeader = new ObjectParser()
             //{
-            //    Name = "LogFileHeader"
+            //    Name = "LogFileHeader",
+            //    Properties = new PropertyParser[]
+            //    {
+            //        new PropertyParser{Name = "Signature",Type = BinaryType.String,Parameter = "3"},
+            //        //self.bom = bytes().join(struct.unpack('2c', buf[3:5])) self.os,self.logVersion,self.encode = struct.unpack('3c', buf[5:8])
+            //        new PropertyParser{Type = BinaryType.Skip,Parameter = $"{2+3}"},
+            //        new PropertyParser{Name = "MagicNumber",Type = BinaryType.Int},
+            //        new PropertyParser{Name = "EncryptKey",Type = BinaryType.Int},
+            //        new PropertyParser{Name = "SummarySize",Type = BinaryType.Int},
+            //        new PropertyParser{Name = "FileMaxSize",Type = BinaryType.Int},
+            //        new PropertyParser{Name = "FileCurSize",Type = BinaryType.Int},
+            //        new PropertyParser{Type = BinaryType.Skip,Parameter = "32"},
+            //    }
             //};
-            //logFileHeader.Properties = new List<PropertyParser>();
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "Signature",
-            //    Type = BinaryType.StringUTF8,
-            //    Length = 3
-            //});
-            ////self.bom = bytes().join(struct.unpack('2c', buf[3:5]))
-            ////self.os,self.logVersion,self.encode = struct.unpack('3c', buf[5:8])
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Type = BinaryType.Skip,
-            //    Length = 2 + 3
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "MagicNumber",
-            //    Type = BinaryType.Int
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "EncryptKey",
-            //    Type = BinaryType.Int
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "SummarySize",
-            //    Type = BinaryType.Int
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "FileMaxSize",
-            //    Type = BinaryType.Int
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Name = "FileCurSize",
-            //    Type = BinaryType.Int
-            //});
-            //logFileHeader.Properties.Add(new PropertyParser
-            //{
-            //    Type = BinaryType.Skip,
-            //    Length = 32
-            //});
-
             //Objects.Add(logFileHeader);
 
             //var logSummary = new ObjectParser()
             //{
-            //    Name = "LogSummary"
-            //};
-            //logSummary.Properties = new List<PropertyParser>();
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "TimeZone",
-            //    Type = BinaryType.Int
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Type = BinaryType.Skip,
-            //    Length = 4
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "StartTime",
-            //    Type = BinaryType.Long
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "StartTimeMS",
-            //    Type = BinaryType.UInt
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "ProcessName",
-            //    Type = BinaryType.StringUTF8,
-            //    Length = 256
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "ProcessId",
-            //    Type = BinaryType.Int
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Name = "ItemCount",
-            //    Type = BinaryType.Int
-            //});
-            //logSummary.Properties.Add(new PropertyParser
-            //{
-            //    Type = BinaryType.Skip,
-            //    Length = 32 + 4
-            //});
-            //Objects.Add(logSummary);
-
-            //var arrayItem = new ObjectParser()
-            //{
-            //    Name = "LogItem"
-            //};
-            //arrayItem.Properties = new List<PropertyParser>();
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "TickOffset",
-            //    Type = BinaryType.Long
-            //});
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "ModuleName",
-            //    Type = BinaryType.StringUTF8WithIntHead
-            //});
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "ThreadId",
-            //    Type = BinaryType.Int
-            //});
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "Level",
-            //    Type = BinaryType.Int
-            //});
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "Hint",
-            //    Type = BinaryType.StringUTF8WithIntHead
-            //});
-            //arrayItem.Properties.Add(new PropertyParser
-            //{
-            //    Name = "Msg",
-            //    Type = BinaryType.StringUTF8WithIntHead
-            //});
-
-            //var array = new ObjectParser()
-            //{
-            //    Name = "LogContent",
-            //    Array = new ArrayParser()
+            //    Name = "LogSummary",
+            //    Properties = new PropertyParser[]
             //    {
-            //        LengthParser = "Root.LogSummary.ItemCount",
-            //        ArrayItem = arrayItem
+            //        new PropertyParser{Name = "TimeZone",Type = BinaryType.Int},
+            //        new PropertyParser{Type = BinaryType.Skip,Parameter = "4"},
+            //        new PropertyParser{Name = "StartTime",Type = BinaryType.Long},
+            //        new PropertyParser{Name = "StartTimeMS",Type = BinaryType.UInt},
+            //        new PropertyParser{Name = "ProcessName",Type = BinaryType.String,Parameter="256"},
+            //        new PropertyParser{Name = "ProcessId",Type = BinaryType.Int},
+            //        new PropertyParser{Name = "ItemCount",Type = BinaryType.Int},
+            //        new PropertyParser{Type = BinaryType.Skip,Parameter=$"{32+4}"},
             //    }
             //};
-            //Objects.Add(array);
+            //Objects.Add(logSummary);
+
+            //var logItems = new ObjectParser()
+            //{
+            //    Name = "LogItems",
+            //    SubObjects = new SubObjectsParser()
+            //    {
+            //        LengthParser = "Root.LogSummary.ItemCount",
+            //        Object = new ObjectParser()
+            //        {
+            //            Name = "LogContent",
+            //            Properties = new PropertyParser[]
+            //            {
+            //                new PropertyParser{Name = "TickOffset",Type = BinaryType.Long},
+            //                new PropertyParser{Name = "ModuleName",Type = BinaryType.String,Parameter="HeadInt"},
+            //                new PropertyParser{Name = "ThreadId",Type = BinaryType.Int},
+            //                new PropertyParser{Name = "Level",Type = BinaryType.Int},
+            //                new PropertyParser{Name = "Hint",Type = BinaryType.String,Parameter="HeadInt"},
+            //                new PropertyParser{Name = "Msg",Type = BinaryType.String,Parameter="HeadInt"},
+            //            }
+            //        }
+            //    }
+            //};
+            //Objects.Add(logItems);
 
             //var options = new JsonSerializerOptions
             //{

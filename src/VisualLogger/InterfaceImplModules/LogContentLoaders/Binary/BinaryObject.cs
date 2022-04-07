@@ -16,7 +16,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             private BinaryObject _rootObject;
             private BinaryParser.PropertyParser _propertyParser;
             private BinaryType _type;
-            private int? _parameter;
+            private string _parameter;
 
             public string Name { get; private set; }
             public StreamDataBlock Value { get; private set; }
@@ -31,11 +31,11 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             {
                 Name = _propertyParser.Name;
                 _type = _propertyParser.Type;
-                _parameter = _propertyParser.Length;
+                _parameter = _propertyParser.Parameter;
                 switch (_type)
                 {
                     case BinaryType.Skip:
-                        if (_parameter is int count)
+                        if (int.TryParse(_parameter, out int count))
                         {
                             binaryReader.BaseStream.Position += count;
                             Value = null;
@@ -81,9 +81,15 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                         Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 2, typeof(short));
                         binaryReader.BaseStream.Position += 2;
                         break;
-                    case BinaryType.StringUTF8:
-                        if (_parameter is int stringUTF8Length)
+                    case BinaryType.String:
+                        if (int.TryParse(_parameter, out int stringUTF8Length))
                         {
+                            Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, stringUTF8Length, typeof(string));
+                            binaryReader.BaseStream.Position += stringUTF8Length;
+                        }
+                        else if (_parameter == "HeadInt")
+                        {
+                            stringUTF8Length = binaryReader.ReadInt32();
                             Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, stringUTF8Length, typeof(string));
                             binaryReader.BaseStream.Position += stringUTF8Length;
                         }
@@ -91,11 +97,6 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                         {
                             Debug.Assert(_parameter != null, "Parameter should not be null.");
                         }
-                        break;
-                    case BinaryType.StringUTF8WithIntHead:
-                        var length = binaryReader.ReadInt32();
-                        Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, length, typeof(string));
-                        binaryReader.BaseStream.Position += length;
                         break;
                     case BinaryType.UInt:
                         Value = new StreamDataBlock(binaryReader, binaryReader.BaseStream.Position, 4, typeof(uint));
@@ -166,7 +167,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         internal void Load(BinaryReader binaryReader)
         {
             Name = _objectDescription.Name;
-            if (_objectDescription.Array == null)
+            if (_objectDescription.Properties != null)
             {
                 foreach (var propertyDescription in _objectDescription.Properties)
                 {
@@ -178,17 +179,17 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                     }
                 }
             }
-            else
+            if (_objectDescription.SubObjects != null)
             {
                 int arrayLength = 0;
-                var lengthDescription = _objectDescription.Array.LengthParser;
-                if (int.TryParse(lengthDescription, out int length))
+                var lengthParser = _objectDescription.SubObjects.LengthParser;
+                if (int.TryParse(lengthParser,out int length))
                 {
                     arrayLength = length;
                 }
                 else
                 {
-                    var value = GetValueFromRecursivePath(lengthDescription);
+                    var value = GetValueFromRecursivePath(lengthParser.ToString());
                     if (value is StreamDataBlock[] streamDataBlocks && streamDataBlocks.Length > 0 && streamDataBlocks[0].PopData() is int lengthFromPath)
                     {
                         arrayLength = lengthFromPath;
@@ -196,7 +197,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                 }
                 for (int i = 0; i < arrayLength; i++)
                 {
-                    var subBinaryObject = new BinaryObject(this, _objectDescription.Array.ArrayItem);
+                    var subBinaryObject = new BinaryObject(this, _objectDescription.SubObjects.Object);
                     subBinaryObject.Load(binaryReader);
                     _subObjects.Add(subBinaryObject);
                 }

@@ -41,12 +41,12 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         {
             using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(logPath);
              var stream = memoryMappedFile.CreateViewStream();
-            //using var memoryStream = new MemoryStream();
-            //stream.CopyTo(memoryStream);
+             var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
             _binaryObject.LoadFromStream(stream);
-            var logContent = _binaryObject.GetValueFromRecursivePath("Root.LogContent") as IEnumerable<StreamDataBlock[]>;
+            var logContent = _binaryObject.GetValueFromRecursivePath("Root.LogItems") as IEnumerable<StreamDataBlock[]>;
             LogContent content = new LogContent(_columns, logContent.Select(x => new LogItem(x)).ToArray());
-            return null ;
+            return content;
         }
     }
 }
