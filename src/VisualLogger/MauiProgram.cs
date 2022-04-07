@@ -7,7 +7,7 @@ using Microsoft.Maui.LifecycleEvents;
 using Microsoft.JSInterop;
 using System.Globalization;
 using VisualLogger.InterfaceModules;
-using VisualLogger.InterfaceImplModules.ILogDownloaders;
+using VisualLogger.InterfaceImplModules.LogDownloaders;
 using VisualLogger.LogPickers;
 using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
@@ -19,6 +19,10 @@ namespace VisualLogger
 {
     public static class MauiProgram
     {
+        public class AAAAA 
+        {
+        public string D { get; set; }
+        }
         public static MauiApp CreateMauiApp()
         {
             Log.Logger = new LoggerConfiguration()

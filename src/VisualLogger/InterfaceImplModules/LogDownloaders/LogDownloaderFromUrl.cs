@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using VisualLogger.InterfaceModules;
 using VisualLogger.Resources.Languages;
 
-namespace VisualLogger.InterfaceImplModules.ILogDownloaders
+namespace VisualLogger.InterfaceImplModules.LogDownloaders
 {
     internal class LogDownloaderFromUrl : ILogDownloader
     {
