@@ -10,7 +10,7 @@ namespace VisualLogger.Datas.LogContents
     public class LogContent : IEnumerable<LogItem>
     {
 
-        private LogItem[] _logItems;
+        private readonly LogItem[] _logItems;
 
         public string[] ColumnsName { get; }
         public int Count => _logItems.Length;

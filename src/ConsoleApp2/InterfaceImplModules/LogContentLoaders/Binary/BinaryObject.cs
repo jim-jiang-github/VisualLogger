@@ -13,8 +13,8 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
     {
         public class BinaryProperty
         {
-            private BinaryObject _rootObject;
-            private BinaryParser.PropertyParser _propertyParser;
+            private readonly BinaryObject _rootObject;
+            private readonly BinaryParser.PropertyParser _propertyParser;
             private BinaryType _type;
             private string _parameter;
 
@@ -122,10 +122,10 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             }
         }
 
-        private BinaryObject _rootObject;
-        private BinaryParser.ObjectParser _objectParser;
-        private List<BinaryProperty> _properties = new List<BinaryProperty>();
-        private List<BinaryObject> _subObjects = new List<BinaryObject>();
+        private readonly BinaryObject _rootObject;
+        private readonly BinaryParser.ObjectParser _objectParser;
+        private readonly List<BinaryProperty> _properties = new List<BinaryProperty>();
+        private readonly List<BinaryObject> _subObjects = new List<BinaryObject>();
 
         private const string ROOT_NAME = "Root";
 
@@ -246,7 +246,6 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                     return GetValueFromRecursivePath(subObject, paths.Skip(1));
                 }
             }
-
         }
     }
 }

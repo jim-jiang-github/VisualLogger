@@ -12,8 +12,8 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
 {
     public class BinaryLogLoader : ILogContentLoader
     {
-        private string[] _columns;
-        private BinaryObject _binaryObject;
+        private readonly string[] _columns;
+        private readonly BinaryObject _binaryObject;
 
         public string[] Columns => _columns;
 
