@@ -8,11 +8,11 @@ namespace VisualLogger.Datas.LogContents
 {
     public class LogItem
     {
-        public LogCell[] Datas { get; }
+        public LogCell[] Cells { get; }
 
-        public LogItem(LogCell[] datas)
+        public LogItem(LogCell[] cells)
         {
-            Datas = datas;
+            Cells = cells;
         }
     }
 }
