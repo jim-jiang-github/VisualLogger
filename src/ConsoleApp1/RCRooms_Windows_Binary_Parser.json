@@ -1,24 +1,17 @@
 {
-  "columns": [
-    "Time",
-    "Module",
-    "Thread",
-    "Level",
-    "Hint",
-    "Msg"
-  ],
-  "objects": [
+  "logitemspath": "Content",
+  "blocks": [
     {
-      "name": "LogFileHeader",
-      "properties": [
+      "name": "Header",
+      "cells": [
         {
           "name": "Signature",
-          "type": "String",
-          "parameter": "3"
+          "type": "StringWithLength",
+          "length": 3
         },
         {
           "type": "Skip",
-          "parameter": "5"
+          "length": 5
         },
         {
           "name": "MagicNumber",
@@ -42,20 +35,20 @@
         },
         {
           "type": "Skip",
-          "parameter": "32"
+          "length": 32
         }
       ]
     },
     {
-      "name": "LogSummary",
-      "properties": [
+      "name": "Summary",
+      "cells": [
         {
           "name": "TimeZone",
           "type": "Int"
         },
         {
           "type": "Skip",
-          "parameter": "4"
+          "length": 4
         },
         {
           "name": "StartTime",
@@ -67,8 +60,8 @@
         },
         {
           "name": "ProcessName",
-          "type": "String",
-          "parameter": "256"
+          "type": "StringWithLength",
+          "length": 256
         },
         {
           "name": "ProcessId",
@@ -80,46 +73,40 @@
         },
         {
           "type": "Skip",
-          "parameter": "36"
+          "length": 36
         }
       ]
     },
     {
-      "name": "LogItems",
-      "subobjects": {
-        "lengthparser": "Root.LogSummary.ItemCount",
-        "object": {
-          "name": "LogContent",
-          "properties": [
-            {
-              "name": "TickOffset",
-              "type": "Long"
-            },
-            {
-              "name": "ModuleName",
-              "type": "String",
-              "parameter": "HeadInt"
-            },
-            {
-              "name": "ThreadId",
-              "type": "Int"
-            },
-            {
-              "name": "Level",
-              "type": "Int"
-            },
-            {
-              "name": "Hint",
-              "type": "String",
-              "parameter": "HeadInt"
-            },
-            {
-              "name": "Msg",
-              "type": "String",
-              "parameter": "HeadInt"
-            }
-          ]
-        }
+      "name": "Content",
+      "items": {
+        "count": "Summary.ItemCount",
+        "cellstemplate": [
+          {
+            "name": "Time",
+            "type": "Long"
+          },
+          {
+            "name": "Module",
+            "type": "StringWithIntHead"
+          },
+          {
+            "name": "Thread",
+            "type": "Int"
+          },
+          {
+            "name": "Level",
+            "type": "Int"
+          },
+          {
+            "name": "Hint",
+            "type": "StringWithIntHead"
+          },
+          {
+            "name": "Msg",
+            "type": "StringWithIntHead"
+          }
+        ]
       }
     }
   ]

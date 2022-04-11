@@ -5,29 +5,25 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualLogger.Datas.LogContents;
+using VisualLogger.Datas;
+using VisualLogger.InterfaceImplModules.LogStreamLoaders;
 using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
 {
     public class BinaryLogLoader : ILogContentLoader
     {
-        private readonly string[] _columns;
-        private readonly BinaryObject _binaryObject;
+        private readonly BinaryContentParser _binaryContentParser;
 
-        public string[] Columns => _columns;
-
-        public static BinaryLogLoader Load(string parserFile)
+        public static BinaryLogLoader Load(BinaryContentParser binaryContentParser)
         {
             try
             {
-                var binaryParser = BinaryParser.LoadFromJsonFile(parserFile);
-                if (binaryParser == null)
+                if (binaryContentParser == null)
                 {
                     return null;
                 }
-                var binaryObject = BinaryObject.LoadFromBinaryParser(binaryParser);
-                return new BinaryLogLoader(binaryParser.Columns, binaryObject);
+                return new BinaryLogLoader(binaryContentParser);
             }
             catch
             {
@@ -35,21 +31,27 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             }
         }
 
-        private BinaryLogLoader(string[] columns, BinaryObject binaryObject)
+        private BinaryLogLoader(BinaryContentParser binaryContentParser)
         {
-            _columns = columns;
-            _binaryObject = binaryObject;
+            _binaryContentParser = binaryContentParser;
         }
 
         public LogContent LoadLogContent(string logPath)
         {
-            using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(logPath);
-            var stream = memoryMappedFile.CreateViewStream();
-            //var memoryStream = new MemoryStream();
-            //stream.CopyTo(memoryStream);
-            _binaryObject.LoadFromStream(stream);
-            var logContent = _binaryObject.GetValueFromRecursivePath("Root.LogItems") as IEnumerable<LogCell[]>;
-            LogContent content = new LogContent(_columns, logContent.Select(x => new LogItem(x)).ToArray());
+            var memoryMappedStreamLoader = new MemoryMappedStreamLoader();
+            var stream = memoryMappedStreamLoader.LoadLogStream(logPath);
+            if (stream == null)
+            {
+                return null;
+            }
+            var binaryContent = BinaryContent.Load(stream, _binaryContentParser);
+            if (binaryContent == null)
+            {
+                return null;
+            }
+            var itemsTemplate = binaryContent.GetItemsTemplate(_binaryContentParser.LogItemsPath);
+            var items = binaryContent.GetItems(_binaryContentParser.LogItemsPath);
+            var content = new LogContent(itemsTemplate, items);
             return content;
         }
     }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.IO;
+using System.Threading.Tasks;
 
-namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
+namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Text
 {
-    public class BinaryParser
+    public class TextParser
     {
         private class LowerCaseNamingPolicy : JsonNamingPolicy
         {
@@ -25,6 +25,9 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         public class ObjectParser
         {
             public string Name { get; set; }
+            public string RegexPatternLineStart { get; set; }
+            public string RegexPatternLineContent { get; set; }
+            public string RegexPattern { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
             public PropertyParser[] Properties { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -34,40 +37,46 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         {
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
             public string Name { get; set; }
-            [JsonConverter(typeof(JsonStringEnumConverter))]
-            public BinaryType Type { get; set; }
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-            public string Parameter { get; set; }
-
-            public override string ToString()
-            {
-                return $"Name:{Name}-Type:{Type}";
-            }
+            public int RegexGroupIndex { get; set; }
         }
 
         public string[] Columns { get; set; }
         public List<ObjectParser> Objects { get; set; } = new List<ObjectParser>();
 
-        public BinaryParser()
+        public TextParser()
         {
-            //Columns = new string[] { "Time", "Module", "Thread", "Level", "Hint", "Msg" };
-            //var logFileHeader = new ObjectParser()
-            //{
-            //    Name = "LogFileHeader",
-            //    Properties = new PropertyParser[]
-            //    {
-            //        new PropertyParser{Name = "Signature",Type = BinaryType.String,Parameter = "3"},
-            //        //self.bom = bytes().join(struct.unpack('2c', buf[3:5])) self.os,self.logVersion,self.encode = struct.unpack('3c', buf[5:8])
-            //        new PropertyParser{Type = BinaryType.Skip,Parameter = $"{2+3}"},
-            //        new PropertyParser{Name = "MagicNumber",Type = BinaryType.Int},
-            //        new PropertyParser{Name = "EncryptKey",Type = BinaryType.Int},
-            //        new PropertyParser{Name = "SummarySize",Type = BinaryType.Int},
-            //        new PropertyParser{Name = "FileMaxSize",Type = BinaryType.Int},
-            //        new PropertyParser{Name = "FileCurSize",Type = BinaryType.Int},
-            //        new PropertyParser{Type = BinaryType.Skip,Parameter = "32"},
-            //    }
-            //};
-            //Objects.Add(logFileHeader);
+            Columns = new string[] { "Time", "Level", "Module", "Thread", "Msg" };
+            var logFileHeader = new ObjectParser()
+            {
+                Name = "LogFileHeader",
+                RegexPatternLineStart = @"app: (RoomsController)/([^\s]+)/(SHA)\(\)",
+                RegexPatternLineContent = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
+                RegexPattern = @"app: (RoomsController)/([^\s]+)/([^\s]+)\(\)\r\nos: ([^\s]+)/([^\s]+)\r\n",
+                Properties = new PropertyParser[]
+                {
+                    new PropertyParser{Name = "Type", RegexGroupIndex=1},
+                    new PropertyParser{Name = "Version", RegexGroupIndex=2},
+                    new PropertyParser{Name = "EncryptKey", RegexGroupIndex=3},
+                    new PropertyParser{Name = "OS", RegexGroupIndex=4},
+                    new PropertyParser{Name = "OSVersion", RegexGroupIndex=5},
+                }
+            };
+            Objects.Add(logFileHeader); 
+            
+            var logItem = new ObjectParser()
+            {
+                Name = "logItems",
+                RegexPatternLineStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
+                RegexPatternLineContent = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
+                Properties = new PropertyParser[]
+                {
+                    new PropertyParser{Name = "Type", RegexGroupIndex=1},
+                    new PropertyParser{Name = "Version", RegexGroupIndex=2},
+                    new PropertyParser{Name = "EncryptKey", RegexGroupIndex=3},
+                }
+            };
+            Objects.Add(logItem);
 
             //var logSummary = new ObjectParser()
             //{
@@ -75,13 +84,13 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //    Properties = new PropertyParser[]
             //    {
             //        new PropertyParser{Name = "TimeZone",Type = BinaryType.Int},
-            //        new PropertyParser{Type = BinaryType.Skip,Parameter = "4"},
+            //        new PropertyParser{Type = BinaryType.Skip,Length = 4},
             //        new PropertyParser{Name = "StartTime",Type = BinaryType.Long},
             //        new PropertyParser{Name = "StartTimeMS",Type = BinaryType.UInt},
-            //        new PropertyParser{Name = "ProcessName",Type = BinaryType.String,Parameter="256"},
+            //        new PropertyParser{Name = "ProcessName",Type = BinaryType.StringWithLength,Length=256},
             //        new PropertyParser{Name = "ProcessId",Type = BinaryType.Int},
             //        new PropertyParser{Name = "ItemCount",Type = BinaryType.Int},
-            //        new PropertyParser{Type = BinaryType.Skip,Parameter=$"{32+4}"},
+            //        new PropertyParser{Type = BinaryType.Skip,Length=32+4},
             //    }
             //};
             //Objects.Add(logSummary);
@@ -94,15 +103,15 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //        LengthParser = "Root.LogSummary.ItemCount",
             //        Object = new ObjectParser()
             //        {
-            //            Name = "LogContent",
+            //            Name = "LogItem",
             //            Properties = new PropertyParser[]
             //            {
             //                new PropertyParser{Name = "TickOffset",Type = BinaryType.Long},
-            //                new PropertyParser{Name = "ModuleName",Type = BinaryType.String,Parameter="HeadInt"},
+            //                new PropertyParser{Name = "ModuleName",Type = BinaryType.StringWithIntHead},
             //                new PropertyParser{Name = "ThreadId",Type = BinaryType.Int},
             //                new PropertyParser{Name = "Level",Type = BinaryType.Int},
-            //                new PropertyParser{Name = "Hint",Type = BinaryType.String,Parameter="HeadInt"},
-            //                new PropertyParser{Name = "Msg",Type = BinaryType.String,Parameter="HeadInt"},
+            //                new PropertyParser{Name = "Hint",Type = BinaryType.StringWithIntHead},
+            //                new PropertyParser{Name = "Msg",Type = BinaryType.StringWithIntHead},
             //            }
             //        }
             //    }
@@ -117,7 +126,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //var a = System.Text.Json.JsonSerializer.Serialize(this, options);
         }
 
-        public static BinaryParser LoadFromJsonFile(string jsonFile)
+        public static TextParser LoadFromJsonFile(string jsonFile)
         {
             if (!File.Exists(jsonFile))
             {
@@ -131,8 +140,8 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             };
             try
             {
-                var binaryParser = JsonSerializer.Deserialize<BinaryParser>(jsonContent, options);
-                return binaryParser;
+                var binaryContentParser = JsonSerializer.Deserialize<TextParser>(jsonContent, options);
+                return binaryContentParser;
             }
             catch
             {
