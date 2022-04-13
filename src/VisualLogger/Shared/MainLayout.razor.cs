@@ -44,7 +44,7 @@ namespace VisualLogger.Shared
             };
             var menus = new List<BootstrapBlazor.Components.MenuItem>
             {
-                new BootstrapBlazor.Components.MenuItem() { Text = "Open", Icon = "fa fa-fw fa-home",Items=openMenus},
+                new BootstrapBlazor.Components.MenuItem() { Text = "Open", Icon = "fa fa-fw fa-home"},
                 new BootstrapBlazor.Components.MenuItem() { Text = "Index", Icon = "fa fa-fw fa-fa", Url = "/" , Match = NavLinkMatch.All},
                 new BootstrapBlazor.Components.MenuItem() { Text = "Counter", Icon = "fa fa-fw fa-check-square-o", Url = "/counter" },
                 new BootstrapBlazor.Components.MenuItem() { Text = "FetchData", Icon = "fa fa-fw fa-database", Url = "fetchdata" },

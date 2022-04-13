@@ -1,0 +1,3 @@
+[submodule "src/BootstrapBlazor"]
+	path = src/BootstrapBlazor
+	url = https://github.com/dotnetcore/BootstrapBlazor.git
