@@ -22,7 +22,7 @@
     <tbody>
         <Virtualize ItemsProvider="LoadForecasts" ItemSize="10">
             <tr>
-                @foreach (var data in context.Datas)
+                @foreach (var data in context)
                 {
                     <td>
                         <div class="table-cell is-ellips is-resizable">

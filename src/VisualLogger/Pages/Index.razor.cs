@@ -7,14 +7,15 @@ using Microsoft.JSInterop;
 using System.Linq;
 using System.Threading.Tasks;
 using VisualLogger.InterfaceImplModules.LogContentLoaders.Binary;
-using static VisualLogger.InterfaceModules.LogContent;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using VisualLogger.Datas;
 
 namespace VisualLogger.Pages
 {
     public sealed partial class Index
     {
         public VirtualizeTable virtualizeTable = new VirtualizeTable();
+        private LogContent logContent;
 
         public Index()
         {
@@ -27,25 +28,24 @@ namespace VisualLogger.Pages
         {
             base.OnInitialized();
 
+            var parserFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Parser.json";
+            var binaryContentParser = BinaryContentParser.LoadFromJsonFile(parserFile);
             var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog";
             //var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsServiceHost-20220407163855.rcvlog";
-            var parserFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Parser.json";
-            var parser = BinaryLogLoader.Load(parserFile);
-            virtualizeTable.ColumnNames = parser.Columns;
-            var content = parser.LoadLogContent(logFile);
-            virtualizeTable.Rows = content.AsEnumerable();
-            virtualizeTable.TotalCount = content.Count;
+            var binaryContentLoader = BinaryContentLoader.Load(binaryContentParser);
+            logContent = binaryContentLoader.LoadLogContent(logFile);
+            virtualizeTable.ColumnNames = logContent.ColumnsName;
+            virtualizeTable.TotalCount = logContent.Count;
         }
-        protected async ValueTask<ItemsProviderResult<LogItem>> LoadForecasts(ItemsProviderRequest request)
+        protected async ValueTask<ItemsProviderResult<StreamCell[]>> LoadForecasts(ItemsProviderRequest request)
         {
-            var result = virtualizeTable.Rows.Skip(request.StartIndex).Take(request.Count);
+            var result = logContent.GetItems(request.StartIndex, request.Count);
 
-            return new ItemsProviderResult<LogItem>(result, virtualizeTable.TotalCount);
+            return new ItemsProviderResult<StreamCell[]>(result, virtualizeTable.TotalCount);
         }
         public class VirtualizeTable
         {
             public string[] ColumnNames { get; set; }
-            public IEnumerable<LogItem> Rows { get; set; } = new LogItem[0];
             public int TotalCount { get; set; } = 0;
         }
         public Dictionary<string, string> Cultures { get; }

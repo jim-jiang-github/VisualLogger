@@ -1,8 +1,4 @@
-﻿using Microsoft.Maui.Handlers;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
-using WinRT.Interop;
+﻿using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,25 +17,8 @@ namespace VisualLogger.WinUI
         public App()
         {
             this.InitializeComponent();
-
-            Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
-            {
-                var nativeWindow = handler.PlatformView;
-
-                IntPtr hWnd = WindowNative.GetWindowHandle(nativeWindow);
-                WindowId windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-                AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
-                //appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-                //appWindow.TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
-                //appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-            });
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
-        {
-            base.OnLaunched(e);
-        }
     }
 }

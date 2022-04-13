@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace VisualLogger.Services
         public string ExecutablePath { get; }
         public string WorkingDirectory { get; }
 
-        public CommandRunner(string executablePath, string workingDirectory = null)
+        public CommandRunnerService(string executablePath, string workingDirectory = null)
         {
             ExecutablePath = executablePath ?? throw new ArgumentNullException(nameof(executablePath));
             WorkingDirectory = workingDirectory ?? Path.GetDirectoryName(executablePath);

@@ -34,7 +34,6 @@ namespace VisualLogger
 
             var builder = MauiApp.CreateBuilder();
             builder
-                .RegisterBlazorMauiWebView()
                 .UseMauiApp<App>()
                                 .ConfigureLifecycleEvents(events =>
                                 {
@@ -56,7 +55,8 @@ namespace VisualLogger
             builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(Log.Logger, dispose: true));
             //builder.Services.AddLogging();
             builder.Services.AddLocalization();
-            builder.Services.AddBlazorWebView();
+            builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Services.AddBootstrapBlazor();
             builder.Services.AddSingleton<FileDownloadService>();
             builder.Services.AddSingleton<IErrorBoundaryLogger>(new ErrorBoundaryLoggerImpl());
