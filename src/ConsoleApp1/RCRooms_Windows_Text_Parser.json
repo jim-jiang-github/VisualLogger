@@ -1,0 +1,63 @@
+{
+  "logitemspath": "Content",
+  "blocks": [
+    {
+      "name": "Header",
+      "regexpatternitemstart": "app: (RoomsController)/(.*?)/(SHA)\\(\\)",
+      "regexpatternitemcontent": "^(?!\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}).*",
+      "regexpattern": "app: (RoomsController)/(.*?)/(.*?)\\(\\)[\\r|\\n]*os: (.*?)/(.*?)[\\r|\\n]",
+      "cells": [
+        {
+          "name": "Type",
+          "regexgroupindex": 1
+        },
+        {
+          "name": "Version",
+          "regexgroupindex": 2
+        },
+        {
+          "name": "EncryptKey",
+          "regexgroupindex": 3
+        },
+        {
+          "name": "OS",
+          "regexgroupindex": 4
+        },
+        {
+          "name": "OSVersion",
+          "regexgroupindex": 5
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "regexpatternitemstart": "^(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3})",
+      "regexpatternitemcontent": "^(?!\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}).*",
+      "regexpattern": "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3} [A-Z]{3}) : (.*?) : \\[(.*?)\\] \\[(.*?)\\] (.*)",
+      "items": {
+        "cellstemplate": [
+          {
+            "name": "Time",
+            "regexgroupindex": 1
+          },
+          {
+            "name": "Level",
+            "regexgroupindex": 2
+          },
+          {
+            "name": "Module",
+            "regexgroupindex": 3
+          },
+          {
+            "name": "Thread",
+            "regexgroupindex": 4
+          },
+          {
+            "name": "Msg",
+            "regexgroupindex": 5
+          }
+        ]
+      }
+    }
+  ]
+}

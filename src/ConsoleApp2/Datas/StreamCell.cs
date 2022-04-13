@@ -9,12 +9,12 @@ namespace VisualLogger.Datas
 {
     public class StreamCell
     {
-        private readonly BinaryReader _source;
+        private readonly LogStreamReader _source;
         private readonly long _position;
         private readonly int _length;
         private readonly StreamCellType _type;
 
-        public StreamCell(BinaryReader source, long position, int length, StreamCellType type)
+        public StreamCell(LogStreamReader source, long position, int length, StreamCellType type)
         {
             _source = source;
             _position = position;

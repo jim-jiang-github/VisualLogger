@@ -11,11 +11,11 @@ using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
 {
-    public class BinaryLogLoader : ILogContentLoader
+    public class BinaryContentLoader : ILogContentLoader
     {
         private readonly BinaryContentParser _binaryContentParser;
 
-        public static BinaryLogLoader Load(BinaryContentParser binaryContentParser)
+        public static BinaryContentLoader Load(BinaryContentParser binaryContentParser)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                 {
                     return null;
                 }
-                return new BinaryLogLoader(binaryContentParser);
+                return new BinaryContentLoader(binaryContentParser);
             }
             catch
             {
@@ -31,7 +31,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             }
         }
 
-        private BinaryLogLoader(BinaryContentParser binaryContentParser)
+        private BinaryContentLoader(BinaryContentParser binaryContentParser)
         {
             _binaryContentParser = binaryContentParser;
         }

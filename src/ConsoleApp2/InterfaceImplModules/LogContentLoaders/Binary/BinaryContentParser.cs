@@ -79,7 +79,7 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //};
             //Blocks.Add(summary);
 
-            //var items = new Block()
+            //var content = new Block()
             //{
             //    Name = "Content",
             //    Items = new Items()
@@ -96,8 +96,8 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             //        }
             //    }
             //};
-            //Blocks.Add(items);
-            //LogItemsPath = $"{items.Name}";
+            //Blocks.Add(content);
+            //LogItemsPath = $"{content.Name}";
 
             //var options = new JsonSerializerOptions
             //{

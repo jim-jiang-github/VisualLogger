@@ -22,17 +22,17 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
             public string[] ItemsTemplate { get; } = Array.Empty<string>();
             public StreamCell[][] Items { get; } = Array.Empty<StreamCell[]>();
 
-            public BinaryBlock(BinaryContent binaryContent, BinaryReader binaryReader, BinaryContentParser.Block block, ref long position)
+            public BinaryBlock(BinaryContent binaryContent, LogStreamReader logStreamReader, BinaryContentParser.Block block, ref long position)
             {
                 _binaryContent = binaryContent;
                 Name = block.Name;
-                if (block.Cells is BinaryContentParser.Cell[] cells)
+                if (block.Cells is BinaryContentParser.Cell[] cellsParser)
                 {
                     var cellNames = new List<string>();
                     var item = new List<StreamCell>();
-                    foreach (var cell in cells)
+                    foreach (var cell in cellsParser)
                     {
-                        var streamCell = CreateStreamCell(binaryReader, cell, ref position);
+                        var streamCell = CreateStreamCell(logStreamReader, cell, ref position);
                         if (streamCell != null)
                         {
                             cellNames.Add(cell.Name);
@@ -42,11 +42,11 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                     CellNames = cellNames.ToArray();
                     Item = item.ToArray();
                 }
-                if (block.Items is BinaryContentParser.Items items)
+                if (block.Items is BinaryContentParser.Items itemsParser)
                 {
                     ItemsTemplate = block.Items.CellsTemplate.Select(t => t.Name).ToArray();
                     int itemCount = 0;
-                    var countParser = items.Count;
+                    var countParser = itemsParser.Count;
                     if (int.TryParse(countParser, out int count))
                     {
                         itemCount = count;
@@ -66,14 +66,14 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                         for (int j = 0; j < ItemsTemplate.Length; j++)
                         {
                             var template = block.Items.CellsTemplate[j];
-                            var streamCell = CreateStreamCell(binaryReader, template, ref position);
+                            var streamCell = CreateStreamCell(logStreamReader, template, ref position);
                             streamCells[j] = streamCell;
                         }
                         Items[i] = streamCells;
                     }
                 }
             }
-            private StreamCell CreateStreamCell(BinaryReader binaryReader, BinaryContentParser.Cell cell, ref long position)
+            private StreamCell CreateStreamCell(LogStreamReader logStreamReader, BinaryContentParser.Cell cell, ref long position)
             {
                 var type = cell.Type;
                 var length = cell.Length;
@@ -87,55 +87,55 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
                         return null;
                     case BinaryType.Boolean:
                         position += 1;
-                        return new StreamCell(binaryReader, position - 1, 1, StreamCellType.Boolean);
+                        return new StreamCell(logStreamReader, position - 1, 1, StreamCellType.Boolean);
                     case BinaryType.Byte:
                         position += 1;
-                        return new StreamCell(binaryReader, position - 1, 1, StreamCellType.Byte);
+                        return new StreamCell(logStreamReader, position - 1, 1, StreamCellType.Byte);
                     case BinaryType.Char:
                         position += 1;
-                        return new StreamCell(binaryReader, position - 1, 1, StreamCellType.Char);
+                        return new StreamCell(logStreamReader, position - 1, 1, StreamCellType.Char);
                     case BinaryType.Decimal:
                         position += 16;
-                        return new StreamCell(binaryReader, position - 16, 16, StreamCellType.Decimal);
+                        return new StreamCell(logStreamReader, position - 16, 16, StreamCellType.Decimal);
                     case BinaryType.Double:
                         position += 8;
-                        return new StreamCell(binaryReader, position - 8, 8, StreamCellType.Double);
+                        return new StreamCell(logStreamReader, position - 8, 8, StreamCellType.Double);
                     case BinaryType.Float:
                         position += 4;
-                        return new StreamCell(binaryReader, position - 4, 4, StreamCellType.Float);
+                        return new StreamCell(logStreamReader, position - 4, 4, StreamCellType.Float);
                     case BinaryType.Int:
                         position += 4;
-                        return new StreamCell(binaryReader, position - 4, 4, StreamCellType.Int);
+                        return new StreamCell(logStreamReader, position - 4, 4, StreamCellType.Int);
                     case BinaryType.Long:
                         position += 8;
-                        return new StreamCell(binaryReader, position - 8, 8, StreamCellType.Long);
+                        return new StreamCell(logStreamReader, position - 8, 8, StreamCellType.Long);
                     case BinaryType.Short:
                         position += 2;
-                        return new StreamCell(binaryReader, position - 2, 2, StreamCellType.Short);
+                        return new StreamCell(logStreamReader, position - 2, 2, StreamCellType.Short);
                     case BinaryType.StringWithLength:
                         if (length is int stringLength)
                         {
                             position += stringLength;
-                            return new StreamCell(binaryReader, position - stringLength, stringLength, StreamCellType.String);
+                            return new StreamCell(logStreamReader, position - stringLength, stringLength, StreamCellType.String);
                         }
                         else
                         {
                             return null;
                         }
                     case BinaryType.StringWithIntHead:
-                        binaryReader.BaseStream.Position = position;
-                        var stringHeadLength = binaryReader.ReadInt32();
+                        logStreamReader.BaseStream.Position = position;
+                        var stringHeadLength = logStreamReader.ReadInt32();
                         position += 4 + stringHeadLength;
-                        return new StreamCell(binaryReader, position - stringHeadLength, stringHeadLength, StreamCellType.String);
+                        return new StreamCell(logStreamReader, position - stringHeadLength, stringHeadLength, StreamCellType.String);
                     case BinaryType.UInt:
                         position += 4;
-                        return new StreamCell(binaryReader, position - 4, 4, StreamCellType.UInt);
+                        return new StreamCell(logStreamReader, position - 4, 4, StreamCellType.UInt);
                     case BinaryType.ULong:
                         position += 8;
-                        return new StreamCell(binaryReader, position - 8, 8, StreamCellType.ULong);
+                        return new StreamCell(logStreamReader, position - 8, 8, StreamCellType.ULong);
                     case BinaryType.UShort:
                         position += 2;
-                        return new StreamCell(binaryReader, position - 2, 2, StreamCellType.UShort);
+                        return new StreamCell(logStreamReader, position - 2, 2, StreamCellType.UShort);
                     default:
                         Debug.Assert(false, "Can not match any type.");
                         return null;
@@ -156,11 +156,11 @@ namespace VisualLogger.InterfaceImplModules.LogContentLoaders.Binary
         }
         private BinaryContent(Stream stream, BinaryContentParser binaryContentParser)
         {
-            var binaryReader = new BinaryReader(stream);
+            var logStreamReader = new LogStreamReader(stream);
             long position = 0;
             foreach (var block in binaryContentParser.Blocks)
             {
-                var binaryBlock = new BinaryBlock(this, binaryReader, block, ref position);
+                var binaryBlock = new BinaryBlock(this, logStreamReader, block, ref position);
                 _blocks.Add(binaryBlock);
             }
         }
