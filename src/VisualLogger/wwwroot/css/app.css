@@ -86,3 +86,7 @@ a, .btn-link {
 .table-cell.is-ellips.is-resizable {
     position: relative !important;
 }
+
+.layout.is-page .layout-main {
+    padding: 0rem !important;
+}

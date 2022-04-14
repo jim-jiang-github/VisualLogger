@@ -56,4 +56,16 @@
 	  <ProjectReference Include="..\BootstrapBlazor\src\BootstrapBlazor\BootstrapBlazor.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="AppShell.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

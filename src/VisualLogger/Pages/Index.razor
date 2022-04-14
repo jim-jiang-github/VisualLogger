@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inject IStringLocalizer<Strings> Localizer;
 
-<label>@Localizer["DownloadFromUrl"]</label>
+@*<label>@Localizer["DownloadFromUrl"]</label>*@
 @*<Select Value="@SelectedCulture" OnSelectedItemChanged="@SetCulture">
     <Options>
     @foreach (var kv in Cultures)
@@ -10,29 +10,28 @@
     }
     </Options>
     </Select>*@
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            @foreach (var columnName in virtualizeTable.ColumnNames)
-            {
-                <th>@columnName</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        <Virtualize ItemsProvider="LoadForecasts" ItemSize="10">
+<div class="table-fix-head">
+    <table class="table table-sm table-nowrap">
+        <thead>
             <tr>
-                @foreach (var data in context)
+                @foreach (var columnName in virtualizeTable.ColumnNames)
                 {
-                    <td>
-                        <div class="table-cell is-ellips is-resizable">
-                            <div generateelement="false">
-                                @data
-                            </div>
-                        </div>
-                    </td>
+                    <th style="width: 20px;">@columnName</th>
                 }
             </tr>
-        </Virtualize>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <Virtualize ItemsProvider="LoadForecasts" ItemSize="10">
+
+                <tr>
+                    @foreach (var data in context)
+                    {
+                        <td>
+                            @data
+                        </td>
+                    }
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+</div>

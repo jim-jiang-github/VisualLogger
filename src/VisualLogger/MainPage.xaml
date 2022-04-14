@@ -5,6 +5,23 @@
              xmlns:local="clr-namespace:VisualLogger"
              x:Class="VisualLogger.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <!--<ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="Open" />
+            <MenuFlyoutItem Text="Save" />
+            <MenuFlyoutItem Text="Exit" />
+        </MenuBarItem>
+        <MenuBarItem Text="Edit">
+            <MenuFlyoutSubItem Text="Rotate">
+                <MenuFlyoutItem Text="Rotate 90" />
+                <MenuFlyoutItem Text="Rotate 180" />
+                <MenuFlyoutItem Text="Rotate 270" />
+                <MenuFlyoutItem Text="Rotate 360" />
+            </MenuFlyoutSubItem>
+            <MenuFlyoutItem Text="Zoom" />
+            <MenuFlyoutItem Text="Reset" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>-->
     <b:BlazorWebView HostPage="wwwroot/index.html">
         <b:BlazorWebView.RootComponents>
             <b:RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />

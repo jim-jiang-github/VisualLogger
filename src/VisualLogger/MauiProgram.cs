@@ -56,7 +56,9 @@ namespace VisualLogger
             //builder.Services.AddLogging();
             builder.Services.AddLocalization();
             builder.Services.AddMauiBlazorWebView();
+#if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
+#endif
             builder.Services.AddBootstrapBlazor();
             builder.Services.AddSingleton<FileDownloadService>();
             builder.Services.AddSingleton<IErrorBoundaryLogger>(new ErrorBoundaryLoggerImpl());

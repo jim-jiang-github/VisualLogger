@@ -1,0 +1,26 @@
+﻿.table-nowrap {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table-nowrap tr td, .table-nowrap tr th {
+        max-width: 10vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .table-nowrap th {
+        background: #eee;
+    }
+
+.table-fix-head {
+    overflow: auto;
+    height: calc(100vh - var(--bb-layout-header-height));
+}
+
+    .table-fix-head thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
