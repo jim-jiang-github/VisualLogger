@@ -19,10 +19,6 @@ namespace VisualLogger
 {
     public static class MauiProgram
     {
-        public class AAAAA 
-        {
-        public string D { get; set; }
-        }
         public static MauiApp CreateMauiApp()
         {
             Log.Logger = new LoggerConfiguration()

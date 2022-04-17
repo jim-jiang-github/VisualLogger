@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<Layout SideWidth="0" IsPage="true" ShowCollapseBar="true"
+@*<Layout SideWidth="0" IsPage="true" ShowCollapseBar="true"
         IsFixedHeader="@IsFixedHeader"
         TabDefaultUrl="/"
         Menus="@Menus" AdditionalAssemblies="new[] { GetType().Assembly }" class="@Theme">
@@ -16,4 +16,43 @@
     <NotFound>
         <p>Sorry, there's nothing at this address.</p>
     </NotFound>
-</Layout>
+</Layout>*@
+
+<CascadingValue Value="this" IsFixed="true">
+    <ErrorLogger>
+
+        <section class="layout is-page">
+            <header class="layout-header is-fixed">
+                <a title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="TooltipTextxxxxxxxxx" class="layout-header-bar @(IsCollapsed?"is-collapsed":"")" @onclick="CollapseMenu">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <span class="ms-3 flex-fill">Bootstrap of Blazor</span>
+                <div class="layout-drawer" @onclick="@(e => IsOpen = !IsOpen)"><i class="fa fa-gears"></i></div>
+
+            </header>
+            <section class="has-sidebar">
+                <aside class="layout-side is-fixed-header @(IsCollapsed?"is-collapsed":"")">
+                    <div class="flex-fill">
+                        <i class="fa fa-fw fa-fa"></i>
+                        <span class="text">xxxxxxxxx</span>
+                    </div>
+                    <div class="layout-menu">
+                        <Scroll>
+                            @if (IsShowTree && !IsCollapsed)
+                            {
+                                <Tree Items="@Items" OnTreeItemClick="@OnTreeItemClick" />
+                            }
+                            else
+                            {
+                                <Menu Items="@Menus" IsVertical="true" IsCollapsed=@IsCollapsed OnClick="@ClickMenu()" />
+                            }
+                        </Scroll>
+                    </div>
+                </aside>
+                <main class="layout-main @(IsCollapsed?"is-collapsed":"")">
+                    @Body
+                </main>
+            </section>
+        </section>
+    </ErrorLogger>
+</CascadingValue>

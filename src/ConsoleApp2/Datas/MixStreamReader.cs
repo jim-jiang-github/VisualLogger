@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Datas
 {
-    public class LogStreamReader : BinaryReader
+    /// <summary>
+    /// Can read binary data and string line.
+    /// </summary>
+    public class MixStreamReader : BinaryReader
     {
         private const int BUFFER_SIZE = 1024;
 
@@ -18,11 +21,11 @@ namespace VisualLogger.Datas
         private int charPos = 0;
         private int charLen = 0;
 
-        public LogStreamReader(Stream input) : this(input, Encoding.UTF8)
+        public MixStreamReader(Stream input) : this(input, Encoding.UTF8)
         {
         }
 
-        public LogStreamReader(Stream input, Encoding encoding) : base(input, encoding)
+        public MixStreamReader(Stream input, Encoding encoding) : base(input, encoding)
         {
             _input = input;
             _byteBuffer = new byte[BUFFER_SIZE];
@@ -44,14 +47,14 @@ namespace VisualLogger.Datas
             return byteLen;
         }
 
-        public string ReadLine(bool includeEndOfLine = false)
+        public string? ReadLine(bool includeEndOfLine = false)
         {
             //ref: https://referencesource.microsoft.com/#mscorlib/system/io/streamreader.cs,737
             if (charPos == charLen)
             {
                 if (ReadBuffer() == 0) return null;
             }
-            StringBuilder sb = null;
+            StringBuilder? sb = null;
             do
             {
                 int i = charPos;

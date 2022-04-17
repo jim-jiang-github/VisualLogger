@@ -9,20 +9,22 @@ namespace VisualLogger.Datas
 {
     public class StreamCell
     {
-        private readonly LogStreamReader _source;
+        private readonly MixStreamReader _source;
         private readonly long _position;
         private readonly int _length;
         private readonly StreamCellType _type;
+        private readonly StreamCellConvertor? _convertor;
 
-        public StreamCell(LogStreamReader source, long position, int length, StreamCellType type)
+        public StreamCell(MixStreamReader source, long position, int length, StreamCellType type, StreamCellConvertor? convertor)
         {
             _source = source;
             _position = position;
             _length = length;
             _type = type;
+            _convertor = convertor;
         }
 
-        public object GetValue()
+        public object? GetValue()
         {
             var lastPosition = _source.BaseStream.Position;
             if (lastPosition != _position)
@@ -60,7 +62,14 @@ namespace VisualLogger.Datas
 
         public override string ToString()
         {
-            return GetValue().ToString();
+            if (_convertor == null)
+            {
+                return GetValue()?.ToString() ?? string.Empty;
+            }
+            else
+            {
+                return _convertor.Convert(GetValue())?.ToString() ?? string.Empty;
+            }
         }
     }
 }
