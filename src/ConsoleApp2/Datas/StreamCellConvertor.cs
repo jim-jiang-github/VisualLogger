@@ -46,10 +46,10 @@ namespace VisualLogger.Datas
                 var pattern = @"{" + CELL_VALUE + "}";
                 Expression = Regex.Replace(Expression, pattern, nameof(CSharpScriptGlobalParameter<long>.Value));
                 ScriptOptions.Default.WithEmitDebugInformation(false);
-                var script = CSharpScript.Create<long>($"(long){Expression}", globalsType: typeof(CSharpScriptGlobalParameter<long>));
+                //var script = CSharpScript.Create<long>($"(long){Expression}", globalsType: typeof(CSharpScriptGlobalParameter<long>));
                 try
                 {
-                    _runner = script.CreateDelegate();
+                    //_runner = script.CreateDelegate();
                 }
                 catch(Exception ex)
                 {

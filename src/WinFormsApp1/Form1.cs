@@ -16,26 +16,32 @@ namespace WinFormsApp1
             MemoryMappedStreamLoader memoryMappedStreamLoader = new MemoryMappedStreamLoader();
             _stream = memoryMappedStreamLoader.LoadLogStream(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog");
 
+            //FileStreamLoader fileStreamLoader = new FileStreamLoader();
+            //_stream = fileStreamLoader.LoadLogStream(@"C:\Users\Jim.Jiang\Downloads\88D77430\log\2022-04-16-154234.906-main.log");
         }
 
-
+        IEnumerable<StreamCell[]> cells;
         private void button1_Click(object sender, EventArgs e)
         {
-            //12137MB
-            //MixStreamReader mixStreamReader = new MixStreamReader(stream);
-            //List<StreamCell> sss = new List<StreamCell>();
-            //for (int i = 0; i < 111267; i++)
+
+
+            //var logSchema = LogSchemaText.LoadFromJsonFile("LogSchemaText.json", out string? ssss);
+            //if (logSchema == null)
             //{
-            //    sss.Add(new StreamCell(mixStreamReader, 0, 0, StreamCellType.Int, null));
+            //    return;
             //}
+            //LogContentText logContentText = new LogContentText(_stream, logSchema);
+            //var cells = logContentText.GetBodyItems();
+
+
             var logSchemaBinary = LogSchemaBinary.LoadFromJsonFile("LogSchemaBinary.json", out string? ssss);
             if (logSchemaBinary == null)
             {
                 return;
             }
             LogContentBinary logContentBinary = new LogContentBinary(_stream, logSchemaBinary);
-            var cells = logContentBinary.GetBodyItems("Content");
-            LogSource logSource = new LogSource(_stream, logContentBinary.GetItemsTemplate("Content"), cells);
+            cells = logContentBinary.GetBodyItems();
+            LogSource logSource = new LogSource(_stream, logContentBinary.GetBodyTemplate(), cells);
             this.textBox1.Text = LifeCycleViewer.GetLifeCycleInfo();
         }
 

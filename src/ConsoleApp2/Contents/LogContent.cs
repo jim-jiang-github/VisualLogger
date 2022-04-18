@@ -12,80 +12,53 @@ using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger.Contents
 {
-    public abstract class LogContent<TLogSchema, TBlock, TBody, TCell> : LifeCycleable<LogContent<TLogSchema, TBlock, TBody, TCell>>, ILogContent, IDisposable
-        where TLogSchema : LogSchema<TLogSchema, TBlock, TBody, TCell>
-        where TBlock : LogSchema<TLogSchema, TBlock, TBody, TCell>.BlockSchema
-        where TBody : LogSchema<TLogSchema, TBlock, TBody, TCell>.BodySchema
-        where TCell : LogSchema<TLogSchema, TBlock, TBody, TCell>.CellSchema
+    public abstract class LogContent<TLogSchema, TBlock, TBody, TCell> :
+        LifeCycleable<LogContent<TLogSchema, TBlock, TBody, TCell>>,
+        ILogContent, 
+        IDisposable
+        where TLogSchema : LogSchema<TLogSchema, TBlock, TBody, TCell>, new()
+        where TBlock : LogSchema<TLogSchema, TBlock, TBody, TCell>.BlockSchema, new()
+        where TBody : LogSchema<TLogSchema, TBlock, TBody, TCell>.BodySchema, new()
+        where TCell : LogSchema<TLogSchema, TBlock, TBody, TCell>.CellSchema, new()
     {
         #region Internal Class
-        protected struct CellsContent
+        protected struct BlockCell
         {
-            public string[] CellNames { get; }
-            public StreamCell[] Cells { get; }
-            public CellsContent(string[] cellNames, StreamCell[] cells)
+            public string Name { get; }
+            public StreamCell Cell { get; }
+            public BlockCell(string name, StreamCell cell)
             {
-                CellNames = cellNames;
+                Name = name;
+                Cell = cell;
+            }
+        }
+        protected struct BlockContent
+        {
+            public string Name { get; }
+            public BlockCell[] Cells { get; }
+            public BlockContent(string name, BlockCell[] cells)
+            {
+                Name = name;
                 Cells = cells;
             }
         }
         protected struct BodyContent
         {
             public string[] BodyTemplate { get; }
-            public StreamCell[][] Body { get; }
-            public BodyContent(string[] bodyTemplate, StreamCell[][] body)
+            public IEnumerable<StreamCell[]> Body { get; }
+            public BodyContent(string[] bodyTemplate, IEnumerable<StreamCell[]> body)
             {
                 BodyTemplate = bodyTemplate;
                 Body = body;
             }
         }
-        protected abstract class BlockContent : LifeCycleable<BlockContent>
-        {
-            public string? Name { get; }
-            public CellsContent CellsContent { get; }
-            public BodyContent BodyContent { get; }
-
-            public BlockContent(
-                ILogContent logContent,
-                MixStreamReader mixStreamReader,
-                TBlock block,
-                ref long streamPosition)
-            {
-                Name = block.Name;
-                if (block.Cells is TCell[] cells)
-                {
-                    var cellsContent = CreateCellsContent(logContent, mixStreamReader, block, cells, ref streamPosition);
-                    if (cellsContent != null)
-                    {
-                        CellsContent = cellsContent.Value;
-                    }
-                }
-                if (block.Body is TBody body)
-                {
-                    var bodyContent = CreateBodyContent(logContent, mixStreamReader, block, body, ref streamPosition);
-                    if (bodyContent != null)
-                    {
-                        BodyContent = bodyContent.Value;
-                    }
-                }
-            }
-            protected abstract CellsContent? CreateCellsContent(
-                ILogContent logContent,
-                MixStreamReader mixStreamReader,
-                TBlock block,
-                TCell[] cells,
-                ref long streamPosition);
-            protected abstract BodyContent? CreateBodyContent(
-                ILogContent logContent,
-                MixStreamReader mixStreamReader,
-                TBlock block,
-                TBody body,
-                ref long streamPosition);
-        }
         #endregion
-        private Dictionary<string, StreamCellConvertor>? _convertors;
-        private List<BlockContent>? _blockContents;
-        private LogSchema<TLogSchema, TBlock, TBody, TCell>? _logSchema;
+
+        private readonly Dictionary<string, StreamCellConvertor> _convertors;
+        private readonly List<BlockContent> _blockContents;
+        private readonly BodyContent _bodyContent;
+        private readonly LogSchema<TLogSchema, TBlock, TBody, TCell> _logSchema;
+
         protected LogContent(Stream stream, LogSchema<TLogSchema, TBlock, TBody, TCell> logSchema)
         {
             _convertors = new();
@@ -98,12 +71,19 @@ namespace VisualLogger.Contents
                 var blockContent = CreateBlockContent(this, mixStreamReader, block, ref streamPosition);
                 _blockContents.Add(blockContent);
             }
+            _bodyContent = CreateBodyContent(this, mixStreamReader, logSchema.Body, ref streamPosition);
         }
         protected abstract BlockContent CreateBlockContent(
             ILogContent logContent,
             MixStreamReader mixStreamReader,
             TBlock block,
             ref long streamPosition);
+        protected abstract BodyContent CreateBodyContent(
+            ILogContent logContent,
+            MixStreamReader mixStreamReader,
+            TBody body,
+            ref long streamPosition);
+        #region ILogContent
         public StreamCellConvertor? GetConvertor(string? convertorName)
         {
             if (_convertors == null)
@@ -151,113 +131,41 @@ namespace VisualLogger.Contents
                 return null;
             }
             var block = _blockContents.FirstOrDefault(b => b.Name == path);
-            if (block == null)
-            {
-                return null;
-            }
+
             path = paths.Skip(1).FirstOrDefault();
             if (path == null)
             {
                 return null;
             }
-            var index = Array.IndexOf(block.CellsContent.CellNames, path);
-            if (index < 0 || index >= block.CellsContent.CellNames.Length)
+            var index = -1;
+            for (int i = 0; i < block.Cells.Length; i++)
+            {
+                if (block.Cells[i].Name == path)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index < 0)
             {
                 return null;
             }
             else
             {
-                return block.CellsContent.Cells[index];
+                return block.Cells[index].Cell;
             }
         }
-        public StreamCell[]? GetCells(string recursivePath)
+        public string[] GetBodyTemplate()
         {
-            var paths = recursivePath.Split(".");
-            return GetCells(paths);
+            return _bodyContent.BodyTemplate;
         }
-        private StreamCell[]? GetCells(IEnumerable<string> paths)
+        public IEnumerable<StreamCell[]> GetBodyItems()
         {
-            if (_blockContents == null)
-            {
-                return null;
-            }
-            var path = paths.FirstOrDefault();
-            if (path == null)
-            {
-                return null;
-            }
-            var block = _blockContents.FirstOrDefault(b => b.Name == path);
-            if (block == null)
-            {
-                return null;
-            }
-            if (block.CellsContent.Cells == null)
-            {
-                return null;
-            }
-            return block.CellsContent.Cells;
+            return _bodyContent.Body;
         }
-        public string[]? GetItemsTemplate(string recursivePath)
-        {
-            var paths = recursivePath.Split(".");
-            return GetItemsTemplate(paths);
-        }
-        private string[]? GetItemsTemplate(IEnumerable<string> paths)
-        {
-            if (_blockContents == null)
-            {
-                return null;
-            }
-            var path = paths.FirstOrDefault();
-            if (path == null)
-            {
-                return null;
-            }
-            var block = _blockContents.FirstOrDefault(b => b.Name == path);
-            if (block == null)
-            {
-                return null;
-            }
-            if (block.BodyContent.BodyTemplate == null)
-            {
-                return null;
-            }
-            return block.BodyContent.BodyTemplate;
-        }
-        public StreamCell[][]? GetBodyItems(string recursivePath)
-        {
-            var paths = recursivePath.Split(".");
-            return GetBodyItems(paths);
-        }
-        private StreamCell[][]? GetBodyItems(IEnumerable<string> paths)
-        {
-            if (_blockContents == null)
-            {
-                return null;
-            }
-            var path = paths.FirstOrDefault();
-            if (path == null)
-            {
-                return null;
-            }
-            var block = _blockContents.FirstOrDefault(b => b.Name == path);
-            if (block == null)
-            {
-                return null;
-            }
-            if (block.BodyContent.Body == null)
-            {
-                return null;
-            }
-            return block.BodyContent.Body;
-        }
-
+        #endregion
         public void Dispose()
         {
-            _convertors = null;
-            _blockContents = null;
-            _logSchema = null;
-            GC.Collect();
         }
     }
 }

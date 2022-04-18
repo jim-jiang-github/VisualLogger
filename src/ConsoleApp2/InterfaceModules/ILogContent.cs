@@ -11,8 +11,7 @@ namespace VisualLogger.InterfaceModules
     {
         public StreamCellConvertor? GetConvertor(string? convertorName);
         StreamCell? GetCell(string recursivePath);
-        StreamCell[]? GetCells(string recursivePath);
-        string[]? GetItemsTemplate(string recursivePath);
-        StreamCell[][]? GetBodyItems(string recursivePath);
+        string[] GetBodyTemplate();
+        IEnumerable<StreamCell[]> GetBodyItems();
     }
 }

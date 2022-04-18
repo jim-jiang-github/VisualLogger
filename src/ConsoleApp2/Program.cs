@@ -37,14 +37,14 @@ namespace VisualLogger
             stream.Dispose();
             GC.Collect();
             Console.ReadKey();
-            var asd = logContentBinary.GetBodyItems("Content");
+            var asd = logContentBinary.GetBodyItems();
             GC.Collect();
             GC.WaitForPendingFinalizers();
             if (asd == null)
             {
                 return;
             }
-            var t = logContentBinary.GetItemsTemplate("Content");
+            var t = logContentBinary.GetBodyTemplate();
             if (t == null)
             {
                 return;

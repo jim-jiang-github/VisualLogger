@@ -10,27 +10,12 @@ namespace VisualLogger.Datas
 {
     public class LogSource : LifeCycleable<LogSource>, IDisposable
     {
-        private readonly StreamCell[][] _content;
+        private readonly IEnumerable<StreamCell[]> _content;
         private readonly Stream _stream;
 
         public string[] ColumnsName { get; }
-        public int Count => _content.Length;
-        public IEnumerable<StreamCell>? this[int index]
-        {
-            get
-            {
-                if (index < 0)
-                {
-                    return null;
-                }
-                if (index >= Count)
-                {
-                    return null;
-                }
-                return _content[index];
-            }
-        }
-        public LogSource(Stream stream, string[] columnsName, StreamCell[][] content)
+        public int Count => _content.Count();
+        public LogSource(Stream stream, string[] columnsName, IEnumerable<StreamCell[]> content)
         {
             _stream = stream;
             _content = content;
