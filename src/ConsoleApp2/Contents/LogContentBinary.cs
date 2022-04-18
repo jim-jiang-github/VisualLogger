@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceModules;
-using VisualLogger.Schemas.Log;
+using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger.Contents
 {

@@ -15,8 +15,9 @@ using VisualLogger.Schemas.Convertors;
 
 namespace VisualLogger.Datas
 {
-    public abstract class StreamCellConvertor
+    public abstract class StreamCellConvertor : LifeCycleable<StreamCellConvertor>
     {
+        private const string CELL_VALUE = "CellValue";
         #region Internal Class
         /// <summary>
         /// This must use public, Otherwise '_script.RunAsync(_parameter).Result' will cause 'is inaccessible due to its protection level' error.
@@ -38,14 +39,23 @@ namespace VisualLogger.Datas
         private class StreamCellConvertorMath : StreamCellConvertor
         {
             private CSharpScriptGlobalParameter<long> _parameter = new CSharpScriptGlobalParameter<long>();
-            private Script<long> _script;
+            private ScriptRunner<long>? _runner;
 
             public StreamCellConvertorMath(string expression) : base(expression)
             {
-                var pattern = @"{value}";
+                var pattern = @"{" + CELL_VALUE + "}";
                 Expression = Regex.Replace(Expression, pattern, nameof(CSharpScriptGlobalParameter<long>.Value));
-                _script = CSharpScript.Create<long>($"(long){Expression}", globalsType: typeof(CSharpScriptGlobalParameter<long>));
-                _script.Compile();
+                ScriptOptions.Default.WithEmitDebugInformation(false);
+                var script = CSharpScript.Create<long>($"(long){Expression}", globalsType: typeof(CSharpScriptGlobalParameter<long>));
+                try
+                {
+                    _runner = script.CreateDelegate();
+                }
+                catch(Exception ex)
+                {
+                    //TODO log
+                    _runner = null;
+                }
             }
             protected override object? ConvertInternal(object? value)
             {
@@ -54,10 +64,14 @@ namespace VisualLogger.Datas
                 {
                     return value;
                 }
+                if (_runner == null)
+                {
+                    return value;
+                }
                 if (int.TryParse(input, out int tickOffset))
                 {
                     _parameter.Value = tickOffset;
-                    var result = _script.RunAsync(_parameter).Result.ReturnValue;
+                    var result = _runner.Invoke(_parameter).Result;
                     return result;
                 }
                 return value;
@@ -140,7 +154,7 @@ namespace VisualLogger.Datas
             foreach (Match match in matches)
             {
                 if (match.Success && match.Groups.Count >= 1 &&
-                    match.Groups[1].Value.ToLower() != "value" &&
+                    match.Groups[1].Value != CELL_VALUE &&
                     logContent.GetCell(match.Groups[1].Value) is object value)
                 {
                     var replacement = value.ToString();

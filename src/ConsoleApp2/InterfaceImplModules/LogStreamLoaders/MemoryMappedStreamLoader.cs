@@ -9,7 +9,7 @@ using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.InterfaceImplModules.LogStreamLoaders
 {
-    public class MemoryMappedStreamLoader : ILogStreamLoader
+    public class MemoryMappedStreamLoader : LifeCycleable<MemoryMappedStreamLoader>, ILogStreamLoader
     {
         public Stream LoadLogStream(string logPath)
         {

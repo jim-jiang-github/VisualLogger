@@ -8,29 +8,48 @@ using System.Text.RegularExpressions;
 using VisualLogger.Contents;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceImplModules.LogStreamLoaders;
-using VisualLogger.Schemas.Log;
+using VisualLogger.Schemas.Logs;
 
-namespace ConsoleApp2
+namespace VisualLogger
 {
-    class Program
+    public class Program
     {
+        public static int Count;
         static void Main(string[] args)
         {
 
-            LogSchemaBinary logSchemaBinary = new LogSchemaBinary();
             MemoryMappedStreamLoader memoryMappedStreamLoader = new MemoryMappedStreamLoader();
             var stream = memoryMappedStreamLoader.LoadLogStream(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog");
+            //12137MB
+            //MixStreamReader mixStreamReader = new MixStreamReader(stream);
+            //List<StreamCell> sss = new List<StreamCell>();
+            //for (int i = 0; i < 111267; i++)
+            //{
+            //    sss.Add(new StreamCell(mixStreamReader, 0, 0, StreamCellType.Int, null));
+            //}
             var a = LogSchemaBinary.LoadFromJsonFile("LogSchemaBinary.json", out string? ssss);
             if (a == null)
             {
                 return;
             }
             LogContentBinary logContentBinary = new LogContentBinary(stream, a);
+            logContentBinary.Dispose();
+            stream.Dispose();
+            GC.Collect();
+            Console.ReadKey();
             var asd = logContentBinary.GetBodyItems("Content");
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             if (asd == null)
             {
                 return;
             }
+            var t = logContentBinary.GetItemsTemplate("Content");
+            if (t == null)
+            {
+                return;
+            }
+            LogSource logSource = new LogSource(stream, t, asd);
             foreach (var item in asd)
             {
                 var sssasd = item[0].ToString();

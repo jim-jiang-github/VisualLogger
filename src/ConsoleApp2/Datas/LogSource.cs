@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VisualLogger.Datas;
 
-namespace ConsoleApp2.Datas
+namespace VisualLogger.Datas
 {
-    public class LogSource : IDisposable
+    public class LogSource : LifeCycleable<LogSource>, IDisposable
     {
         private readonly StreamCell[][] _content;
         private readonly Stream _stream;
@@ -35,6 +35,42 @@ namespace ConsoleApp2.Datas
             _stream = stream;
             _content = content;
             ColumnsName = columnsName;
+            string delimiterChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+            char[] breakChars = { '\r', '\n' };
+
+            Dictionary<string, List<int>> wordMap = new Dictionary<string, List<int>>();
+            StringBuilder stringBuilder = new StringBuilder();
+            List<string> words = new List<string>();
+            int index = 0;
+
+            foreach (var item in content)
+            {
+                var str = item[5].ToString();
+                foreach (var c in str)
+                {
+                    if (delimiterChars.Contains(c))
+                    {
+                        stringBuilder.Append(c);
+                    }
+                    else
+                    {
+                        if (stringBuilder.Length > 0)
+                        {
+                            var word = stringBuilder.ToString();
+                            if (wordMap.TryGetValue(word, out List<int>? indexs))
+                            {
+                                indexs.Add(index);
+                            }
+                            else
+                            {
+                                wordMap.Add(word, new List<int>() { index });
+                            }
+                            index++;
+                            stringBuilder.Clear();
+                        }
+                    }
+                }
+            }
         }
         public IEnumerable<StreamCell[]> GetItems(int startIndex, int length)
         {

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Datas
 {
-    public class StreamCell
+    public class StreamCell: LifeCycleable<StreamCell>
     {
         private readonly MixStreamReader _source;
         private readonly long _position;
         private readonly int _length;
         private readonly StreamCellType _type;
         private readonly StreamCellConvertor? _convertor;
-
         public StreamCell(MixStreamReader source, long position, int length, StreamCellType type, StreamCellConvertor? convertor)
         {
+            Program.Count++;
             _source = source;
             _position = position;
             _length = length;

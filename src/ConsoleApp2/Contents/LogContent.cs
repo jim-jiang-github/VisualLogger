@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceModules;
 using VisualLogger.Schemas.Convertors;
-using VisualLogger.Schemas.Log;
+using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger.Contents
 {
-    public abstract class LogContent<TLogSchema, TBlock, TBody, TCell> : ILogContent
+    public abstract class LogContent<TLogSchema, TBlock, TBody, TCell> : LifeCycleable<LogContent<TLogSchema, TBlock, TBody, TCell>>, ILogContent, IDisposable
         where TLogSchema : LogSchema<TLogSchema, TBlock, TBody, TCell>
         where TBlock : LogSchema<TLogSchema, TBlock, TBody, TCell>.BlockSchema
         where TBody : LogSchema<TLogSchema, TBlock, TBody, TCell>.BodySchema
@@ -39,7 +39,7 @@ namespace VisualLogger.Contents
                 Body = body;
             }
         }
-        protected abstract class BlockContent
+        protected abstract class BlockContent : LifeCycleable<BlockContent>
         {
             public string? Name { get; }
             public CellsContent CellsContent { get; }
@@ -83,12 +83,13 @@ namespace VisualLogger.Contents
                 ref long streamPosition);
         }
         #endregion
-        private readonly Dictionary<string, StreamCellConvertor> _convertors = new();
-        private readonly List<BlockContent> _blockContents = new();
-        private readonly LogSchema<TLogSchema, TBlock, TBody, TCell> _logSchema;
-
+        private Dictionary<string, StreamCellConvertor>? _convertors;
+        private List<BlockContent>? _blockContents;
+        private LogSchema<TLogSchema, TBlock, TBody, TCell>? _logSchema;
         protected LogContent(Stream stream, LogSchema<TLogSchema, TBlock, TBody, TCell> logSchema)
         {
+            _convertors = new();
+            _blockContents = new();
             _logSchema = logSchema;
             var mixStreamReader = new MixStreamReader(stream);
             long streamPosition = 0;
@@ -105,6 +106,10 @@ namespace VisualLogger.Contents
             ref long streamPosition);
         public StreamCellConvertor? GetConvertor(string? convertorName)
         {
+            if (_convertors == null)
+            {
+                return null;
+            }
             if (convertorName == null)
             {
                 return null;
@@ -115,7 +120,7 @@ namespace VisualLogger.Contents
             }
             else
             {
-                var convertorSchema = _logSchema.Convertors.FirstOrDefault(c => c.Name == convertorName);
+                var convertorSchema = _logSchema?.Convertors.FirstOrDefault(c => c.Name == convertorName);
                 if (convertorSchema == null)
                 {
                     return null;
@@ -136,6 +141,10 @@ namespace VisualLogger.Contents
         }
         private StreamCell? GetCell(IEnumerable<string> paths)
         {
+            if (_blockContents == null)
+            {
+                return null;
+            }
             var path = paths.FirstOrDefault();
             if (path == null)
             {
@@ -168,6 +177,10 @@ namespace VisualLogger.Contents
         }
         private StreamCell[]? GetCells(IEnumerable<string> paths)
         {
+            if (_blockContents == null)
+            {
+                return null;
+            }
             var path = paths.FirstOrDefault();
             if (path == null)
             {
@@ -191,6 +204,10 @@ namespace VisualLogger.Contents
         }
         private string[]? GetItemsTemplate(IEnumerable<string> paths)
         {
+            if (_blockContents == null)
+            {
+                return null;
+            }
             var path = paths.FirstOrDefault();
             if (path == null)
             {
@@ -214,6 +231,10 @@ namespace VisualLogger.Contents
         }
         private StreamCell[][]? GetBodyItems(IEnumerable<string> paths)
         {
+            if (_blockContents == null)
+            {
+                return null;
+            }
             var path = paths.FirstOrDefault();
             if (path == null)
             {
@@ -229,6 +250,14 @@ namespace VisualLogger.Contents
                 return null;
             }
             return block.BodyContent.Body;
+        }
+
+        public void Dispose()
+        {
+            _convertors = null;
+            _blockContents = null;
+            _logSchema = null;
+            GC.Collect();
         }
     }
 }

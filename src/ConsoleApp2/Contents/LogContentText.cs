@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceModules;
-using VisualLogger.Schemas.Log;
+using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger.Contents
 {
@@ -152,7 +152,7 @@ namespace VisualLogger.Contents
                         foreach (var cell in cells)
                         {
                             var streamCell = CreateStreamCell(logContent, logStreamReader, match, cell, ref streamPosition);
-                            if (streamCell != null && cell.Name != null)
+                            if (cell.Name != null)
                             {
                                 cellNames.Add(cell.Name);
                                 item.Add(streamCell);
