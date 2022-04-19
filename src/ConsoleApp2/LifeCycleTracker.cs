@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace VisualLogger
 {
-    public class LifeCycleable<T>
-        where T: LifeCycleable<T>
+    public class LifeCycleTracker<T>
+        where T: LifeCycleTracker<T>
     {
-        ~LifeCycleable() 
+        ~LifeCycleTracker() 
         {
             LifeCycleViewer.Release(GetType());
         }
 
-        public LifeCycleable()
+        public LifeCycleTracker()
         {
             LifeCycleViewer.Create(GetType());
         }

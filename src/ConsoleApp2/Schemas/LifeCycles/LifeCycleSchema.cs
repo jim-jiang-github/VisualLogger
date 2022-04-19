@@ -4,9 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2.Schemas.LifeCycles
+namespace VisualLogger.Schemas.LifeCycles
 {
     public class LifeCycleSchema
     {
+        #region Internal Class
+        public class ObjectSchema
+        {
+            public string Name { get; set; } = "";
+        }
+        #endregion
     }
 }

@@ -2,7 +2,7 @@ using VisualLogger;
 using VisualLogger.Contents;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceImplModules.LogStreamLoaders;
-using VisualLogger.Schemas.Logs;
+using VisualLogger.Schemas.LogElements;
 
 namespace WinFormsApp1
 {

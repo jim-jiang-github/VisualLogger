@@ -15,7 +15,7 @@ using VisualLogger.Schemas.Convertors;
 
 namespace VisualLogger.Datas
 {
-    public abstract class StreamCellConvertor : LifeCycleable<StreamCellConvertor>
+    public abstract class StreamCellConvertor : LifeCycleTracker<StreamCellConvertor>
     {
         private const string CELL_VALUE = "CellValue";
         #region Internal Class
@@ -46,12 +46,12 @@ namespace VisualLogger.Datas
                 var pattern = @"{" + CELL_VALUE + "}";
                 Expression = Regex.Replace(Expression, pattern, nameof(CSharpScriptGlobalParameter<long>.Value));
                 ScriptOptions.Default.WithEmitDebugInformation(false);
-                //var script = CSharpScript.Create<long>($"(long){Expression}", globalsType: typeof(CSharpScriptGlobalParameter<long>));
+                var script = CSharpScript.Create<long>(Expression, globalsType: typeof(CSharpScriptGlobalParameter<long>));
                 try
                 {
-                    //_runner = script.CreateDelegate();
+                    _runner = script.CreateDelegate();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //TODO log
                     _runner = null;
@@ -101,7 +101,7 @@ namespace VisualLogger.Datas
         }
         private class StreamCellConvertorEnum : StreamCellConvertor
         {
-            private Dictionary<int, string> _enumDictionary;
+            private readonly Dictionary<int, string> _enumDictionary;
             public StreamCellConvertorEnum(string expression) : base(expression)
             {
                 var matches = Regex.Matches(expression, @"(\d:[A-Z|a-z]*)");
@@ -110,11 +110,15 @@ namespace VisualLogger.Datas
                     _enumDictionary = new Dictionary<int, string>();
                     return;
                 }
-                _enumDictionary = matches.Select(m => m.Value.Split(':')).Select(x => new
-                {
-                    Key = int.Parse(x[0]),
-                    Value = x[1]
-                }).ToDictionary(x => x.Key, x => x.Value);
+                _enumDictionary = matches.Select(m => m.Value.Split(':')).
+                    Where(x => x.Length == 2).
+                    Select(x => new
+                    {
+                        Key = int.TryParse(x[0], out int key) ? (int?)key : null,
+                        Value = x[1]
+                    }).
+                    Where(x => x.Key != null).
+                    ToDictionary(x => x.Key ?? -1, x => x.Value);
             }
             protected override object? ConvertInternal(object? value)
             {

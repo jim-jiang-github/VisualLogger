@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Schemas
 {
-    public class Schema<T>: LifeCycleable<Schema<T>>
+    public class Schema<T>: LifeCycleTracker<Schema<T>>
         where T : class
     {
         protected void SaveAsJson(string jsonFilePath)

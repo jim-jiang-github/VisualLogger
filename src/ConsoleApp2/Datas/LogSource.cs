@@ -8,53 +8,32 @@ using VisualLogger.Datas;
 
 namespace VisualLogger.Datas
 {
-    public class LogSource : LifeCycleable<LogSource>, IDisposable
+    public class LogSource : LifeCycleTracker<LogSource>, IDisposable
     {
         private readonly IEnumerable<StreamCell[]> _content;
         private readonly Stream _stream;
 
-        public string[] ColumnsName { get; }
+        public LogColumn[] Columns { get; }
         public int Count => _content.Count();
-        public LogSource(Stream stream, string[] columnsName, IEnumerable<StreamCell[]> content)
+        public LogSource(Stream stream, string[] columns, IEnumerable<StreamCell[]> content)
         {
             _stream = stream;
             _content = content;
-            ColumnsName = columnsName;
-            string delimiterChars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-            char[] breakChars = { '\r', '\n' };
+            Columns = columns.Select(c => new LogColumn(c, new WordRetriever())).ToArray();
 
-            Dictionary<string, List<int>> wordMap = new Dictionary<string, List<int>>();
-            StringBuilder stringBuilder = new StringBuilder();
-            List<string> words = new List<string>();
-            int index = 0;
-
+            int itemIndex = 0;
             foreach (var item in content)
             {
-                var str = item[5].ToString();
-                foreach (var c in str)
+                for (int i = 0; i < item.Length; i++)
                 {
-                    if (delimiterChars.Contains(c))
+                    var column = Columns[i];
+                    if (column.WordRetriever == null)
                     {
-                        stringBuilder.Append(c);
+                        continue;
                     }
-                    else
-                    {
-                        if (stringBuilder.Length > 0)
-                        {
-                            var word = stringBuilder.ToString();
-                            if (wordMap.TryGetValue(word, out List<int>? indexs))
-                            {
-                                indexs.Add(index);
-                            }
-                            else
-                            {
-                                wordMap.Add(word, new List<int>() { index });
-                            }
-                            index++;
-                            stringBuilder.Clear();
-                        }
-                    }
+                    column.WordRetriever.AppendString(item[i].ToString(), itemIndex);
                 }
+                itemIndex++;
             }
         }
         public IEnumerable<StreamCell[]> GetItems(int startIndex, int length)

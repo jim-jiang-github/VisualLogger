@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceModules;
-using VisualLogger.Schemas.Logs;
+using VisualLogger.Schemas.LogElements;
 
 namespace VisualLogger.Contents
 {

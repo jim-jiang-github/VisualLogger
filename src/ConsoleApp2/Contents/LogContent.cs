@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using VisualLogger.Datas;
 using VisualLogger.InterfaceModules;
 using VisualLogger.Schemas.Convertors;
-using VisualLogger.Schemas.Logs;
+using VisualLogger.Schemas.LogElements;
 
 namespace VisualLogger.Contents
 {
     public abstract class LogContent<TLogSchema, TBlock, TBody, TCell> :
-        LifeCycleable<LogContent<TLogSchema, TBlock, TBody, TCell>>,
+        LifeCycleTracker<LogContent<TLogSchema, TBlock, TBody, TCell>>,
         ILogContent, 
         IDisposable
         where TLogSchema : LogSchema<TLogSchema, TBlock, TBody, TCell>, new()
