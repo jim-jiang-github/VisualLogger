@@ -141,7 +141,7 @@ namespace VisualLogger.Datas
         {
             Expression = expression;
         }
-        public static StreamCellConvertor? CreateConvertor(ILogContent logContent, ConvertorSchema? convertorSchema)
+        public static StreamCellConvertor? CreateConvertor(ILogSource logContent, ConvertorSchema? convertorSchema)
         {
             if (convertorSchema == null)
             {

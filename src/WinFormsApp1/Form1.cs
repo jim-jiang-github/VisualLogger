@@ -41,7 +41,7 @@ namespace WinFormsApp1
             }
             LogContentBinary logContentBinary = new LogContentBinary(_stream, logSchemaBinary);
             cells = logContentBinary.GetBodyItems();
-            LogSource logSource = new LogSource(_stream, logContentBinary.GetBodyTemplate(), cells);
+            LogContent logSource = new LogContent(_stream, logContentBinary.GetBodyTemplate(), cells);
             this.textBox1.Text = LifeCycleViewer.GetLifeCycleInfo();
         }
 

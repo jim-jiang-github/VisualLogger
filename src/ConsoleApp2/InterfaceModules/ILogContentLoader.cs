@@ -9,6 +9,6 @@ namespace VisualLogger.InterfaceModules
 {
     public interface ILogContentLoader
     {
-        ILogContent LoadLogContent(Stream stream, ILogSchemaLoader logSchemaLoader);
+        ILogSource LoadLogContent(Stream stream, ILogSchemaLoader logSchemaLoader);
     }
 }

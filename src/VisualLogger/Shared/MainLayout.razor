@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using VisualLogger.Pages
+@inherits LayoutComponentBase
 
 @*<Layout SideWidth="0" IsPage="true" ShowCollapseBar="true"
         IsFixedHeader="@IsFixedHeader"
@@ -32,10 +33,15 @@
             </header>
             <section class="has-sidebar">
                 <aside class="layout-side is-fixed-header @(IsCollapsed?"is-collapsed":"")">
-                    <div class="flex-fill">
-                        <i class="fa fa-fw fa-fa"></i>
-                        <span class="text">xxxxxxxxx</span>
-                    </div>
+                @*    <div class="layout-user">
+                        <img class="layout-avatar" src="_content/BootstrapBlazorApp2.Shared/images/Argo-C.png">
+                        <div class="layout-title">
+                            <span>管理员</span>
+                        </div>
+                        <div class="flex-fill">
+                            <i class="fa-solid fa-xmark"></i><!--!-->
+                        </div>
+                    </div>*@
                     <div class="layout-menu">
                         <Scroll>
                             @if (IsShowTree && !IsCollapsed)

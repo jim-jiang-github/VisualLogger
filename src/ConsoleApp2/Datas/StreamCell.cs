@@ -10,17 +10,19 @@ namespace VisualLogger.Datas
     public struct StreamCell
     {
         private readonly MixStreamReader _source;
+        private readonly int _index;
         private readonly long _position;
         private readonly int _length;
         private readonly StreamCellType _type;
         private readonly StreamCellConvertor? _convertor;
 
-        public int Length => _length;
+        public int Index => _index;
 
-        public StreamCell(MixStreamReader source, long position, int length, StreamCellType type, StreamCellConvertor? convertor)
+        public StreamCell(MixStreamReader source, int index, long position, int length, StreamCellType type, StreamCellConvertor? convertor)
         {
             Program.Count++;
             _source = source;
+            _index = index;
             _position = position;
             _length = length;
             _type = type;
@@ -73,6 +75,12 @@ namespace VisualLogger.Datas
             {
                 return _convertor.Convert(GetValue())?.ToString() ?? string.Empty;
             }
+        }
+
+        public string ToString(int start, int end)
+        {
+            var text = ToString();
+            return text.AsSpan().Slice(start, end).ToString();
         }
     }
 }

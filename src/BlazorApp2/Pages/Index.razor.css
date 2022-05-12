@@ -1,0 +1,38 @@
+﻿.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+}
+
+    .table,
+    .table th,
+    .table td {
+        border: 1px solid #ccc;
+    }
+
+        .table th,
+        .table td {
+            max-width: 0rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+.table-draggable th {
+    user-select: none;
+    position: relative;
+}
+
+.table .dragging-left {
+    box-shadow: inset 5px 0px 0px 0px black;
+}
+
+.table .dragging-right {
+    box-shadow: inset -5px 0px 0px 0px black;
+}
+
+.scroll {
+    max-height: 300px;
+    overflow: auto;
+}

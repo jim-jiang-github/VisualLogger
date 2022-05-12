@@ -5,10 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using VisualLogger.Contents;
 using VisualLogger.Datas;
+using VisualLogger.Datas.LogSources;
 using VisualLogger.InterfaceImplModules.LogStreamLoaders;
-using VisualLogger.Schemas.LogElements;
+using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger
 {
@@ -32,7 +32,7 @@ namespace VisualLogger
             {
                 return;
             }
-            LogContentBinary logContentBinary = new LogContentBinary(stream, a);
+            LogSourceBinary logContentBinary = new LogSourceBinary(stream, a);
             logContentBinary.Dispose();
             stream.Dispose();
             GC.Collect();
@@ -49,7 +49,7 @@ namespace VisualLogger
             {
                 return;
             }
-            LogSource logSource = new LogSource(stream, t, asd);
+            LogContent logSource = new LogContent(stream, t, asd);
             foreach (var item in asd)
             {
                 var sssasd = item[0].ToString();

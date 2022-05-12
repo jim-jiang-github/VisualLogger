@@ -10,7 +10,7 @@ namespace VisualLogger.InterfaceImplModules
 {
     public class LogContentLoader : ILogContentLoader
     {
-        public ILogContent LoadLogContent(Stream stream, ILogSchemaLoader logSchemaLoader)
+        public ILogSource LoadLogContent(Stream stream, ILogSchemaLoader logSchemaLoader)
         {
             throw new NotImplementedException();
         }

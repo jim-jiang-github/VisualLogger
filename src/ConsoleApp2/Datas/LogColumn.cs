@@ -9,11 +9,11 @@ namespace VisualLogger.Datas
     public class LogColumn : LifeCycleTracker<LogColumn>
     {
         public string Name { get; }
-        public WordRetriever? WordRetriever { get; }
-        public LogColumn(string name, WordRetriever? wordRetriever)
+        public TextSplitter? Splitter { get; }
+        public LogColumn(string name, TextSplitter? splitter)
         {
             Name = name;
-            WordRetriever = wordRetriever;
+            Splitter = splitter;
         }
         public LogColumn(string name) : this(name, null)
         {

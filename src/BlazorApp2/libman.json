@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "filesystem",
+      "library": "Pages/",
+      "files": [ "Index.razor.js" ],
+      "destination": "wwwroot/js/"
+    }
+  ]
+}
