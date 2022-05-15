@@ -105,7 +105,7 @@ namespace VisualLogger.Schemas.Logs
             //    }
             //};
 
-            //SaveAsJson("LogSchemaBinary.json");
+            //SaveAsJson("log_schema_binary.json");
         }
     }
 }

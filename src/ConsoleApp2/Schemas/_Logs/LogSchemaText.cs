@@ -37,41 +37,41 @@ namespace VisualLogger.Schemas.Logs
 
         public LogSchemaText()
         {
-            //Name = "Rcv Android log";
-            //ExtensionNames = new string[] { "txt", "log" };
-            //var header = new BlockText()
-            //{
-            //    Name = "Header",
-            //    RegexStart = @"app: (RoomsController)/(.*?)/(SHA\(.*\))",
-            //    RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
-            //    RegexContent = @"app: (RoomsController)/(.*?)/(SHA\(.*\))[\r|\n]*os: (.*?)/(.*?)[\r|\n]",
-            //    Cells = new CellText[]
-            //    {
-            //        new CellText{Name = "Type", RegexGroupIndex=1},
-            //        new CellText{Name = "Version", RegexGroupIndex=2},
-            //        new CellText{Name = "EncryptKey", RegexGroupIndex=3},
-            //        new CellText{Name = "OS", RegexGroupIndex=4},
-            //        new CellText{Name = "OSVersion", RegexGroupIndex=5},
-            //    }
-            //};
-            //Blocks.Add(header);
+            Name = "Rcv Android log";
+            ExtensionNames = new string[] { "txt", "log" };
+            var header = new BlockText()
+            {
+                Name = "Header",
+                RegexStart = @"app: (RoomsController)/(.*?)/(SHA\(.*\))",
+                RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
+                RegexContent = @"app: (RoomsController)/(.*?)/(SHA\(.*\))[\r|\n]*os: (.*?)/(.*?)[\r|\n]",
+                Cells = new CellText[]
+                {
+                    new CellText{Name = "Type", RegexGroupIndex=1},
+                    new CellText{Name = "Version", RegexGroupIndex=2},
+                    new CellText{Name = "EncryptKey", RegexGroupIndex=3},
+                    new CellText{Name = "OS", RegexGroupIndex=4},
+                    new CellText{Name = "OSVersion", RegexGroupIndex=5},
+                }
+            };
+            Blocks.Add(header);
 
-            //Body = new BodyText
-            //{
-            //    RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
-            //    RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
-            //    RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
-            //    BodyTemplate = new CellText[]
-            //    {
-            //        new CellText{Name = "Time", RegexGroupIndex=1},
-            //        new CellText{Name = "Level", RegexGroupIndex=2},
-            //        new CellText{Name = "Module", RegexGroupIndex=3},
-            //        new CellText{Name = "Thread", RegexGroupIndex=4},
-            //        new CellText{Name = "Msg", RegexGroupIndex=5},
-            //    }
-            //};
+            Body = new BodyText
+            {
+                RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
+                RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
+                RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
+                BodyTemplate = new CellText[]
+                {
+                    new CellText{Name = "Time", RegexGroupIndex=1},
+                    new CellText{Name = "Level", RegexGroupIndex=2},
+                    new CellText{Name = "Module", RegexGroupIndex=3},
+                    new CellText{Name = "Thread", RegexGroupIndex=4},
+                    new CellText{Name = "Msg", RegexGroupIndex=5},
+                }
+            };
 
-            //SaveAsJson("LogSchemaText.json");
+            SaveAsJson("log_schema_text.json");
         }
     }
 }
