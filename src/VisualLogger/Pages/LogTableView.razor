@@ -10,13 +10,13 @@
     }
     </Options>
     </Select>*@
-<div class="table-fix-head">
-    <table class="table table-sm table-nowrap">
+<div class="table-fix-head scroll">
+    <table class="table log-table table-resizable">
         <thead>
             <tr>
-                @foreach (var columnName in virtualizeTable.ColumnNames)
+                @foreach (var columnName in ColumnNames)
                 {
-                    <th style="width: 20px;">@columnName</th>
+                    <th>@columnName</th>
                 }
             </tr>
         </thead>

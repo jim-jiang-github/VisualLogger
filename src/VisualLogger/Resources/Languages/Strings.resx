@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddScenePage.Title" xml:space="preserve">
+    <value>Get scene from git repo.</value>
+  </data>
+  <data name="AddScenePage.WaterMark" xml:space="preserve">
+    <value>Get scene from git repo.</value>
+  </data>
   <data name="LogDownloader.Name" xml:space="preserve">
     <value>Filestack</value>
   </data>
@@ -146,6 +152,18 @@
   </data>
   <data name="MenuBar.Help" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="MenuBar.Tools" xml:space="preserve">
+    <value>Tools…</value>
+  </data>
+  <data name="MenuBar.Tools.Options" xml:space="preserve">
+    <value>Options…</value>
+  </data>
+  <data name="MenuBar.Tools.Options.AddScene" xml:space="preserve">
+    <value>Add scene…</value>
+  </data>
+  <data name="MenuBar.Tools.Options.RemoveScene" xml:space="preserve">
+    <value>Remove scene…</value>
   </data>
   <data name="PleaseSelectLanguage" xml:space="preserve">
     <value>aaaa</value>

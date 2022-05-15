@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static VisualLogger.Services.CommandRunnerService;
 
 namespace VisualLogger.Services
 {
@@ -18,39 +19,68 @@ namespace VisualLogger.Services
 
     //git.Run("clone -b support/5.x https://github.com/GitTools/GitVersion.git --depth 1");
 
-    class CommandRunnerService
+    public class CommandRunnerService
     {
-        public string ExecutablePath { get; }
-        public string WorkingDirectory { get; }
-
-        public CommandRunnerService(string executablePath, string workingDirectory = null)
+        public class CommandRunner
         {
-            ExecutablePath = executablePath ?? throw new ArgumentNullException(nameof(executablePath));
-            WorkingDirectory = workingDirectory ?? Path.GetDirectoryName(executablePath);
+            private string _executablePath;
+            private string _workingDirectory;
+            private List<Func<Task<string>>> commands = new List<Func<Task<string>>>();
+            public CommandRunner(string executablePath, string workingDirectory)
+            {
+                _executablePath = executablePath;
+                _workingDirectory = workingDirectory;
+            }
+            public CommandRunner Command(string arguments, bool subscriptResult = false)
+            {
+                Func<Task<string>> func = new Func<Task<string>>(async () =>
+                {
+                    var info = new ProcessStartInfo(_executablePath, arguments)
+                    {
+                        CreateNoWindow = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        WorkingDirectory = _workingDirectory,
+                    };
+                    var process = new Process
+                    {
+                        StartInfo = info,
+                        EnableRaisingEvents = true
+                    };
+                    process.Start();
+                    await process.WaitForExitAsync();
+                    var error = process.StandardError.ReadToEnd();
+                    var result = string.Empty;
+                    if (subscriptResult)
+                    {
+                        result = process.StandardOutput.ReadToEnd();
+                    }
+                    return result;
+                });
+                commands.Add(func);
+                return this;
+            }
+
+            public async Task<string> Run()
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var command in commands)
+                {
+                    var result = await command.Invoke();
+                    stringBuilder.AppendLine(result);
+                }
+                return stringBuilder.ToString();
+            }
         }
 
-        public void Run(string arguments)
+        public CommandRunner Init(string executablePath, string workingDirectory)
         {
-            var info = new ProcessStartInfo(ExecutablePath, arguments)
+            if (!Directory.Exists(workingDirectory))
             {
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = WorkingDirectory,
-            };
-            var process = new Process
-            {
-                StartInfo = info,
-                EnableRaisingEvents = true
-            };
-            process.OutputDataReceived += (sender, args) =>
-            {
-                Console.WriteLine("received output: {0}", args.Data);
-            };
-            process.Start();
-            process.BeginOutputReadLine();
-            process.WaitForExit();
-            process.CancelOutputRead();
+                Directory.CreateDirectory(workingDirectory);
+            }
+            return new CommandRunner(executablePath, workingDirectory);
         }
     }
 }

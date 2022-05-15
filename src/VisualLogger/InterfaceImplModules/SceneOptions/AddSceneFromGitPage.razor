@@ -1,0 +1,11 @@
+﻿@inject IStringLocalizer<Strings> Localizer;
+
+<div class="row g-3">
+    <div class="col-12">
+        <BootstrapInput PlaceHolder=@Localizer["AddScenePage.WaterMark"] TValue="string" @bind-Value="@GitRepo" IsAutoFocus="true" IsSelectAllTextOnFocus="true" />
+    </div>
+</div>
+<div class="d-flex justify-content-between">
+    <Circle Value="80" Color="Color.Info" StrokeWidth="5" />
+    <Button Text="xxxxx" OnClick="@Click"></Button>
+</div>

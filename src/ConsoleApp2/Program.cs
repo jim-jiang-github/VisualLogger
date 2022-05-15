@@ -12,11 +12,61 @@ using VisualLogger.Schemas.Logs;
 
 namespace VisualLogger
 {
+    public class CommandRunnerService
+    {
+        public class CommandRunner
+        {
+            private string _executablePath;
+            private string _workingDirectory;
+            public CommandRunner(string executablePath, string workingDirectory)
+            {
+                _executablePath = executablePath;
+                _workingDirectory = workingDirectory;
+            }
+            public CommandRunner Run(string arguments)
+            {
+                if (!Directory.Exists(_workingDirectory))
+                {
+                    Directory.CreateDirectory(_workingDirectory);
+                }
+                var processStartInfo = new ProcessStartInfo(_executablePath, arguments)
+                {
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    WorkingDirectory = _workingDirectory,
+                };
+                var process = new Process
+                {
+                    StartInfo = processStartInfo,
+                    EnableRaisingEvents = true
+                };
+                process.OutputDataReceived += (sender, args) =>
+                {
+                    Console.WriteLine("received output: {0}", args.Data);
+                };
+                process.Start();
+                process.BeginOutputReadLine();
+                process.WaitForExit();
+                process.CancelOutputRead();
+                return this;
+            }
+        }
+
+        public CommandRunner Init(string executablePath, string workingDirectory)
+        {
+            return new CommandRunner(executablePath, workingDirectory);
+        }
+    }
     public class Program
     {
         public static int Count;
         static void Main(string[] args)
         {
+            CommandRunnerService commandRunnerService = new CommandRunnerService();
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scenes");
+            commandRunnerService.Init("git", path)
+                .Run("pull git@git.ringcentral.com:jim.jiang/visuallogger.options.git windows_rooms");
 
             MemoryMappedStreamLoader memoryMappedStreamLoader = new MemoryMappedStreamLoader();
             var stream = memoryMappedStreamLoader.LoadLogStream(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog");

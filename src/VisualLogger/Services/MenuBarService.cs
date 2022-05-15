@@ -11,39 +11,52 @@ namespace VisualLogger.Services
 {
     public class MenuBarService
     {
-        private readonly IStringLocalizer<Strings> _stringLocalizer;
-        private readonly ILogPicker _logPicker;
-        private List<MenuItem> _menuItems = new List<MenuItem>();
+        private readonly List<MenuItem> _menuItems = new List<MenuItem>();
         public MenuBarService(IStringLocalizer<Strings> stringLocalizer,
-            ILogPicker logPicker)
+            ILogPicker logPicker,
+            ISceneOptions sceneOptions)
         {
-            _stringLocalizer = stringLocalizer;
-            _logPicker = logPicker;
             IEnumerable<MenuItem> GetOpenMenuItems()
             {
-                yield return new MenuItem(_stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: () =>
                 {
-                    _logPicker?.PickFromFile();
+                    logPicker?.PickFromFile();
                 });
-                yield return new MenuItem(_stringLocalizer["MenuBar.File.Open.FromFolder"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromFolder"], clickAction: () =>
                 {
-                    _logPicker?.PickFromFolder();
+                    logPicker?.PickFromFolder();
                 });
-                yield return new MenuItem(_stringLocalizer["MenuBar.File.Open.FromWebsite"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromWebsite"], clickAction: () =>
                 {
-                    _logPicker?.PickFromWebsite();
+                    logPicker?.PickFromWebsite();
                 });
             }
             IEnumerable<MenuItem> GetFileMenuItems()
             {
-                yield return new MenuItem(_stringLocalizer["MenuBar.File.Open"], GetOpenMenuItems());
-                yield return new MenuItem(_stringLocalizer["MenuBar.Exit"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Open"], GetOpenMenuItems());
+                yield return new MenuItem(stringLocalizer["MenuBar.Exit"], clickAction: () =>
                 {
                     App.Current.CloseWindow(App.Current.Windows[0]);
                 });
             }
-            _menuItems.Add(new MenuItem(_stringLocalizer["MenuBar.File"], GetFileMenuItems().ToArray()));
-            _menuItems.Add(new MenuItem(_stringLocalizer["MenuBar.Help"]));
+            _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.File"], GetFileMenuItems().ToArray()));
+            IEnumerable<MenuItem> GetToolsMenuItems()
+            {
+                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options.AddScene"], clickAction: () =>
+                {
+                    sceneOptions.AddScene();
+                });
+                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options.RemoveScene"], clickAction: () =>
+                {
+                    sceneOptions.RemoveCurrentScene();
+                });
+            }
+            IEnumerable<MenuItem> GetOptionsMenuItems()
+            {
+                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options"], GetToolsMenuItems());
+            }
+            _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Tools"], GetOptionsMenuItems()));
+            _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Help"]));
         }
         public IEnumerable<MenuItem> GetMenuItems()
         {
