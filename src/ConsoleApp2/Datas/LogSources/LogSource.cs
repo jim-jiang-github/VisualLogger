@@ -13,8 +13,7 @@ using VisualLogger.Schemas.Logs;
 namespace VisualLogger.Datas.LogSources
 {
     public abstract class LogSource<TLogSchema, TBlock, TBody, TCell> :
-        LifeCycleTracker<LogSource<TLogSchema, TBlock, TBody, TCell>>,
-        ILogSource, 
+        ILogSource,
         IDisposable
         where TLogSchema : LogSchema<TLogSchema, TBlock, TBody, TCell>, new()
         where TBlock : LogSchema<TLogSchema, TBlock, TBody, TCell>.BlockSchema, new()

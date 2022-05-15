@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.InterfaceModules
 {
-    public interface ILogDownloader
+    public interface IWebsitePicker
     {
         string Name { get; }
         string RegexPattern { get; }
-        Task<string[]> DownloadLogs();
+        Task<string> PickWebsite();
     }
 }

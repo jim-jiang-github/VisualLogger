@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Datas
 {
-    public class LogColumn : LifeCycleTracker<LogColumn>
+    public class LogColumn
     {
         public string Name { get; }
         public TextSplitter? Splitter { get; }

@@ -8,8 +8,8 @@ namespace VisualLogger.InterfaceModules
 {
     public interface ILogPicker
     {
-        string[] FileTypes { get; }
-
-        Task<string[]> PickerLogs();
+        Task<IEnumerable<string>> PickFromFolder();
+        Task<IEnumerable<string>> PickFromWebsite();
+        Task<IEnumerable<string>> PickFromFile();
     }
 }

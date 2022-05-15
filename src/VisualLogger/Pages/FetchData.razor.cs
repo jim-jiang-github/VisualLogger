@@ -23,13 +23,11 @@ namespace VisualLogger.Pages
             {
             });
             return;
-            var a1 = await LogPicker.PickerLogs();
         }
         private int DemoValue1 { get; set; } = 1;
         private async Task OnResultDialogClick()
         {
             Logger.LogDebug("LogDebug");
-            var a = await LogDownloader.DownloadLogs();
 
         }
 

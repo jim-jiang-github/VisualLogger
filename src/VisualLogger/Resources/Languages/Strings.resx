@@ -126,7 +126,31 @@
   <data name="LogDownloader.WaterMark" xml:space="preserve">
     <value>Please enter filestack download url.</value>
   </data>
-  <data name="PleaseSelectLanguage1" xml:space="preserve">
-    <value />
+  <data name="MenuBar.Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="MenuBar.File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MenuBar.File.Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="MenuBar.File.Open.FromFiles" xml:space="preserve">
+    <value>Files…</value>
+  </data>
+  <data name="MenuBar.File.Open.FromFolder" xml:space="preserve">
+    <value>Folder…</value>
+  </data>
+  <data name="MenuBar.File.Open.FromWebsite" xml:space="preserve">
+    <value>Website…</value>
+  </data>
+  <data name="MenuBar.Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="PleaseSelectLanguage" xml:space="preserve">
+    <value>aaaa</value>
+  </data>
+  <data name="SelectLogFiles" xml:space="preserve">
+    <value>Please select log files.</value>
   </data>
 </root>

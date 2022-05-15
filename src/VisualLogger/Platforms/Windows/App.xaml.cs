@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using VisualLogger.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,6 +19,7 @@ namespace VisualLogger.WinUI
         {
             this.InitializeComponent();
         }
+
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
     }

@@ -11,7 +11,7 @@ using VisualLogger.Resources.Languages;
 
 namespace VisualLogger.InterfaceImplModules.LogDownloaders
 {
-    internal class LogDownloaderFromUrl : ILogDownloader
+    internal class LogDownloaderFromUrl : IWebsitePicker
     {
         private DialogService _dialogService;
         private IStringLocalizer<Strings> _localizer;
@@ -26,7 +26,7 @@ namespace VisualLogger.InterfaceImplModules.LogDownloaders
             _localizer = localizer;
         }
 
-        public async Task<string[]> DownloadLogs()
+        public async Task<string> PickWebsite()
         {
             int demoValue1 = 1;
             var result = await _dialogService.ShowModal<LogDownloaderPage>(new ResultDialogOption()
@@ -38,7 +38,7 @@ namespace VisualLogger.InterfaceImplModules.LogDownloaders
                     [nameof(LogDownloaderPage.Value)] = demoValue1,
                     [nameof(LogDownloaderPage.ValueChanged)] = EventCallback.Factory.Create<int>(this, v => demoValue1 = v)
                 }
-            }) ;
+            });
             return null;
         }
     }

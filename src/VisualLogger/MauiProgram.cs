@@ -10,9 +10,6 @@ using VisualLogger.InterfaceModules;
 using VisualLogger.InterfaceImplModules.LogDownloaders;
 using VisualLogger.LogPickers;
 using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
 using VisualLogger.Services;
 
 namespace VisualLogger
@@ -21,12 +18,6 @@ namespace VisualLogger
     {
         public static MauiApp CreateMauiApp()
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "log.txt"),
-                restrictedToMinimumLevel: LogEventLevel.Information,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss zzz}[{Level:u3}]{Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
 
             var builder = MauiApp.CreateBuilder();
             builder
@@ -37,9 +28,9 @@ namespace VisualLogger
                                     events.AddWindows(windows => windows
                                            .OnWindowCreated(xamlWindow =>
                                            {
-                                               //var window = xamlWindow as MauiWinUIWindow;
+                                               var window = xamlWindow as MauiWinUIWindow;
                                                //var _hwndMain = window!.WindowHandle;
-                                               //window.ExtendsContentIntoTitleBar = false;
+                                               window.ExtendsContentIntoTitleBar = true;
                                            }));
 #endif
                                 })
@@ -47,8 +38,6 @@ namespace VisualLogger
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-            builder.Logging.AddSerilog(Log.Logger, dispose: true);
-            builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(Log.Logger, dispose: true));
             //builder.Services.AddLogging();
             builder.Services.AddLocalization();
             builder.Services.AddMauiBlazorWebView();
@@ -59,8 +48,14 @@ namespace VisualLogger
             builder.Services.AddSingleton<FileDownloadService>();
             builder.Services.AddSingleton<IErrorBoundaryLogger>(new ErrorBoundaryLoggerImpl());
             builder.Services.AddSingleton<DialogService>();
-            builder.Services.AddSingleton<ILogPicker>(new LogPickerLocalFiles());
-            builder.Services.AddSingleton<ILogDownloader, LogDownloaderFromUrl>();
+            builder.Services.AddSingleton<MenuBarService>();
+            builder.Services.AddSingleton<ILogPicker, LogPickerLocalFiles>();
+            builder.Services.AddSingleton<IWebsitePicker, LogDownloaderFromUrl>();
+#if WINDOWS
+            builder.Services.AddTransient<IFolderPicker, Platforms.Windows.FolderPicker>();
+#elif MACCATALYST
+		builder.Services.AddTransient<IFolderPicker, Platforms.MacCatalyst.FolderPicker>();
+#endif
 
             return builder.Build();
         }
