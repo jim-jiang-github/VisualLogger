@@ -19,25 +19,25 @@ namespace VisualLogger.Pages
         IJSRuntime JSRuntime { get; set; }
         [Inject]
         NavigationManager NavigationManager { get; set; }
-        public string[] ColumnNames { get; set; }
+        public string[] ColumnNames { get; set; } = Array.Empty<string>();
         public int TotalCount { get; set; } = 0;
         private static LogContent logContent;
-        static LogTableView() 
+        static LogTableView()
         {
 
-            var parserFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Parser.json";
-            var binaryContentParser = BinaryContentParser.LoadFromJsonFile(parserFile);
-            var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog";
-            //var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsServiceHost-20220407163855.rcvlog";
-            var binaryContentLoader = BinaryContentLoader.Load(binaryContentParser);
-            logContent = binaryContentLoader.LoadLogContent(logFile);
+            //var parserFile = @"C:\Users\Jim.Jiang\Documents\VisualLogger\src\ConsoleApp1\RCRooms_Windows_Binary_Parser.json";
+            //var binaryContentParser = BinaryContentParser.LoadFromJsonFile(parserFile);
+            //var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsHost-20220407165140.rcvlog";
+            ////var logFile = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_1112e3df-80f9-435d-8b5d-2b7c5a76ee1f_20220407-172316\RoomsServiceHost-20220407163855.rcvlog";
+            //var binaryContentLoader = BinaryContentLoader.Load(binaryContentParser);
+            //logContent = binaryContentLoader.LoadLogContent(logFile);
         }
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
-            ColumnNames = logContent.ColumnsName;
-            TotalCount = logContent.Count;
+            //ColumnNames = logContent.ColumnsName;
+            //TotalCount = logContent.Count;
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -49,7 +49,11 @@ namespace VisualLogger.Pages
         }
         protected async ValueTask<ItemsProviderResult<StreamCell[]>> LoadForecasts(ItemsProviderRequest request)
         {
-            var result = logContent.GetItems(request.StartIndex, request.Count);
+            var result = Enumerable.Empty<StreamCell[]>();
+            if (logContent != null)
+            {
+                result = logContent.GetItems(request.StartIndex, request.Count);
+            }
 
             return new ItemsProviderResult<StreamCell[]>(result, TotalCount);
         }
