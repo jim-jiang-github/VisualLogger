@@ -154,7 +154,7 @@
     <value>Help</value>
   </data>
   <data name="MenuBar.Tools" xml:space="preserve">
-    <value>Tools…</value>
+    <value>Tools</value>
   </data>
   <data name="MenuBar.Tools.Options" xml:space="preserve">
     <value>Options…</value>

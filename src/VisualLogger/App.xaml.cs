@@ -8,7 +8,7 @@ namespace VisualLogger
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new MainPage();
 
 #if MACCATALYST
             foreach (var item in menuBarService.GetMenuItems())
