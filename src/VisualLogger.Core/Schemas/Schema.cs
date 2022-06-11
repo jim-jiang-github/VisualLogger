@@ -13,15 +13,24 @@ namespace VisualLogger.Core.Schemas
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract SchemaType Type { get; }
-
-        public static T? LoadFromJsonFile<T>(string jsonFilePath)
-            where T : class
+        public static string? LoadContentFromJsonFile(string jsonFilePath)
         {
             if (!File.Exists(jsonFilePath))
             {
+                Log.Warning("Not found json file in {jsonFilePath}.", jsonFilePath);
                 return null;
             }
             var jsonContent = File.ReadAllText(jsonFilePath);
+            return jsonContent;
+        }
+        public static T? LoadFromJsonFile<T>(string jsonFilePath)
+            where T : class
+        {
+            var jsonContent = LoadContentFromJsonFile(jsonFilePath);
+            if (jsonContent == null)
+            {
+                return null;
+            }
             try
             {
                 var binaryContentParser = JsonConvert.DeserializeObject<T>(jsonContent);
@@ -33,29 +42,37 @@ namespace VisualLogger.Core.Schemas
                 return null;
             }
         }
-        public static SchemaType GetSchemaTypeFromJsonFile(string jsonFilePath)
+        protected static T? GetAnonymousTypeFromJsonContent<T>(dynamic anonymousType, Func<string, T> deserializeAnonymousTypeCallback, string jsonContent)
         {
-            if (!File.Exists(jsonFilePath))
-            {
-                return SchemaType.Unknow;
-            }
-            var jsonContent = File.ReadAllText(jsonFilePath);
             try
             {
-                var anonymousType = new { Type = "" };
-                var x = JsonConvert.DeserializeAnonymousType(jsonContent, anonymousType);
+                return deserializeAnonymousTypeCallback.Invoke(jsonContent);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning("Load error {error message}.", ex);
+                return default(T);
+            }
+        }
+        protected static T? GetAnonymousTypeFromJsonFile<T>(dynamic anonymousType, Func<string, T> deserializeAnonymousTypeCallback, string jsonFilePath)
+        {
+            var jsonContent = LoadContentFromJsonFile(jsonFilePath);
+            var result = GetAnonymousTypeFromJsonContent(anonymousType, deserializeAnonymousTypeCallback, jsonContent);
+            return result;
+        }
+        public static SchemaType GetSchemaTypeFromJsonFile(string jsonFilePath)
+        {
+            var anonymousType = new { Type = SchemaType.Unknow };
+            var result = GetAnonymousTypeFromJsonFile(anonymousType, (c) =>
+            {
+                var x = JsonConvert.DeserializeAnonymousType(c, anonymousType);
                 if (x == null)
                 {
                     return SchemaType.Unknow;
                 }
-                var schemaType = (SchemaType)Enum.Parse(typeof(SchemaType), x.Type, false);
-                return schemaType;
-            }
-            catch (Exception ex)
-            {
-                Log.Information("Load error {error message}.", ex);
-                return SchemaType.Unknow;
-            }
+                return x.Type;
+            }, jsonFilePath);
+            return result;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace VisualLogger.Core.LogFileLoaders.Streams
 {
     internal class StreamLoaderMemory : StreamLoader
     {
-        public override Stream LoadLogStream(string filePath)
+        public override Stream LoadLogStreamFromPath(string filePath)
         {
             throw new NotImplementedException();
         }

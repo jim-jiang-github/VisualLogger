@@ -12,16 +12,16 @@ namespace VisualLogger.Core.Sources
 {
     public class LogSourceLoader
     {
-        public static ILogSource? Load(string logFilePath, string logSchemaPath)
+        public static ILogSource? Load(string logFilePath, string schemaLogPath)
         {
-            var schemaType = Schema.GetSchemaTypeFromJsonFile(logSchemaPath);
+            var schemaType = Schema.GetSchemaTypeFromJsonFile(schemaLogPath);
             switch (schemaType)
             {
                 case SchemaType.LogText:
-                    var logSourceText = LoadLogSource<LogSourceText, SchemaLogText>(logFilePath, logSchemaPath);
+                    var logSourceText = LoadLogSource<LogSourceText, SchemaLogText>(logFilePath, schemaLogPath);
                     return logSourceText;
                 case SchemaType.LogBinary:
-                    var logSourceBinary = LoadLogSource<LogSourceBinary, SchemaLogBinary>(logFilePath, logSchemaPath);
+                    var logSourceBinary = LoadLogSource<LogSourceBinary, SchemaLogBinary>(logFilePath, schemaLogPath);
                     return logSourceBinary;
             }
             return null;
@@ -29,26 +29,26 @@ namespace VisualLogger.Core.Sources
         private static Stream? LoadLogFileStream(string logFilePath, SchemaLog schemaLog)
         {
             var extension = Path.GetExtension(logFilePath);
-            var available = schemaLog.AvailableExtensions.Contains(extension);
+            var available = schemaLog.SupportedExtensions.Contains(extension);
             if (!available)
             {
-                Log.Error("SchemaLog {AvailableExtensions} not available", string.Join(",", schemaLog.AvailableExtensions));
+                Log.Error("SchemaLog {AvailableExtensions} not available", string.Join(",", schemaLog.SupportedExtensions));
                 return null;
             }
-            var streamLoader = StreamLoaderProvider.GetStreamLoader(schemaLog.LoaderType);
+            var streamLoader = StreamLoaderProvider.GetStreamLoader(schemaLog.LogFileLoaderType);
             if (streamLoader == null)
             {
-                Log.Error("{File} can not find stream loader {Type}", logFilePath, schemaLog.LoaderType);
+                Log.Error("{File} can not find stream loader {Type}", logFilePath, schemaLog.LogFileLoaderType);
                 return null;
             }
-            var stream = streamLoader.LoadLogStream(logFilePath);
+            var stream = streamLoader.LoadLogStreamFromPath(logFilePath);
             return stream;
         }
-        private static ILogSource? LoadLogSource<TLogSource, TLogSchema>(string logFilePath, string logSchemaPath)
+        private static ILogSource? LoadLogSource<TLogSource, TSchemaLog>(string logFilePath, string schemaLogPath)
             where TLogSource : class, ILogSource
-            where TLogSchema : SchemaLog, new()
+            where TSchemaLog : SchemaLog, new()
         {
-            var schemaLog = Schema.LoadFromJsonFile<TLogSchema>(logSchemaPath);
+            var schemaLog = Schema.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
             if (schemaLog == null)
             {
                 return null;

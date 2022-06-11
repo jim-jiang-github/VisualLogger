@@ -7,11 +7,11 @@ using VisualLogger.Core.Streams;
 
 namespace VisualLogger.Core.Sources
 {
-    public interface ILogSource
+    public interface ILogSource : IDisposable
     {
         long TotalRowsCount { get; }
+        string[] ColumnHeads { get; }
         StreamCell? GetCell(string recursivePath);
-        string[] GetColumnHead();
         IEnumerable<StreamCell[]> GetRows();
     }
 }

@@ -8,37 +8,24 @@ using VisualLogger.Core.Streams;
 
 namespace VisualLogger.Core.Datas
 {
-    public class TextSplitter
+    public class WordsCollection
     {
         private const string DELIMITER_CHARS = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
         private const string EXCLUDE_CHARS = "1234567890";
-        private readonly Dictionary<string, List<int>> _wordsMap = new();
+        private readonly List<string> _words = new();
+
         public IEnumerable<string> Words
         {
             get
             {
-                var words = _wordsMap.Select(d => d.Key.ToString());
-                return words;
+                foreach (var word in _words)
+                {
+                    yield return word;
+                }
             }
         }
-        public void AppendStreamCell(StreamCell streamCell)
+        public void AppendFromString(string text)
         {
-            var text = streamCell.ToString();
-            //var matches = Regex.Matches(text, SPLIT_PATTERN);
-            //foreach (Match match in matches)
-            //{
-            //    if (_wordRetrieveMap.TryGetValue(match.Value, out var indexs))
-            //    {
-            //        if (!indexs.Contains(streamCell.Index))
-            //        {
-            //            indexs.Add(streamCell.Index);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        _wordRetrieveMap.Add(match.Value, new List<int>() { streamCell.Index });
-            //    }
-            //}
             var stringBuilder = new StringBuilder();
             for (int i = 0; i < text.Length; i++)
             {
@@ -51,16 +38,13 @@ namespace VisualLogger.Core.Datas
                 if (stringBuilder.Length > 0 && (i == text.Length - 1 || (!isDelimiterChar && stringBuilder.Length > 0)))
                 {
                     var word = stringBuilder.ToString();
-                    if (_wordsMap.TryGetValue(word, out var indexs))
+                    if (_words.Contains(word))
                     {
-                        if (!indexs.Contains(streamCell.Index))
-                        {
-                            indexs.Add(streamCell.Index);
-                        }
+                        return;
                     }
                     else
                     {
-                        _wordsMap.Add(word, new List<int>() { streamCell.Index });
+                        _words.Add(word);
                     }
                     stringBuilder.Clear();
                 }

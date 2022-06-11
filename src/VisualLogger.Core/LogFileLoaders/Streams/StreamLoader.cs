@@ -8,6 +8,6 @@ namespace VisualLogger.Core.LogFileLoaders.Streams
 {
     internal abstract class StreamLoader
     {
-        public abstract Stream LoadLogStream(string filePath);
+        public abstract Stream LoadLogStreamFromPath(string filePath);
     }
 }

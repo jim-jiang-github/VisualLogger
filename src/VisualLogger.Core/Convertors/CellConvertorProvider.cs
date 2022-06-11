@@ -12,13 +12,13 @@ namespace VisualLogger.Core.Convertors
     internal class CellConvertorProvider
     {
         private readonly ILogSource _logSource;
-        private readonly SchemaLog _logSchema;
+        private readonly SchemaLog _schemaLog;
         private readonly Dictionary<string, CellConvertor> _convertors = new();
 
         public CellConvertorProvider(ILogSource logSource, SchemaLog schemaLog)
         {
             _logSource = logSource;
-            _logSchema = schemaLog;
+            _schemaLog = schemaLog;
         }
         public CellConvertor? GetConvertor(string? convertorName)
         {
@@ -36,7 +36,7 @@ namespace VisualLogger.Core.Convertors
             }
             else
             {
-                var schemaConvertor = _logSchema?.Convertors.FirstOrDefault(c => c.Name == convertorName);
+                var schemaConvertor = _schemaLog?.Convertors.FirstOrDefault(c => c.Name == convertorName);
                 if (schemaConvertor == null)
                 {
                     return null;

@@ -12,8 +12,7 @@ using VisualLogger.Core.Streams;
 namespace VisualLogger.Core.Sources
 {
     internal abstract class LogSource<TBlockSchema, TColumnHeadSchema, TCellSchema> :
-        ILogSource,
-        IDisposable
+        ILogSource
         where TBlockSchema : SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaBlock, new()
         where TColumnHeadSchema : SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumnHead, new()
         where TCellSchema : SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaCell, new()
@@ -54,19 +53,20 @@ namespace VisualLogger.Core.Sources
         private readonly CellConvertorProvider _cellConvertorProvider;
         private readonly List<BlockSource> _blockSources;
         private readonly ColumnHeadSource _bodySource;
+        private readonly MixStreamReader _mixStreamReader;
 
         protected LogSource(Stream stream, SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> schemaLog)
         {
             _cellConvertorProvider = new(this, schemaLog);
             _blockSources = new();
-            var mixStreamReader = new MixStreamReader(stream);
+            _mixStreamReader = new MixStreamReader(stream);
             long streamPosition = 0;
             foreach (var block in schemaLog.Blocks)
             {
-                var blockSource = CreateBlockSource(mixStreamReader, this, block, _cellConvertorProvider, ref streamPosition);
+                var blockSource = CreateBlockSource(_mixStreamReader, this, block, _cellConvertorProvider, ref streamPosition);
                 _blockSources.Add(blockSource);
             }
-            _bodySource = CreateContentSource(mixStreamReader, this, schemaLog.ColumnHeadTemplate, _cellConvertorProvider, ref streamPosition);
+            _bodySource = CreateContentSource(_mixStreamReader, this, schemaLog.ColumnHeadTemplate, _cellConvertorProvider, ref streamPosition);
         }
         protected abstract BlockSource CreateBlockSource(
             MixStreamReader mixStreamReader,
@@ -82,6 +82,7 @@ namespace VisualLogger.Core.Sources
             ref long streamPosition);
         #region ILogSource
         public long TotalRowsCount { get; protected set; }
+        public string[] ColumnHeads => _bodySource.ColumnHeadTemplate;
         public StreamCell? GetCell(string recursivePath)
         {
             var paths = recursivePath.Split(".");
@@ -123,10 +124,6 @@ namespace VisualLogger.Core.Sources
                 return block.Cells[index].Cell;
             }
         }
-        public string[] GetColumnHead()
-        {
-            return _bodySource.ColumnHeadTemplate;
-        }
         public IEnumerable<StreamCell[]> GetRows()
         {
             return _bodySource.Cells;
@@ -135,6 +132,8 @@ namespace VisualLogger.Core.Sources
         #region IDisposable
         public void Dispose()
         {
+            _mixStreamReader.Close();
+            _mixStreamReader.Dispose();
         }
         #endregion
     }

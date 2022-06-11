@@ -8,7 +8,7 @@ namespace VisualLogger.Core.LogFileLoaders.Streams
 {
     internal class StreamLoaderText : StreamLoader
     {
-        public override Stream LoadLogStream(string filePath)
+        public override Stream LoadLogStreamFromPath(string filePath)
         {
             var stream = File.OpenRead(filePath);
             return stream;

@@ -9,7 +9,7 @@ namespace VisualLogger.Core.LogFileLoaders.Streams
 {
     internal class StreamLoaderMemoryMapped : StreamLoader
     {
-        public override Stream LoadLogStream(string filePath)
+        public override Stream LoadLogStreamFromPath(string filePath)
         {
             using MemoryMappedFile memoryMappedFile = MemoryMappedFile.CreateFromFile(filePath);
             var stream = memoryMappedFile.CreateViewStream();

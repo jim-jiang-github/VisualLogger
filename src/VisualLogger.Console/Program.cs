@@ -19,11 +19,20 @@ Log.Logger = new LoggerConfiguration()
                rollingInterval: RollingInterval.Day,
                rollOnFileSizeLimit: true)
            .CreateLogger();
-Scenario.Load();
+
+SchemaLogBinary logSchemaBinary = new SchemaLogBinary();
+logSchemaBinary.SaveAsDefault();
+SchemaLogText logSchemaText = new SchemaLogText();
+logSchemaText.SaveAsDefault();
 SchemaScenario schemaScenario = new SchemaScenario();
 schemaScenario.SaveAsDefault();
-var asssaa = LogSourceLoader.Load(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_49ff3833-2153-4dfd-a55d-ea34a30566a5_20220610-140234\RoomsHost-20220607_131631-pid_16104.log",
-    @"C:\Users\Jim.Jiang\source\repos\VisualLogger\VisualLogger.Console\bin\Debug\net6.0\log_schema_text_rcv_windows_22.2.20.json");
+
+var logFilePath = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_49ff3833-2153-4dfd-a55d-ea34a30566a5_20220610-140234\RoomsHost-20220607_131631-pid_16104.log";
+Scenario scenario = new Scenario();
+scenario.Init();
+scenario.LoadLogSource(logFilePath);
+var logSource = scenario.LogSource;
+
 //for (int i = 0; i < 11; i++)
 //{
 //    Log.Debug("Hello, Serilog! {Index}", i);
@@ -31,16 +40,6 @@ var asssaa = LogSourceLoader.Load(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_
 //    Log.Warning("Hello, Serilog! {Index}", i);
 //    Log.Error("Hello, Serilog! {Index}", i);
 //}
-SchemaLogBinary logSchemaBinary = new SchemaLogBinary();
-logSchemaBinary.SaveAsDefault();
-SchemaLogText logSchemaText = new SchemaLogText();
-logSchemaText.SaveAsDefault();
-var a1 = Schema.GetSchemaTypeFromJsonFile("log_schema_text_default.json");
-var aa1 = Schema.GetSchemaTypeFromJsonFile("log_schema_binary_default.json");
-var a = Schema.LoadFromJsonFile<SchemaLogText>("log_schema_text_default.json");
-var aa = Schema.LoadFromJsonFile<SchemaLogBinary>("log_schema_binary_default.json");
-WeatherForecastService x = new WeatherForecastService();
-x.AAA();
 Log.CloseAndFlush();
 Console.WriteLine("Hello, World!");
 Console.ReadLine();

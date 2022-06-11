@@ -38,8 +38,8 @@ namespace VisualLogger.Core.Schemas.Logs
         public void SaveAsDefault()
         {
             Name = "schema_log_binary_rcv_windows_21.4.30";
-            LoaderType = LogFileLoaderType.MemoryMapped;
-            AvailableExtensions = new[] { ".rcvlog" };
+            LogFileLoaderType = LogFileLoaderType.MemoryMapped;
+            SupportedExtensions = new[] { ".rcvlog" };
             var timeConvertor = new SchemaConvertor()
             {
                 Name = "Time",

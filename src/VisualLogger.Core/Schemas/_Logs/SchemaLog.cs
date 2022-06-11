@@ -23,32 +23,41 @@ namespace VisualLogger.Core.Schemas.Logs
         #endregion
         public string Name { get; set; } = string.Empty;
         [JsonConverter(typeof(StringEnumConverter))]
-        public LogFileLoaderType LoaderType { get; set; } = LogFileLoaderType.Unknow;
-        public string[] AvailableExtensions { get; set; } = Array.Empty<string>();
+        public LogFileLoaderType LogFileLoaderType { get; set; } = LogFileLoaderType.Unknow;
+        public string[] SupportedExtensions { get; set; } = Array.Empty<string>();
         public List<SchemaConvertor> Convertors { get; } = new List<SchemaConvertor>();
 
-        public static string[] GetAvailableExtensionsFromJsonFile(string jsonFilePath)
+        public static string[] GetSupportedExtensionsFromJsonContent(string jsonContent)
         {
-            if (!File.Exists(jsonFilePath))
+            var anonymousType = new { SupportedExtensions = Array.Empty<string>() };
+            var result = GetAnonymousTypeFromJsonContent(anonymousType, (c) =>
             {
-                return Array.Empty<string>();
-            }
-            var jsonContent = File.ReadAllText(jsonFilePath);
-            try
-            {
-                var anonymousType = new { AvailableExtensions = Array.Empty<string>() };
-                var x = JsonConvert.DeserializeAnonymousType(jsonContent, anonymousType);
+                var x = JsonConvert.DeserializeAnonymousType(c, anonymousType);
                 if (x == null)
                 {
                     return Array.Empty<string>();
                 }
-                return x.AvailableExtensions;
-            }
-            catch (Exception ex)
+                return x.SupportedExtensions;
+            }, jsonContent);
+            if (result == null)
             {
-                Log.Information("Load error {error message}.", ex);
                 return Array.Empty<string>();
             }
+            return result;
+        }
+        public static LogFileLoaderType GetLogFileLoaderTypeFromJsonContent(string jsonContent)
+        {
+            var anonymousType = new { LogFileLoaderType = LogFileLoaderType.Unknow };
+            var result = GetAnonymousTypeFromJsonContent(anonymousType, (c) =>
+            {
+                var x = JsonConvert.DeserializeAnonymousType(c, anonymousType);
+                if (x == null)
+                {
+                    return LogFileLoaderType.Unknow;
+                }
+                return x.LogFileLoaderType;
+            }, jsonContent);
+            return result;
         }
     }
     /// <summary>
