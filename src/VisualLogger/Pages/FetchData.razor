@@ -1,102 +1,48 @@
 ﻿@page "/fetchdata"
-@inject ILogPicker LogPicker;
-@inject IWebsitePicker LogDownloader;
-@inject DialogService DialogService;
-@inject FileDownloadService FileDownloadService;
-@inject ILogger<FetchData> Logger;
 
-<div class="treeview-animated w-20 border mx-4 my-4">
-    <h6 class="pt-3 pl-3">Folders</h6>
-    <hr>
-    <ul class="treeview-animated-list mb-3">
-        <li class="treeview-animated-items">
-            <a class="closed">
-                <i class="fas fa-angle-right"></i>
-                <span><i class="far fa-envelope-open ic-w mx-1"></i>Mail</span>
-            </a>
-            <ul class="nested">
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-bell ic-w mr-1"></i>Offers</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-address-book ic-w mr-1"></i>Contacts</div>
-                </li>
-                <li class="treeview-animated-items">
-                    <a class="closed">
-                        <i class="fas fa-angle-right"></i>
-                        <span><i class="far fa-calendar-alt ic-w mx-1"></i>Calendar</span>
-                    </a>
-                    <ul class="nested">
-                        <li>
-                            <div class="treeview-animated-element"><i class="far fa-clock ic-w mr-1"></i>Deadlines</div>
-                        </li>
-                        <li>
-                            <div class="treeview-animated-element"><i class="fas fa-users ic-w mr-1"></i>Meetings</div>
-                        </li>
-                        <li>
-                            <div class="treeview-animated-element"><i class="fas fa-basketball-ball ic-w mr-1"></i>Workouts</div>
-                        </li>
-                        <li>
-                            <div class="treeview-animated-element"><i class="fas fa-mug-hot ic-w mr-1"></i>Events</div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li class="treeview-animated-items">
-            <a class="closed">
-                <i class="fas fa-angle-right"></i>
-                <span><i class="far fa-folder-open ic-w mx-1"></i>Inbox</span>
-            </a>
-            <ul class="nested">
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-folder-open ic-w mr-1"></i>Admin</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-folder-open ic-w mr-1"></i>Corporate</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-folder-open ic-w mr-1"></i>Finance</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-folder-open ic-w mr-1"></i>Other</div>
-                </li>
-            </ul>
-        </li>
-        <li class="treeview-animated-items">
-            <a class="closed">
-                <i class="fas fa-angle-right"></i>
-                <span><i class="far fa-gem mx-1"></i>Favourites</span>
-            </a>
-            <ul class="nested">
-                <li>
-                    <div class="treeview-animated-element"><i class="fas fa-pepper-hot ic-w mr-1"></i>Restaurants</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="far fa-eye ic-w mr-1"></i>Places</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="fas fa-gamepad ic-w mr-1"></i>Games</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="fas fa-cocktail ic-w mr-1"></i>Coctails</div>
-                </li>
-                <li>
-                    <div class="treeview-animated-element"><i class="fas fa-pizza-slice ic-w mr-1"></i>Food</div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <div class="treeview-animated-element"><i class="far fa-comment ic-w mr-1"></i>Notes</div>
-        </li>
-        <li>
-            <div class="treeview-animated-element"><i class="fas fa-cogs ic-w mr-1"></i>Settings</div>
-        </li>
-        <li>
-            <div class="treeview-animated-element"><i class="fas fa-desktop ic-w mr-1"></i>Devices</div>
-        </li>
-        <li>
-            <div class="treeview-animated-element"><i class="fas fa-trash-alt ic-w mr-1"></i>Deleted Items</div>
-        </li>
-    </ul>
-</div>
+<PageTitle>Weather forecast</PageTitle>
+
+@using VisualLogger.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}

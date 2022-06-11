@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VisualLogger.Core.LogFileLoaders.Streams
+{
+    internal class StreamLoaderText : StreamLoader
+    {
+        public override Stream LoadLogStream(string filePath)
+        {
+            var stream = File.OpenRead(filePath);
+            return stream;
+        }
+    }
+}

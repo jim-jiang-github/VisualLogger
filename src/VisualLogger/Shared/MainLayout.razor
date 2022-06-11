@@ -1,64 +1,19 @@
-﻿@using VisualLogger.Pages
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
-@*<Layout SideWidth="0" IsPage="true" ShowCollapseBar="true"
-        IsFixedHeader="@IsFixedHeader"
-        TabDefaultUrl="/"
-        Menus="@Menus" AdditionalAssemblies="new[] { GetType().Assembly }" class="@Theme">
-    <Header>
-        <span class="ms-3 flex-fill">Bootstrap of Blazor</span>
-        <div class="layout-drawer" @onclick="@(e => IsOpen = !IsOpen)"><i class="fa fa-gears"></i></div>
-    </Header>
-    <Side>
-    </Side>
-    <Main>
-        @Body
-    </Main>
-    <NotFound>
-        <p>Sorry, there's nothing at this address.</p>
-    </NotFound>
-</Layout>*@
+<PageTitle>VisualLogger</PageTitle>
 
-<CascadingValue Value="this" IsFixed="true">
-    <ErrorLogger>
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
 
-        <section class="layout is-page">
-            <header class="layout-header is-fixed">
-                <a title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="TooltipTextxxxxxxxxx" class="layout-header-bar @(IsCollapsed?"is-collapsed":"")" @onclick="CollapseMenu">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <span class="ms-3 flex-fill">Bootstrap of Blazor</span>
-                <div class="layout-drawer" @onclick="@(e => IsOpen = !IsOpen)"><i class="fa fa-gears"></i></div>
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
 
-            </header>
-            <section class="has-sidebar">
-                <aside class="layout-side is-fixed-header @(IsCollapsed?"is-collapsed":"")">
-                @*    <div class="layout-user">
-                        <img class="layout-avatar" src="_content/BootstrapBlazorApp2.Shared/images/Argo-C.png">
-                        <div class="layout-title">
-                            <span>管理员</span>
-                        </div>
-                        <div class="flex-fill">
-                            <i class="fa-solid fa-xmark"></i><!--!-->
-                        </div>
-                    </div>*@
-                    <div class="layout-menu">
-                        <Scroll>
-                            @if (IsShowTree && !IsCollapsed)
-                            {
-                                <Tree Items="@Items" OnTreeItemClick="@OnTreeItemClick" />
-                            }
-                            else
-                            {
-                                <Menu Items="@Menus" IsVertical="true" IsCollapsed=@IsCollapsed OnClick="@ClickMenu()" />
-                            }
-                        </Scroll>
-                    </div>
-                </aside>
-                <main class="layout-main @(IsCollapsed?"is-collapsed":"")">
-                    @Body
-                </main>
-            </section>
-        </section>
-    </ErrorLogger>
-</CascadingValue>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

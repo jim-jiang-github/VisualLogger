@@ -1,0 +1,135 @@
+{
+  "Name": "Rcv Windows log",
+  "ExtensionNames": [
+    "rcvlog"
+  ],
+  "Convertors": [
+    {
+      "Name": "Time",
+      "Type": "Math",
+      "Expression": "(long){Summary.StartTime}*1000+{Summary.StartTimeMS}+{CellValue}",
+      "ContinueConvertor": {
+        "Type": "Time",
+        "Expression": "yyyy-MM-dd HH:mm:ss,fff"
+      }
+    },
+    {
+      "Name": "Level",
+      "Type": "Enum",
+      "Expression": "0:DEBUG,1:INFO,2:WARNING,3:ERROR"
+    }
+  ],
+  "Blocks": [
+    {
+      "Name": "Header",
+      "Cells": [
+        {
+          "Type": "StringWithLength",
+          "Length": 3,
+          "Name": "Signature"
+        },
+        {
+          "Type": "Skip",
+          "Length": 5,
+          "Name": ""
+        },
+        {
+          "Type": "Int",
+          "Name": "MagicNumber"
+        },
+        {
+          "Type": "Int",
+          "Name": "EncryptKey"
+        },
+        {
+          "Type": "Int",
+          "Name": "SummarySize"
+        },
+        {
+          "Type": "Int",
+          "Name": "FileMaxSize"
+        },
+        {
+          "Type": "Int",
+          "Name": "FileCurSize"
+        },
+        {
+          "Type": "Skip",
+          "Length": 32,
+          "Name": ""
+        }
+      ]
+    },
+    {
+      "Name": "Summary",
+      "Cells": [
+        {
+          "Type": "Int",
+          "Name": "TimeZone"
+        },
+        {
+          "Type": "Skip",
+          "Length": 4,
+          "Name": ""
+        },
+        {
+          "Type": "Long",
+          "Name": "StartTime"
+        },
+        {
+          "Type": "UInt",
+          "Name": "StartTimeMS"
+        },
+        {
+          "Type": "StringWithLength",
+          "Length": 256,
+          "Name": "ProcessName"
+        },
+        {
+          "Type": "Int",
+          "Name": "ProcessId"
+        },
+        {
+          "Type": "Int",
+          "Name": "ItemCount"
+        },
+        {
+          "Type": "Skip",
+          "Length": 36,
+          "Name": ""
+        }
+      ]
+    }
+  ],
+  "ColumnHeadTemplate": {
+    "Count": "Summary.ItemCount",
+    "Cells": [
+      {
+        "Type": "Long",
+        "Name": "TickOffset",
+        "ConvertorName": "Time"
+      },
+      {
+        "Type": "StringWithIntHead",
+        "Name": "Module"
+      },
+      {
+        "Type": "Int",
+        "Name": "Thread"
+      },
+      {
+        "Type": "Int",
+        "Name": "Level",
+        "ConvertorName": "Level"
+      },
+      {
+        "Type": "StringWithIntHead",
+        "Name": "Hint"
+      },
+      {
+        "Type": "StringWithIntHead",
+        "Name": "Msg"
+      }
+    ]
+  }
+}

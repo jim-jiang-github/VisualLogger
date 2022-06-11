@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.InterfaceModules
 {
-    internal interface IFolderPicker
+    public interface IFolderPicker
     {
         Task<string> PickFolder();
     }
