@@ -7,7 +7,7 @@ using VisualLogger.InterfaceModules;
 
 namespace VisualLogger.InterfaceImplModules
 {
-    internal class SceneOptions : ISceneOptions
+    internal class SceneOptions : IScenarioOptions
     {
         public void AddScene()
         {

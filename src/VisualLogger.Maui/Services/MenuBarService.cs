@@ -14,7 +14,7 @@ namespace VisualLogger.Maui.Services
         private readonly List<MenuItem> _menuItems = new List<MenuItem>();
         public MenuBarService(IStringLocalizer<Strings> stringLocalizer,
             ILogPicker logPicker,
-            ISceneOptions sceneOptions)
+            IScenarioOptions scenarioOptions)
         {
             IEnumerable<MenuItem> GetOpenMenuItems()
             {
@@ -42,20 +42,12 @@ namespace VisualLogger.Maui.Services
             _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.File"], GetFileMenuItems().ToArray()));
             IEnumerable<MenuItem> GetToolsMenuItems()
             {
-                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options.AddScene"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Scenario"], clickAction: () =>
                 {
-                    sceneOptions.AddScene();
                 });
-                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options.RemoveScene"], clickAction: () =>
-                {
-                    sceneOptions.RemoveCurrentScene();
-                });
+                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options"]);
             }
-            IEnumerable<MenuItem> GetOptionsMenuItems()
-            {
-                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options"], GetToolsMenuItems());
-            }
-            _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Tools"], GetOptionsMenuItems()));
+            _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Tools"], GetToolsMenuItems()));
             _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Help"]));
         }
         public IEnumerable<MenuItem> GetMenuItems()

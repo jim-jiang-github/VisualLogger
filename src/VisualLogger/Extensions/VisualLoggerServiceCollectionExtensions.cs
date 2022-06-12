@@ -14,7 +14,7 @@ namespace VisualLogger.Extensions
         public static IServiceCollection AddVisualLogger(this IServiceCollection services)
         {
             services.AddLocalization();
-            services.AddSingleton<ISceneOptions, SceneOptions>();
+            services.AddSingleton<IScenarioOptions, SceneOptions>();
             return services;
         }
     }

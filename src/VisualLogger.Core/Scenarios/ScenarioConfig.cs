@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Core.Scenarios
 {
-    public class ScenarioLoader
+    public class ScenarioConfig : IJsonSerializable
     {
+        public string? ScenarioGitRepo { get; set; }
     }
 }

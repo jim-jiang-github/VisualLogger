@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.InterfaceModules
 {
-    public interface ISceneOptions
+    public interface IScenarioOptions
     {
         void AddScene();
         void RemoveCurrentScene();
