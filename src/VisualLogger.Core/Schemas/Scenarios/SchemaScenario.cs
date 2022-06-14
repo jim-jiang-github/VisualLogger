@@ -15,8 +15,8 @@ namespace VisualLogger.Core.Schemas.Scenarios
         public void SaveAsDefault()
         {
             Name = "schema_scenario_rcv_windows_22.2.20";
-            SchemaLogName = "schema_log_text_rcv_windows_22.2.20.json";
-            this.SaveAsJson($"{Name}.json");
+            SchemaLogName = "schema_log.json";
+            this.SaveAsJson($"schema_scenario.json");
         }
     }
 }

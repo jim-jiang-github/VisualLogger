@@ -53,6 +53,7 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3})",
                 RegexEnd = @"^(?!\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}).*",
                 RegexContent = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \<(.*?)\> \[(.*?)\] (.*?) (.*)",
+                FilterableColumnNames = new string[] { "Level", "Module", "Thread" },
                 EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellText[]
                 {
@@ -63,7 +64,8 @@ namespace VisualLogger.Core.Schemas.Logs
                     new SchemaCellText{Name = "Msg", RegexGroupIndex=5},
                 }
             };
-            this.SaveAsJson($"{Name}.json");
+
+            this.SaveAsJson($"schema_log.json");
         }
         public void SaveAsDefault1()
         {
@@ -92,6 +94,7 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
                 RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
                 RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
+                FilterableColumnNames = new string[] { "Level", "Module", "Thread" },
                 EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellText[]
                 {
@@ -103,7 +106,7 @@ namespace VisualLogger.Core.Schemas.Logs
                 }
             };
 
-            this.SaveAsJson("log_schema_text_default.json");
+            this.SaveAsJson($"schema_log.json");
         }
     }
 }

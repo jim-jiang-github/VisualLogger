@@ -98,6 +98,7 @@ namespace VisualLogger.Core.Schemas.Logs
             ColumnHeadTemplate = new SchemaColumnHeadBinary()
             {
                 Count = $"{summary.Name}.{summary.Cells[6].Name}",
+                FilterableColumnNames = new string[] { "Module", "Thread", "Level" },
                 EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellBinary[]
                 {
@@ -109,7 +110,8 @@ namespace VisualLogger.Core.Schemas.Logs
                     new SchemaCellBinary{Name = "Msg",Type = SchemaLogBinaryType.StringWithIntHead},
                 }
             };
-            this.SaveAsJson($"{Name}.json");
+
+            this.SaveAsJson($"schema_log.json");
         }
     }
 }

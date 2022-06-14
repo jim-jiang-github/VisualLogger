@@ -27,8 +27,6 @@ Log.Logger = new LoggerConfiguration()
                rollOnFileSizeLimit: true)
            .CreateLogger();
 
-SchemaLogBinary logSchemaBinary = new SchemaLogBinary();
-logSchemaBinary.SaveAsDefault();
 SchemaLogText logSchemaText = new SchemaLogText();
 logSchemaText.SaveAsDefault();
 SchemaScenario schemaScenario = new SchemaScenario();
