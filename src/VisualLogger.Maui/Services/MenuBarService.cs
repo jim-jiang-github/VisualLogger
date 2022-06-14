@@ -34,6 +34,10 @@ namespace VisualLogger.Maui.Services
             IEnumerable<MenuItem> GetFileMenuItems()
             {
                 yield return new MenuItem(stringLocalizer["MenuBar.File.Open"], GetOpenMenuItems());
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Scenario"], clickAction: async () =>
+                {
+                    await scenarioOptions.OpenScenarioDialog();
+                });
                 yield return new MenuItem(stringLocalizer["MenuBar.Exit"], clickAction: () =>
                 {
                     App.Current.CloseWindow(App.Current.Windows[0]);
@@ -42,9 +46,6 @@ namespace VisualLogger.Maui.Services
             _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.File"], GetFileMenuItems().ToArray()));
             IEnumerable<MenuItem> GetToolsMenuItems()
             {
-                yield return new MenuItem(stringLocalizer["MenuBar.Tools.Scenario"], clickAction: () =>
-                {
-                });
                 yield return new MenuItem(stringLocalizer["MenuBar.Tools.Options"]);
             }
             _menuItems.Add(new MenuItem(stringLocalizer["MenuBar.Tools"], GetToolsMenuItems()));

@@ -150,6 +150,9 @@
   <data name="MenuBar.File.Open.FromWebsite" xml:space="preserve">
     <value>Website…</value>
   </data>
+  <data name="MenuBar.File.Scenario" xml:space="preserve">
+    <value>Scenario…</value>
+  </data>
   <data name="MenuBar.Help" xml:space="preserve">
     <value>Help</value>
   </data>
@@ -158,9 +161,6 @@
   </data>
   <data name="MenuBar.Tools.Options" xml:space="preserve">
     <value>Options…</value>
-  </data>
-  <data name="MenuBar.Tools.Scenario" xml:space="preserve">
-    <value>Scenario…</value>
   </data>
   <data name="PleaseSelectLanguage" xml:space="preserve">
     <value>aaaa</value>
