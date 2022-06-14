@@ -48,7 +48,7 @@ namespace VisualLogger.Core.Sources
             where TLogSource : class, ILogSource
             where TSchemaLog : SchemaLog, new()
         {
-            var schemaLog = Schema.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
+            var schemaLog = IJsonSerializable.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
             if (schemaLog == null)
             {
                 return null;

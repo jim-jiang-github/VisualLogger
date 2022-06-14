@@ -1,9 +1,52 @@
 ﻿@page "/"
+<RadzenSplitter Orientation="Orientation.Vertical" Collapse=@OnCollapse Expand=@OnExpand style="height: 100%; border: 1px solid rgba(0,0,0,.08);">
+    <RadzenSplitterPane>
+        <RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
+            <RadzenSplitterPane Collapsible="false" Size="200px" Max="200px">
+               <RadzenCard Style="width: 100%;">
+                <h4 class="mt-4">Vertical Orientation</h4>
+                <RadzenCheckBoxList TValue="int" Orientation="Orientation.Vertical">
+                    <Items>
+                        <RadzenCheckBoxListItem Text="Orders" Value="1" />
+                        <RadzenCheckBoxListItem Text="Employees" Value="2" />
+                        <RadzenCheckBoxListItem Text="Customers" Value="3" />
+                        <RadzenCheckBoxListItem Text="Customers1" Value="4" />
+                        <RadzenCheckBoxListItem Text="Customers2" Value="5" />
+                        <RadzenCheckBoxListItem Text="Customers3" Value="6" />
+                        <RadzenCheckBoxListItem Text="Customers4" Value="7" />
+                        <RadzenCheckBoxListItem Text="Customers5" Value="8" />
+                    </Items>
+                </RadzenCheckBoxList>
+            </RadzenCard>
+            </RadzenSplitterPane>
+            <RadzenSplitterPane Collapsible="false" >
+             
+            </RadzenSplitterPane>
+        </RadzenSplitter>
+    </RadzenSplitterPane>
+</RadzenSplitter>
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+@code {
 
-Welcome to your new app.
+    void OnCollapse(RadzenSplitterEventArgs args)
+    {
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    void OnExpand(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnResize(RadzenSplitterResizeEventArgs args)
+    {
+    }
+
+    void OnCollapseDisabled(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
+    {
+    }
+
+}

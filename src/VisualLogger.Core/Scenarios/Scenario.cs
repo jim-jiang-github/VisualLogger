@@ -44,7 +44,7 @@ namespace VisualLogger.Core.Scenarios
                 return false;
             }
             var schemaScenarioPath = schemaTypeMap.FirstOrDefault(x => x.Key == SchemaType.Scenario).Value;
-            var schemaScenario = Schema.LoadFromJsonFile<SchemaScenario>(schemaScenarioPath);
+            var schemaScenario = IJsonSerializable.LoadFromJsonFile<SchemaScenario>(schemaScenarioPath);
             if (schemaScenario == null)
             {
                 Log.Warning("Can not load schemaScenario from json file in {schemaScenarioPath}", schemaScenarioPath);
@@ -56,7 +56,7 @@ namespace VisualLogger.Core.Scenarios
                 return false;
             }
             var schemaLogPath = Path.Combine(_scenarioDirectory, schemaScenario.SchemaLogName);
-            var schemaLogContent = Schema.LoadContentFromJsonFile(schemaLogPath);
+            var schemaLogContent = IJsonSerializable.LoadContentFromJsonFile(schemaLogPath);
             if (schemaLogContent == null)
             {
                 Log.Warning("Can not load schema log content from json file in {schemaLogPath}", schemaLogPath);
@@ -128,7 +128,7 @@ namespace VisualLogger.Core.Scenarios
             where TLogSource : class, ILogSource
             where TSchemaLog : SchemaLog, new()
         {
-            var schemaLog = Schema.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
+            var schemaLog = IJsonSerializable.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
             if (schemaLog == null)
             {
                 Log.Warning("Can not load schemaLog from {schemaLogPath}", schemaLogPath);

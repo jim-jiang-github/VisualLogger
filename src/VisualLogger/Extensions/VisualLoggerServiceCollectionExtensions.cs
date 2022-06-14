@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualLogger.InterfaceImplModules;
-using VisualLogger.InterfaceModules;
+using Radzen;
 
 namespace VisualLogger.Extensions
 {
@@ -14,6 +13,12 @@ namespace VisualLogger.Extensions
         public static IServiceCollection AddVisualLogger(this IServiceCollection services)
         {
             services.AddLocalization();
+            services.AddVisualLoggerCore();
+            services.AddScoped<SidebarMenuService>();
+            services.AddScoped<DialogService>();
+            services.AddScoped<NotificationService>();
+            services.AddScoped<TooltipService>();
+            services.AddScoped<ContextMenuService>();
             services.AddSingleton<IScenarioOptions, SceneOptions>();
             return services;
         }

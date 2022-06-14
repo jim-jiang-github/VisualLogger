@@ -76,6 +76,7 @@ namespace VisualLogger.Core.Sources
                     var template = columnHead.Cells[j];
                     var streamCell = CreateStreamCell(mixStreamReader, logSource, i, template, cellConvertorProvider, ref streamPosition);
                     streamCells[j] = streamCell;
+                    HandleContentCell(template.Name, streamCell);
                 }
                 sourceItems[i] = streamCells;
             }

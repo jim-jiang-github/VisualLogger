@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Radzen;
 using VisualLogger;
 using VisualLogger.Data;
 using VisualLogger.Extensions;

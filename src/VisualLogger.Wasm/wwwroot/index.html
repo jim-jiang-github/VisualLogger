@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>VisualLogger.Wasm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>VisualLogger.Maui</title>
     <base href="/" />
     <link href="_content/VisualLogger/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="_content/Radzen.Blazor/css/dark.css" rel="stylesheet" />
     <link href="_content/VisualLogger/css/app.css" rel="stylesheet">
     <link href="VisualLogger.Wasm.styles.css" rel="stylesheet" />
 </head>
@@ -19,6 +20,11 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <script async src="_content/VisualLogger/js/highlight.pack.js"></script>
+    <script async src="_content/VisualLogger/blazor.polyfill.min.js"></script>
+    <script async src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script defer data-domain="blazor.radzen.com" src="https://analytics.radzen.com/js/plausible.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

@@ -10,7 +10,8 @@ namespace VisualLogger.Core.Sources
     public interface ILogSource : IDisposable
     {
         long TotalRowsCount { get; }
-        string[] ColumnHeads { get; }
+        IEnumerable<string> ColumnHeads { get; }
+        IEnumerable<string> EnumerateWords { get; }
         StreamCell? GetCell(string recursivePath);
         IEnumerable<StreamCell[]> GetRows();
     }

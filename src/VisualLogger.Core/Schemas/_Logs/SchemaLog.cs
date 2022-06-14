@@ -89,6 +89,7 @@ namespace VisualLogger.Core.Schemas.Logs
         }
         public class SchemaColumnHead
         {
+            public string[] EnumerateWordsColumnNames { get; set; } = Array.Empty<string>();
             public TCellSchema[] Cells { get; set; } = Array.Empty<TCellSchema>();
         }
         public class SchemaCell

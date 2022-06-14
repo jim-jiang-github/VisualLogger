@@ -98,6 +98,7 @@ namespace VisualLogger.Core.Schemas.Logs
             ColumnHeadTemplate = new SchemaColumnHeadBinary()
             {
                 Count = $"{summary.Name}.{summary.Cells[6].Name}",
+                EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellBinary[]
                 {
                     new SchemaCellBinary{Name = "TickOffset",Type = SchemaLogBinaryType.Long, ConvertorName=$"{timeConvertor.Name}"},

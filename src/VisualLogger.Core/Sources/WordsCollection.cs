@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisualLogger.Core.Streams;
 
-namespace VisualLogger.Core.Datas
+namespace VisualLogger.Core.Sources
 {
     public class WordsCollection
     {
@@ -35,7 +35,7 @@ namespace VisualLogger.Core.Datas
                 {
                     stringBuilder.Append(c);
                 }
-                if (stringBuilder.Length > 0 && (i == text.Length - 1 || (!isDelimiterChar && stringBuilder.Length > 0)))
+                if (stringBuilder.Length > 0 && (i == text.Length - 1 || !isDelimiterChar && stringBuilder.Length > 0))
                 {
                     var word = stringBuilder.ToString();
                     if (_words.Contains(word))

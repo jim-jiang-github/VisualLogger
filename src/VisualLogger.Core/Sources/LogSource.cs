@@ -50,23 +50,27 @@ namespace VisualLogger.Core.Sources
         }
         #endregion
 
+        private readonly SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> _schemaLog;
         private readonly CellConvertorProvider _cellConvertorProvider;
         private readonly List<BlockSource> _blockSources;
-        private readonly ColumnHeadSource _bodySource;
+        private readonly ColumnHeadSource _columnHeadSource;
         private readonly MixStreamReader _mixStreamReader;
+        private readonly WordsCollection _wordsCollection;
 
         protected LogSource(Stream stream, SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> schemaLog)
         {
+            _schemaLog = schemaLog;
             _cellConvertorProvider = new(this, schemaLog);
             _blockSources = new();
             _mixStreamReader = new MixStreamReader(stream);
+            _wordsCollection = new WordsCollection();
             long streamPosition = 0;
             foreach (var block in schemaLog.Blocks)
             {
                 var blockSource = CreateBlockSource(_mixStreamReader, this, block, _cellConvertorProvider, ref streamPosition);
                 _blockSources.Add(blockSource);
             }
-            _bodySource = CreateContentSource(_mixStreamReader, this, schemaLog.ColumnHeadTemplate, _cellConvertorProvider, ref streamPosition);
+            _columnHeadSource = CreateContentSource(_mixStreamReader, this, schemaLog.ColumnHeadTemplate, _cellConvertorProvider, ref streamPosition);
         }
         protected abstract BlockSource CreateBlockSource(
             MixStreamReader mixStreamReader,
@@ -80,9 +84,17 @@ namespace VisualLogger.Core.Sources
             TColumnHeadSchema columnHead,
             CellConvertorProvider cellConvertorProvider,
             ref long streamPosition);
+        protected void HandleContentCell(string columnName, StreamCell streamCell)
+        {
+            if (_schemaLog.ColumnHeadTemplate.EnumerateWordsColumnNames.Contains(columnName))
+            {
+                _wordsCollection.AppendFromString(streamCell.ToString());
+            }
+        }
         #region ILogSource
         public long TotalRowsCount { get; protected set; }
-        public string[] ColumnHeads => _bodySource.ColumnHeadTemplate;
+        public IEnumerable<string> ColumnHeads => _columnHeadSource.ColumnHeadTemplate;
+        public IEnumerable<string> EnumerateWords => _wordsCollection.Words;
         public StreamCell? GetCell(string recursivePath)
         {
             var paths = recursivePath.Split(".");
@@ -126,7 +138,7 @@ namespace VisualLogger.Core.Sources
         }
         public IEnumerable<StreamCell[]> GetRows()
         {
-            return _bodySource.Cells;
+            return _columnHeadSource.Cells;
         }
         #endregion
         #region IDisposable

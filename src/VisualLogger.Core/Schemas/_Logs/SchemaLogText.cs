@@ -53,6 +53,7 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3})",
                 RegexEnd = @"^(?!\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}).*",
                 RegexContent = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \<(.*?)\> \[(.*?)\] (.*?) (.*)",
+                EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellText[]
                 {
                     new SchemaCellText{Name = "Time", RegexGroupIndex=1, ConvertorName="Time"},
@@ -91,6 +92,7 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
                 RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
                 RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
+                EnumerateWordsColumnNames = new string[] { "Msg" },
                 Cells = new SchemaCellText[]
                 {
                     new SchemaCellText{Name = "Time", RegexGroupIndex=1},

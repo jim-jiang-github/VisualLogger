@@ -10,9 +10,9 @@ using VisualLogger.Core.Utils;
 using VisualLogger.Data;
 
 //GitRunner gitRunner = new GitRunner("git@git.ringcentral.com:CoreLib/rcvrooms-windows.git");
-GitRunner gitRunner = new GitRunner("https://github.com/jim-jiang-github/VisualLogger.Scenarios.git");
-await gitRunner.Fetch();
-await gitRunner.CloneTo("rcv/windows/22.2.20", "ScenariosFolder");
+//GitRunner gitRunner = new GitRunner("https://github.com/jim-jiang-github/VisualLogger.Scenarios.git");
+//await gitRunner.Fetch();
+//await gitRunner.CloneTo("rcv/windows/22.2.20", "ScenariosFolder");
 
 
 Log.Logger = new LoggerConfiguration()

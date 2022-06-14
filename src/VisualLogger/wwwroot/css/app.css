@@ -82,3 +82,42 @@ a, .btn-link {
 		padding-left: env(safe-area-inset-left);
 	}
 }
+
+.header {
+    min-height: 1.125rem !important;
+}
+
+.sidebar-toggle {
+    padding: 0.3rem !important;
+}
+.rz-sidebar-expanded {
+    width: 80px !important;
+}
+
+.rz-panel-menu .rz-navigation-item-link {
+    padding: 0.25rem 0.5rem !important;
+}
+
+.rz-sidebar-menu-item-card {
+    padding: 0.25rem 0.25rem;
+    border-radius: 4px;
+    box-shadow: 0 6px 14px 0 rgb(0 0 0 / 6%);
+    background-color: #5d717b;
+    position: relative;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    align-items: center;
+}
+.rz-sidebar-menu-item-text {
+    font-size: x-small;
+}
+.rz-body {
+    padding: 0rem !important;
+}
+.rz-checkbox-list-vertical .rz-checkbox {
+    margin: 0rem 0 !important;
+}
