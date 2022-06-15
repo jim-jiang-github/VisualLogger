@@ -19,7 +19,7 @@ namespace VisualLogger.Extensions
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
-            services.AddSingleton<IScenarioOptions, SceneOptions>();
+            services.AddScoped<IScenarioOptions, ScenarioOptions>();
             return services;
         }
     }

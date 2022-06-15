@@ -8,7 +8,6 @@ namespace VisualLogger.InterfaceModules
 {
     public interface IScenarioOptions
     {
-        void AddScene();
-        void RemoveCurrentScene();
+        Task OpenScenarioDialog();
     }
 }

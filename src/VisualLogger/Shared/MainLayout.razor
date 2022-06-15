@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject SidebarMenuService SidebarMenuService
+@inject DialogService DialogService
+@inject NotificationService NotificationService
 
 <RadzenDialog />
 <RadzenNotification />
@@ -14,7 +16,11 @@
                 <div class="col-5 d-flex align-items-center">
                     <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                     </RadzenSidebarToggle>
-                    <RadzenLabel Text="Radzen Blazor Components">
+                    <RadzenLabel Text="Visual Logger">
+                    </RadzenLabel>
+                    <RadzenLabel Text=" | ">
+                    </RadzenLabel>
+                    <RadzenLabel Text="V.0.1.0 beta">
                     </RadzenLabel>
                 </div>
                 <div class="col-7 d-flex align-items-center justify-content-end">
@@ -51,6 +57,25 @@
 
     protected override void OnInitialized()
     {
+        //TODO Can not inject 'NotificationService' code behind for radzen, this may be a bug???
+        MessageCenter.NotificationSuccess += (title, message) =>
+        {
+            NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = title,
+                    Detail = message,
+                    Duration = 4000
+                });
+        };
+        //TODO Can not inject 'DialogService' code behind for radzen, this may be a bug???
+        ScenarioOptions.ScenarioDialog += () =>
+        {
+            return DialogService.OpenAsync<ScenarioOptionsPage>($"Order ",
+                new Dictionary<string, object>() { { "OrderID", 1 } },
+                new DialogOptions() { Width = "700px", Height = "570px" });
+        };
+
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
     }
 
