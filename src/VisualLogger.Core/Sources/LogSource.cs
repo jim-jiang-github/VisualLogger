@@ -92,8 +92,8 @@ namespace VisualLogger.Core.Sources
             }
         }
         #region ILogSource
-        public long TotalRowsCount { get; protected set; }
-        public IEnumerable<string> ColumnHeads => _columnHeadSource.ColumnHeadTemplate;
+        public int TotalRowsCount { get; protected set; }
+        public string[] ColumnNames => _columnHeadSource.ColumnHeadTemplate;
         public IEnumerable<string> EnumerateWords => _wordsCollection.Words;
         public StreamCell? GetCell(string recursivePath)
         {

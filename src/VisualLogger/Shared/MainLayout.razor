@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject Scenario Scenario
+@inject IScenarioOptions ScenarioOptions
 @inject NavigationManager NavigationManager
 @inject SidebarMenuService SidebarMenuService
 @inject DialogService DialogService
@@ -54,7 +56,6 @@
 @code {
     bool sidebarExpanded = true;
     bool bodyExpanded = false;
-
     protected override void OnInitialized()
     {
         //TODO Can not inject 'NotificationService' code behind for radzen, this may be a bug???
@@ -75,8 +76,8 @@
                 new Dictionary<string, object>() { { "OrderID", 1 } },
                 new DialogOptions() { Width = "700px", Height = "570px" });
         };
-
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        Scenario.Init();
     }
 
     void ChangeTheme(object value)

@@ -11,7 +11,7 @@ namespace VisualLogger.InterfaceImplModules
 {
     internal class ScenarioOptions : IScenarioOptions
     {
-        public static event Func<Task>? ScenarioDialog;
+        public event Func<Task>? ScenarioDialog;
         public async Task OpenScenarioDialog()
         {
             await (ScenarioDialog?.Invoke() ?? Task.CompletedTask);

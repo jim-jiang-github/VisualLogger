@@ -14,12 +14,12 @@ namespace VisualLogger.Extensions
         {
             services.AddLocalization();
             services.AddVisualLoggerCore();
-            services.AddScoped<SidebarMenuService>();
             services.AddScoped<DialogService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
-            services.AddScoped<IScenarioOptions, ScenarioOptions>();
+            services.AddSingleton<SidebarMenuService>();
+            services.AddSingleton<IScenarioOptions, ScenarioOptions>();
             return services;
         }
     }

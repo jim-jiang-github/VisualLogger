@@ -8,6 +8,7 @@ namespace VisualLogger.InterfaceModules
 {
     public interface IScenarioOptions
     {
+        event Func<Task>? ScenarioDialog;
         Task OpenScenarioDialog();
     }
 }

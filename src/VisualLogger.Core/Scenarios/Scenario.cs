@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,15 +13,18 @@ using VisualLogger.Core.Sources;
 
 namespace VisualLogger.Core.Scenarios
 {
-    public class Scenario
+    public class Scenario : INotifyPropertyChanged, IDisposable
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         private const string SCENARIOS_FOLDER = "Scenarios";
-        private static readonly string _scenarioDirectory = Path.Combine(Directory.GetCurrentDirectory(), SCENARIOS_FOLDER);
+        private static readonly string _scenarioDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, SCENARIOS_FOLDER);
 
         private StreamLoader? _streamLoader;
         private string? _schemaLogPath;
 
         public string[] SupportedExtensions { get; private set; } = Array.Empty<string>();
+        public string[] LoadedLogFiles { get; private set; } = Array.Empty<string>();
         public ILogSource? LogSource { get; private set; }
         public bool Initialized => SupportedExtensions.Length > 0;
         public bool LogSourceLoaded => LogSource != null;
@@ -28,8 +32,16 @@ namespace VisualLogger.Core.Scenarios
         {
 
         }
+        protected void OnPropertyChanged(string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public bool Init()
         {
+            if (!Directory.Exists(_scenarioDirectory))
+            {
+                return false;
+            }
             var files = Directory.GetFiles(_scenarioDirectory);
             var schemaTypeMap = files.ToDictionary(f => Schema.GetSchemaTypeFromJsonFile(f), f => f);
             var schemaScenarioCount = schemaTypeMap.Count(x => x.Key == SchemaType.Scenario);
@@ -80,13 +92,20 @@ namespace VisualLogger.Core.Scenarios
             SupportedExtensions = supportExtensions;
             return true;
         }
-        public void Clean()
+
+        public void Dispose()
         {
             LogSource?.Dispose();
             LogSource = null;
             _schemaLogPath = null;
             _streamLoader = null;
             SupportedExtensions = Array.Empty<string>();
+        }
+        public void LoadLogFiles(string[] logFiles)
+        {
+            LoadedLogFiles = logFiles;
+            LoadLogSource(logFiles[0]);
+            OnPropertyChanged(nameof(LoadedLogFiles));
         }
         public bool LoadLogSource(string logFilePath)
         {
@@ -108,6 +127,7 @@ namespace VisualLogger.Core.Scenarios
             Log.Information("Load LogSource from {logFilePath}", logFilePath);
             var stream = _streamLoader.LoadLogStreamFromPath(logFilePath);
             LogSource = LoadLogSource(stream, _schemaLogPath);
+            OnPropertyChanged(nameof(LogSource));
             return true;
         }
         private ILogSource? LoadLogSource(Stream logFileStream, string schemaLogPath)

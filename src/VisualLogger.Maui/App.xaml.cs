@@ -4,13 +4,14 @@ namespace VisualLogger.Maui
 {
     public partial class App : Application
     {
-        public App(MenuBarService menuBarService)
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
             MainPage = new MainPage();
 
 #if MACCATALYST
+            var menuBarService = serviceProvider.GetService<MenuBarService>();
             LoadMenuItem(menuBarService);
 #endif
         }

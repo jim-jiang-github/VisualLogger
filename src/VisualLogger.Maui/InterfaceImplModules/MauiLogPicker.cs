@@ -4,28 +4,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualLogger.Core.Scenarios;
 using VisualLogger.InterfaceModules;
+using VisualLogger.Maui.InterfaceModules;
 using VisualLogger.Resources.Languages;
 
 namespace VisualLogger.Maui.InterfaceImplModules
 {
-    internal class MauiLogPicker : ILogPicker
+    internal class MauiLogPicker
     {
         private readonly IStringLocalizer<Strings> _stringLocalizer;
         protected readonly IFolderPicker _folderPicker;
+        protected readonly Scenario _scenario;
         public MauiLogPicker(IStringLocalizer<Strings> stringLocalizer,
-            IFolderPicker folderPicker)
+            IFolderPicker folderPicker,
+            Scenario scenario)
         {
             _stringLocalizer = stringLocalizer;
             _folderPicker = folderPicker;
+            _scenario = scenario;
         }
 
-        public async Task<IEnumerable<string>> PickFromFile()
+        public async Task<IEnumerable<string>> PickFromFiles()
         {
-            var fileTypes = new[] { "txt", "log", "zip", "7z", "rar" };
-            var filePickerFileType = new Dictionary<DevicePlatform, IEnumerable<string>>();
-            filePickerFileType.Add(DevicePlatform.WinUI, fileTypes);
-            filePickerFileType.Add(DevicePlatform.MacCatalyst, fileTypes);
+            var fileTypes = new[] { "zip", "7z", "rar" };
+            fileTypes = fileTypes.Concat(_scenario.SupportedExtensions).ToArray();
+            var filePickerFileType = new Dictionary<DevicePlatform, IEnumerable<string>>
+            {
+                { DevicePlatform.WinUI, fileTypes },
+                { DevicePlatform.MacCatalyst, fileTypes }
+            };
             var pickOptions = new PickOptions()
             {
                 PickerTitle = _stringLocalizer["SelectLogFiles"],

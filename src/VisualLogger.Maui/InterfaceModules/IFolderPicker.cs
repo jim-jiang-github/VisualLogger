@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualLogger.InterfaceModules
+namespace VisualLogger.Maui.InterfaceModules
 {
     public interface IFolderPicker
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualLogger.InterfaceModules;
+using VisualLogger.Maui.InterfaceModules;
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace VisualLogger.Maui.Platforms.Windows

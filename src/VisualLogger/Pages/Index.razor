@@ -1,26 +1,54 @@
 ﻿@page "/"
+@implements IDisposable
+@inject Scenario Scenario
+
 <RadzenSplitter Orientation="Orientation.Vertical" Collapse=@OnCollapse Expand=@OnExpand style="height: 100%; border: 1px solid rgba(0,0,0,.08);">
     <RadzenSplitterPane>
         <RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
             <RadzenSplitterPane Collapsible="false" Size="200px" Max="200px">
-               <RadzenCard Style="width: 100%;">
-                <h4 class="mt-4">Vertical Orientation</h4>
-                <RadzenCheckBoxList TValue="int" Orientation="Orientation.Vertical">
-                    <Items>
-                        <RadzenCheckBoxListItem Text="Orders" Value="1" />
-                        <RadzenCheckBoxListItem Text="Employees" Value="2" />
-                        <RadzenCheckBoxListItem Text="Customers" Value="3" />
-                        <RadzenCheckBoxListItem Text="Customers1" Value="4" />
-                        <RadzenCheckBoxListItem Text="Customers2" Value="5" />
-                        <RadzenCheckBoxListItem Text="Customers3" Value="6" />
-                        <RadzenCheckBoxListItem Text="Customers4" Value="7" />
-                        <RadzenCheckBoxListItem Text="Customers5" Value="8" />
-                    </Items>
-                </RadzenCheckBoxList>
-            </RadzenCard>
+                <div style="overflow-y:auto; overflow-x:hidden; width: 100%">
+                    <RadzenCard Style="width: 100%;">
+                        <RadzenCheckBoxList TValue="int" Orientation="Orientation.Vertical">
+                            <Items>
+                                @for (int i = 0; i < Scenario.LoadedLogFiles.Length; i++)
+                                {
+                                    var fileName = Path.GetFileNameWithoutExtension(Scenario.LoadedLogFiles[i]);
+                                    <RadzenCheckBoxListItem Text=@fileName Value=@i />
+                                }
+                            </Items>
+                        </RadzenCheckBoxList>
+                    </RadzenCard>
+                </div>
             </RadzenSplitterPane>
-            <RadzenSplitterPane Collapsible="false" >
-             
+            <RadzenSplitterPane Collapsible="false">
+                @if (Scenario.LogSourceLoaded)
+                {
+                    <RadzenDataGrid ColumnWidth="100%"
+                                SelectionMode="DataGridSelectionMode.Single"
+                                AllowVirtualization="true" Style="height:100%"
+                                FilterMode="FilterMode.Advanced"
+                                Data="@data"
+                                TItem="string[]"
+                                IsLoading="@isLoading"
+                                Count="@count"
+                                LoadData="@LoadData">
+                        <Columns>
+                            @if (Scenario.LogSource != null)
+                            {
+                                for (int i = 0; i < Scenario.LogSource.ColumnNames.Length; i++)
+                                {
+                                    var columnName = Scenario.LogSource.ColumnNames[i];
+                                    var index = i;
+                                    <RadzenDataGridColumn TItem="string[]" Title=@columnName Width=@($"{(i+1)*20}px") Type="typeof(Enum)">
+                                        <Template>
+                                            @context[index]
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                }
+                            }
+                        </Columns>
+                    </RadzenDataGrid>
+                }
             </RadzenSplitterPane>
         </RadzenSplitter>
     </RadzenSplitterPane>
@@ -28,7 +56,37 @@
 
 
 @code {
+    IEnumerable<string[]>? data;
+    int count;
+    bool isLoading;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Scenario.PropertyChanged += Scenario_PropertyChanged;
+    }
+
+    public void Dispose()
+    {
+        Scenario.PropertyChanged -= Scenario_PropertyChanged;
+    }
+    void Scenario_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    async Task LoadData(LoadDataArgs args)
+    {
+        if (Scenario.LogSource == null)
+        {
+            return;
+        }
+        isLoading = true;
+
+        data = Scenario.LogSource.GetRows().Skip(args.Skip ?? 0).Take(args.Top ?? 0).Select(x => x.Select(cell => cell.ToString()).ToArray());
+        count = Scenario.LogSource.TotalRowsCount;
+        isLoading = false;
+    }
     void OnCollapse(RadzenSplitterEventArgs args)
     {
     }

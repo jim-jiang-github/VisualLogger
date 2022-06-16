@@ -13,8 +13,9 @@ namespace VisualLogger.Extensions
     {
         public static IServiceCollection AddVisualLoggerCore(this IServiceCollection services)
         {
-            services.AddScoped<ScenarioConfig>();
-            services.AddScoped<AppConfig>();
+            services.AddSingleton<Scenario>();
+            services.AddSingleton<ScenarioConfig>();
+            services.AddSingleton<AppConfig>();
             return services;
         }
     }

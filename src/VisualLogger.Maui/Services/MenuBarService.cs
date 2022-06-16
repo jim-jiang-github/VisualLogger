@@ -4,23 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualLogger.Core.Scenarios;
 using VisualLogger.InterfaceModules;
+using VisualLogger.Maui.InterfaceImplModules;
 using VisualLogger.Resources.Languages;
 
 namespace VisualLogger.Maui.Services
 {
-    public class MenuBarService
+    internal class MenuBarService
     {
         private readonly List<MenuItem> _menuItems = new List<MenuItem>();
         public MenuBarService(IStringLocalizer<Strings> stringLocalizer,
-            ILogPicker logPicker,
+            MauiLogPicker logPicker,
+            Scenario scenario,
             IScenarioOptions scenarioOptions)
         {
             IEnumerable<MenuItem> GetOpenMenuItems()
             {
-                yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: () =>
+                yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: async () =>
                 {
-                    logPicker?.PickFromFile();
+                    var files = await logPicker?.PickFromFiles();
+                    scenario.LoadLogFiles(files.ToArray());
                 });
                 yield return new MenuItem(stringLocalizer["MenuBar.File.Open.FromFolder"], clickAction: () =>
                 {

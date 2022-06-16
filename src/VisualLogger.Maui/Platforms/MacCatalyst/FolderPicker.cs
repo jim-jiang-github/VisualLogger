@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIKit;
-using VisualLogger.InterfaceModules;
+using VisualLogger.Maui.InterfaceModules;
 
 namespace VisualLogger.Maui.Platforms.MacCatalyst
 {
