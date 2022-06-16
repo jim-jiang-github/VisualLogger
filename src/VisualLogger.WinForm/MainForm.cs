@@ -1,0 +1,27 @@
+using Microsoft.Extensions.DependencyInjection;
+using VisualLogger.Extensions;
+using Microsoft.AspNetCore.Components.WebView.WindowsForms;
+using Microsoft.AspNetCore.Components.Web;
+
+namespace VisualLogger.WinForm
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddWindowsFormsBlazorWebView();
+            serviceCollection.AddVisualLogger();
+#if DEBUG
+            serviceCollection.AddBlazorWebViewDeveloperTools();
+#endif
+
+            mainBlazorWebView.HostPage = "wwwroot\\index.html";
+            mainBlazorWebView.Services = serviceCollection.BuildServiceProvider();
+            mainBlazorWebView.RootComponents.Add<App>("#app");
+
+        }
+    }
+}
