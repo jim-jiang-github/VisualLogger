@@ -28,7 +28,7 @@ Log.Logger = new LoggerConfiguration()
            .CreateLogger();
 
 SchemaLogText logSchemaText = new SchemaLogText();
-logSchemaText.SaveAsDefault();
+logSchemaText.SaveAsDefault_22_2_20();
 SchemaScenario schemaScenario = new SchemaScenario();
 schemaScenario.SaveAsDefault();
 
