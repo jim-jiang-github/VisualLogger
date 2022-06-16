@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using VisualLogger.Data;
-using VisualLogger.Extensions;
+using VisualLogger.Shared.Data;
+using VisualLogger.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

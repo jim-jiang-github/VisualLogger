@@ -2,15 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger", "VisualLogger\VisualLogger.csproj", "{911AE51E-45FB-4E9A-86C6-CA8EE3ECAF9E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Ssr", "VisualLogger.Ssr\VisualLogger.Ssr.csproj", "{EDFE7B00-189E-4EA8-A7DC-D9CA4CDA791F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Maui", "VisualLogger.Maui\VisualLogger.Maui.csproj", "{4C16B525-473D-4909-A737-2BE128A071DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Wasm", "VisualLogger.Wasm\VisualLogger.Wasm.csproj", "{50575F4D-272B-4A40-930C-2221A65992D3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Core", "VisualLogger.Core\VisualLogger.Core.csproj", "{B19FDFA5-E760-4B09-8012-ED712AC8C836}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Test", "VisualLogger.Test\VisualLogger.Test.csproj", "{66C0162E-EAFF-44FB-8B2B-5205B3E306CA}"
 EndProject
@@ -18,7 +14,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Console", "Vis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.WPF", "VisualLogger.WPF\VisualLogger.WPF.csproj", "{6610B8DD-DC95-41B6-9C09-916735879BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualLogger.WinForm", "VisualLogger.WinForm\VisualLogger.WinForm.csproj", "{902B057F-75B3-40CE-96D3-9BB546ACBD04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.WinForm", "VisualLogger.WinForm\VisualLogger.WinForm.csproj", "{902B057F-75B3-40CE-96D3-9BB546ACBD04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Shared", "VisualLogger.Shared\VisualLogger.Shared.csproj", "{50C49A79-6374-47CE-B391-0B31192BBFBD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger", "VisualLogger\VisualLogger.csproj", "{D7CA1CC3-6928-41E2-AEF2-A535137B5053}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{911AE51E-45FB-4E9A-86C6-CA8EE3ECAF9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{911AE51E-45FB-4E9A-86C6-CA8EE3ECAF9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{911AE51E-45FB-4E9A-86C6-CA8EE3ECAF9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{911AE51E-45FB-4E9A-86C6-CA8EE3ECAF9E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDFE7B00-189E-4EA8-A7DC-D9CA4CDA791F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDFE7B00-189E-4EA8-A7DC-D9CA4CDA791F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDFE7B00-189E-4EA8-A7DC-D9CA4CDA791F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,10 +40,6 @@ Global
 		{50575F4D-272B-4A40-930C-2221A65992D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50575F4D-272B-4A40-930C-2221A65992D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50575F4D-272B-4A40-930C-2221A65992D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B19FDFA5-E760-4B09-8012-ED712AC8C836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B19FDFA5-E760-4B09-8012-ED712AC8C836}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B19FDFA5-E760-4B09-8012-ED712AC8C836}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B19FDFA5-E760-4B09-8012-ED712AC8C836}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66C0162E-EAFF-44FB-8B2B-5205B3E306CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66C0162E-EAFF-44FB-8B2B-5205B3E306CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66C0162E-EAFF-44FB-8B2B-5205B3E306CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,6 +56,14 @@ Global
 		{902B057F-75B3-40CE-96D3-9BB546ACBD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{902B057F-75B3-40CE-96D3-9BB546ACBD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{902B057F-75B3-40CE-96D3-9BB546ACBD04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50C49A79-6374-47CE-B391-0B31192BBFBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C49A79-6374-47CE-B391-0B31192BBFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C49A79-6374-47CE-B391-0B31192BBFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C49A79-6374-47CE-B391-0B31192BBFBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7CA1CC3-6928-41E2-AEF2-A535137B5053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7CA1CC3-6928-41E2-AEF2-A535137B5053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7CA1CC3-6928-41E2-AEF2-A535137B5053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7CA1CC3-6928-41E2-AEF2-A535137B5053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

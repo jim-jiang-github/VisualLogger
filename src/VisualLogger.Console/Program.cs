@@ -1,13 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Serilog;
 using System.Globalization;
-using VisualLogger.Core.Scenarios;
-using VisualLogger.Core.Schemas;
-using VisualLogger.Core.Schemas.Logs;
-using VisualLogger.Core.Schemas.Scenarios;
-using VisualLogger.Core.Sources;
-using VisualLogger.Core.Utils;
-using VisualLogger.Data;
+using VisualLogger.Scenarios;
+using VisualLogger.Schemas;
+using VisualLogger.Schemas.Logs;
+using VisualLogger.Schemas.Scenarios;
+using VisualLogger.Sources;
+using VisualLogger.Utils;
 
 //GitRunner gitRunner = new GitRunner("git@git.ringcentral.com:CoreLib/rcvrooms-windows.git");
 //GitRunner gitRunner = new GitRunner("https://github.com/jim-jiang-github/VisualLogger.Scenarios.git");

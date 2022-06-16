@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualLogger.Core.Scenarios;
-using VisualLogger.InterfaceModules;
+using VisualLogger.Scenarios;
 using VisualLogger.Maui.InterfaceModules;
-using VisualLogger.Resources.Languages;
+using VisualLogger.Shared.Resources.Languages;
 
 namespace VisualLogger.Maui.InterfaceImplModules
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using VisualLogger.Data;
-using VisualLogger.InterfaceModules;
 using VisualLogger.Maui.InterfaceImplModules;
 using VisualLogger.Maui.InterfaceModules;
 using VisualLogger.Maui.Services;
+using VisualLogger.Shared.Data;
+using VisualLogger.Shared.Extensions;
 
 namespace VisualLogger.Maui
 {

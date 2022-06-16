@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisualLogger\VisualLogger.csproj" />
+    <ProjectReference Include="..\VisualLogger.Shared\VisualLogger.Shared.csproj" />
+    <ProjectReference Include="..\VisualLogger\VisualLogger.Shared.csproj" />
   </ItemGroup>
 
 </Project>

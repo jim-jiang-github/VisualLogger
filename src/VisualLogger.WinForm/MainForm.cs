@@ -2,6 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using VisualLogger.Extensions;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.AspNetCore.Components.Web;
+using VisualLogger.Shared.Extensions;
+using VisualLogger.Shared;
 
 namespace VisualLogger.WinForm
 {

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:VisualLogger.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:visualLogger="clr-namespace:VisualLogger;assembly=VisualLogger"
+    xmlns:shared="clr-namespace:VisualLogger.Shared;assembly=VisualLogger.Shared"
     Title="MainWindow"
     Width="800"
     Height="450"
@@ -14,7 +14,7 @@
     <Grid>
         <blazor:BlazorWebView HostPage="wwwroot\index.html" Services="{DynamicResource services}">
             <blazor:BlazorWebView.RootComponents>
-                <blazor:RootComponent Selector="#app" ComponentType="{x:Type visualLogger:App}" />
+                <blazor:RootComponent Selector="#app" ComponentType="{x:Type shared:App}" />
             </blazor:BlazorWebView.RootComponents>
         </blazor:BlazorWebView>
     </Grid>

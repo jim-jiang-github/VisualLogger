@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
 using VisualLogger;
-using VisualLogger.Data;
-using VisualLogger.Extensions;
+using VisualLogger.Shared;
+using VisualLogger.Shared.Data;
+using VisualLogger.Shared.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

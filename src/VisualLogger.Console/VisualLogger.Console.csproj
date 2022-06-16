@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,8 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisualLogger.Core\VisualLogger.Core.csproj" />
-    <ProjectReference Include="..\VisualLogger\VisualLogger.csproj" />
+    <ProjectReference Include="..\VisualLogger.Core\VisualLogger.csproj" />
   </ItemGroup>
 
 </Project>

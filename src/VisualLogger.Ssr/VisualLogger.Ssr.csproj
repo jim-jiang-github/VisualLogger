@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="_Imports.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\VisualLogger\VisualLogger.csproj" />
+    <ProjectReference Include="..\VisualLogger.Shared\VisualLogger.Shared.csproj" />
   </ItemGroup>
 
 </Project>
