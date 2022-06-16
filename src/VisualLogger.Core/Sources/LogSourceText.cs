@@ -81,7 +81,7 @@ namespace VisualLogger.Core.Sources
         protected override ColumnHeadSource CreateContentSource(
             MixStreamReader mixStreamReader,
             ILogSource logSource,
-            SchemaLogText.SchemaColumnHeadText body,
+            SchemaLogText.SchemaColumnHeadText columnHead,
             CellConvertorProvider cellConvertorProvider,
             ref long streamPosition)
         {
@@ -94,14 +94,14 @@ namespace VisualLogger.Core.Sources
 
             while (line != null || isItemCreating)
             {
-                if (line != null && !isItemCreating && Regex.IsMatch(line, body.RegexStart, RegexOptions.Singleline))
+                if (line != null && !isItemCreating && Regex.IsMatch(line, columnHead.RegexStart, RegexOptions.Singleline))
                 {
                     stringBuilder.Append(line);
                     isItemCreating = true;
                     startPosition = mixStreamReader.BufferPosition;
                     line = mixStreamReader.ReadLine(true);
                 }
-                else if (line != null && Regex.IsMatch(line, body.RegexEnd, RegexOptions.Singleline))
+                else if (line != null && Regex.IsMatch(line, columnHead.RegexEnd, RegexOptions.Singleline))
                 {
                     stringBuilder.Append(line);
                     startPosition = mixStreamReader.BufferPosition;
@@ -112,14 +112,14 @@ namespace VisualLogger.Core.Sources
                     var itemContent = stringBuilder.ToString();
                     stringBuilder.Clear();
                     isItemCreating = false;
-                    var match = Regex.Match(itemContent, body.RegexContent, RegexOptions.Singleline);
+                    var match = Regex.Match(itemContent, columnHead.RegexContent, RegexOptions.Singleline);
 
-                    var item = new StreamCell[body.Cells.Length];
+                    var item = new StreamCell[columnHead.Columns.Length];
                     for (int i = 0; i < item.Length; i++)
                     {
-                        var template = body.Cells[i];
-                        var streamCell = CreateStreamCell(mixStreamReader, logSource, index++, match, template, cellConvertorProvider, ref streamPosition);
-                        HandleContentCell(template.Name, streamCell);
+                        var column = columnHead.Columns[i];
+                        var streamCell = CreateStreamCell(mixStreamReader, logSource, index++, match, column.Cell, cellConvertorProvider, ref streamPosition);
+                        HandleContentCell(column, streamCell);
                         item[i] = streamCell;
                     }
                     items.Add(item);
@@ -127,7 +127,7 @@ namespace VisualLogger.Core.Sources
                 }
             }
             TotalRowsCount = items.Count;
-            return new ColumnHeadSource(body.Cells.Select(t => t.Name).ToArray(), items);
+            return new ColumnHeadSource(columnHead.Columns.Select(t => t.Cell.Name).ToArray(), items);
         }
     }
 }

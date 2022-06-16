@@ -89,9 +89,15 @@ namespace VisualLogger.Core.Schemas.Logs
         }
         public class SchemaColumnHead
         {
-            public string[] EnumerateWordsColumnNames { get; set; } = Array.Empty<string>();
-            public string[] FilterableColumnNames { get; set; } = Array.Empty<string>();
-            public TCellSchema[] Cells { get; set; } = Array.Empty<TCellSchema>();
+            public SchemaColumn[] Columns { get; set; } = Array.Empty<SchemaColumn>();
+        }
+        public class SchemaColumn
+        {
+#nullable disable
+            public TCellSchema Cell { get; set; }
+#nullable enable
+            public bool Enumeratable { get; set; } = false;
+            public bool Filterable { get; set; } = false;
         }
         public class SchemaCell
         {

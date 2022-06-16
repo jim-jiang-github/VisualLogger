@@ -36,7 +36,7 @@ namespace VisualLogger.Core.Schemas.Logs
         public SchemaLogText()
         {
         }
-        public void SaveAsDefault()
+        public void SaveAsDefault_22_2_20()
         {
             Name = "schema_log_text_rcv_windows_22.2.20";
             LogFileLoaderType = LogFileLoaderType.Txt;
@@ -53,23 +53,40 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3})",
                 RegexEnd = @"^(?!\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}).*",
                 RegexContent = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \<(.*?)\> \[(.*?)\] (.*?) (.*)",
-                FilterableColumnNames = new string[] { "Level", "Module", "Thread" },
-                EnumerateWordsColumnNames = new string[] { "Msg" },
-                Cells = new SchemaCellText[]
+                Columns = new SchemaColumn[]
                 {
-                    new SchemaCellText{Name = "Time", RegexGroupIndex=1, ConvertorName="Time"},
-                    new SchemaCellText{Name = "Module", RegexGroupIndex=2},
-                    new SchemaCellText{Name = "Thread", RegexGroupIndex=3},
-                    new SchemaCellText{Name = "Level", RegexGroupIndex=4},
-                    new SchemaCellText{Name = "Msg", RegexGroupIndex=5},
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Time", RegexGroupIndex=1, ConvertorName="Time"},
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Module", RegexGroupIndex=2},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Thread", RegexGroupIndex=3},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Level", RegexGroupIndex=4},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Msg", RegexGroupIndex=5},
+                        Enumeratable=true
+                    }
                 }
             };
 
             this.SaveAsJson($"schema_log.json");
         }
-        public void SaveAsDefault1()
+        public void SaveAsDefault_21_4_30()
         {
-            Name = "schema_log_text_rcv_android_22.2.20";
+            Name = "schema_log_text_rcv_android_21.4.30";
             LogFileLoaderType = LogFileLoaderType.Txt;
             SupportedExtensions = new string[] { ".txt", ".log" };
             var header = new SchemaBlockText()
@@ -94,15 +111,32 @@ namespace VisualLogger.Core.Schemas.Logs
                 RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
                 RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
                 RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
-                FilterableColumnNames = new string[] { "Level", "Module", "Thread" },
-                EnumerateWordsColumnNames = new string[] { "Msg" },
-                Cells = new SchemaCellText[]
+                Columns = new SchemaColumn[]
                 {
-                    new SchemaCellText{Name = "Time", RegexGroupIndex=1},
-                    new SchemaCellText{Name = "Level", RegexGroupIndex=2},
-                    new SchemaCellText{Name = "Module", RegexGroupIndex=3},
-                    new SchemaCellText{Name = "Thread", RegexGroupIndex=4},
-                    new SchemaCellText{Name = "Msg", RegexGroupIndex=5},
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Time", RegexGroupIndex=1, ConvertorName="Time"},
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Module", RegexGroupIndex=2},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Thread", RegexGroupIndex=3},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Level", RegexGroupIndex=4},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellText{Name = "Msg", RegexGroupIndex=5},
+                        Enumeratable=true
+                    }
                 }
             };
 

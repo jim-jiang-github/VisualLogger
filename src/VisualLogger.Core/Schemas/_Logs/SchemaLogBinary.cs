@@ -98,16 +98,36 @@ namespace VisualLogger.Core.Schemas.Logs
             ColumnHeadTemplate = new SchemaColumnHeadBinary()
             {
                 Count = $"{summary.Name}.{summary.Cells[6].Name}",
-                FilterableColumnNames = new string[] { "Module", "Thread", "Level" },
-                EnumerateWordsColumnNames = new string[] { "Msg" },
-                Cells = new SchemaCellBinary[]
+                Columns = new SchemaColumn[]
                 {
-                    new SchemaCellBinary{Name = "TickOffset",Type = SchemaLogBinaryType.Long, ConvertorName=$"{timeConvertor.Name}"},
-                    new SchemaCellBinary{Name = "Module",Type = SchemaLogBinaryType.StringWithIntHead},
-                    new SchemaCellBinary{Name = "Thread",Type = SchemaLogBinaryType.Int},
-                    new SchemaCellBinary{Name = "Level",Type = SchemaLogBinaryType.Int, ConvertorName=$"{levelConvertor.Name}"},
-                    new SchemaCellBinary{Name = "Hint",Type = SchemaLogBinaryType.StringWithIntHead},
-                    new SchemaCellBinary{Name = "Msg",Type = SchemaLogBinaryType.StringWithIntHead},
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "TickOffset",Type = SchemaLogBinaryType.Long, ConvertorName=$"{timeConvertor.Name}"},
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "Module",Type = SchemaLogBinaryType.StringWithIntHead},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "Thread",Type = SchemaLogBinaryType.Int},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "Level",Type = SchemaLogBinaryType.Int, ConvertorName=$"{levelConvertor.Name}"},
+                        Filterable=true
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "Hint",Type = SchemaLogBinaryType.StringWithIntHead},
+                    },
+                    new SchemaColumn
+                    {
+                        Cell=new SchemaCellBinary{Name = "Msg",Type = SchemaLogBinaryType.StringWithIntHead},
+                        Enumeratable=true
+                    }
                 }
             };
 

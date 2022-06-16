@@ -70,17 +70,17 @@ namespace VisualLogger.Core.Sources
             var sourceItems = new StreamCell[itemCount][];
             for (int i = 0; i < itemCount; i++)
             {
-                StreamCell[] streamCells = new StreamCell[columnHead.Cells.Length];
-                for (int j = 0; j < columnHead.Cells.Length; j++)
+                StreamCell[] streamCells = new StreamCell[columnHead.Columns.Length];
+                for (int j = 0; j < columnHead.Columns.Length; j++)
                 {
-                    var template = columnHead.Cells[j];
-                    var streamCell = CreateStreamCell(mixStreamReader, logSource, i, template, cellConvertorProvider, ref streamPosition);
+                    var column = columnHead.Columns[j];
+                    var streamCell = CreateStreamCell(mixStreamReader, logSource, i, column.Cell, cellConvertorProvider, ref streamPosition);
                     streamCells[j] = streamCell;
-                    HandleContentCell(template.Name, streamCell);
+                    HandleContentCell(column, streamCell);
                 }
                 sourceItems[i] = streamCells;
             }
-            return new ColumnHeadSource(columnHead.Cells.Select(t => t.Name).ToArray(), sourceItems);
+            return new ColumnHeadSource(columnHead.Columns.Select(t => t.Cell.Name).ToArray(), sourceItems);
         }
 
         private StreamCell CreateStreamCell(

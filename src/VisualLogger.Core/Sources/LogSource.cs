@@ -84,9 +84,9 @@ namespace VisualLogger.Core.Sources
             TColumnHeadSchema columnHead,
             CellConvertorProvider cellConvertorProvider,
             ref long streamPosition);
-        protected void HandleContentCell(string columnName, StreamCell streamCell)
+        protected void HandleContentCell(SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumn schemaColumn, StreamCell streamCell)
         {
-            if (_schemaLog.ColumnHeadTemplate.EnumerateWordsColumnNames.Contains(columnName))
+            if (schemaColumn.Enumeratable)
             {
                 _wordsCollection.AppendFromString(streamCell.ToString());
             }
