@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisualLogger.Core\VisualLogger.csproj" />
+    <ProjectReference Include="..\VisualLogger\VisualLogger.csproj" />
   </ItemGroup>
 
 </Project>
