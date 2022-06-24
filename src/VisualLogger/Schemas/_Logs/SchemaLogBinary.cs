@@ -20,7 +20,7 @@ namespace VisualLogger.Schemas.Logs
         }
         public class SchemaColumnHeadBinary : SchemaColumnHead
         {
-            public string? Count { get; set; }
+            public string RowCount { get; set; } = string.Empty;
         }
         public class SchemaCellBinary : SchemaCell
         {
@@ -38,6 +38,7 @@ namespace VisualLogger.Schemas.Logs
         public void SaveAsDefault()
         {
             Name = "schema_log_binary_rcv_windows_21.4.30";
+            EncodingName = "utf-8";
             LogFileLoaderType = LogFileLoaderType.MemoryMapped;
             SupportedExtensions = new[] { "rcvlog" };
             var timeConvertor = new SchemaConvertor()
@@ -97,7 +98,7 @@ namespace VisualLogger.Schemas.Logs
 
             ColumnHeadTemplate = new SchemaColumnHeadBinary()
             {
-                Count = $"{summary.Name}.{summary.Cells[6].Name}",
+                RowCount = $"{summary.Name}.{summary.Cells[6].Name}",
                 Columns = new SchemaColumn[]
                 {
                     new SchemaColumn

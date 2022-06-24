@@ -14,7 +14,7 @@ namespace VisualLogger.Schemas.Logs
         #region Internal Class
         public class SchemaConvertor
         {
-            public string? Name { get; set; }
+            public string Name { get; set; } = string.Empty;
             [JsonConverter(typeof(StringEnumConverter))]
             public SchemaConvertorType Type { get; set; }
             public string? Expression { get; set; }
@@ -22,6 +22,7 @@ namespace VisualLogger.Schemas.Logs
         }
         #endregion
         public string Name { get; set; } = string.Empty;
+        public string EncodingName { get; set; } = "utf-8";
         [JsonConverter(typeof(StringEnumConverter))]
         public LogFileLoaderType LogFileLoaderType { get; set; } = LogFileLoaderType.Unknow;
         public string[] SupportedExtensions { get; set; } = Array.Empty<string>();

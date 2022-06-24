@@ -6,16 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VisualLogger.Sources;
+using static VisualLogger.Schemas.Logs.SchemaLog;
 
 namespace VisualLogger.Convertors
 {
     internal class CellConvertorMath : CellConvertor
     {
         private readonly CSharpScriptGlobalParameter<long> _parameter = new CSharpScriptGlobalParameter<long>();
-        private readonly ScriptRunner<long>? _runner;
+        private ScriptRunner<long>? _runner;
 
         public CellConvertorMath(string expression) : base(expression)
         {
+        }
+
+        internal override void Init(IBlockCellFinder blockCellFinder)
+        {
+            base.Init(blockCellFinder);
             var pattern = @"{" + CellConvertor.CELL_VALUE + "}";
             Expression = Regex.Replace(Expression, pattern, nameof(CSharpScriptGlobalParameter<long>.Value));
             ScriptOptions.Default.WithEmitDebugInformation(false);
@@ -30,6 +37,7 @@ namespace VisualLogger.Convertors
                 _runner = null;
             }
         }
+
         protected override object? ConvertInternal(object? value)
         {
             var input = value?.ToString();

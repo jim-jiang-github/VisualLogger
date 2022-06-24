@@ -40,7 +40,7 @@ namespace VisualLogger.Sources
                     var word = stringBuilder.ToString();
                     if (_words.Contains(word))
                     {
-                        return;
+                        continue;
                     }
                     else
                     {

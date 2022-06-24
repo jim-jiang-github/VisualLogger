@@ -13,6 +13,18 @@ namespace VisualLogger.Extensions
     {
         public static IServiceCollection AddVisualLoggerCore(this IServiceCollection services)
         {
+
+            Log.Logger = new LoggerConfiguration()
+#if DEBUG
+                       .MinimumLevel.Debug()
+                       .WriteTo.Console()
+#else
+           .MinimumLevel.Information()
+#endif
+                       .WriteTo.File("log.txt",
+                           rollingInterval: RollingInterval.Day,
+                           rollOnFileSizeLimit: true)
+                       .CreateLogger();
             services.AddSingleton<Scenario>();
             services.AddSingleton<ScenarioConfig>();
             services.AddSingleton<AppConfig>();

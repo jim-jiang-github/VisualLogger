@@ -11,47 +11,34 @@ namespace VisualLogger.Convertors
 {
     internal class CellConvertorProvider
     {
-        private readonly ILogSource _logSource;
-        private readonly SchemaLog _schemaLog;
-        private readonly Dictionary<string, CellConvertor> _convertors = new();
+        private readonly Dictionary<string, CellConvertor?> _convertorMap;
 
-        public CellConvertorProvider(ILogSource logSource, SchemaLog schemaLog)
+        public CellConvertorProvider(SchemaLog schemaLog)
         {
-            _logSource = logSource;
-            _schemaLog = schemaLog;
+            _convertorMap = schemaLog.Convertors.ToDictionary(x => x.Name, x => CreateConvertor(x));
         }
+        public void Init(IBlockCellFinder blockCellFinder)
+        {
+            foreach (var convertor in _convertorMap)
+            {
+                convertor.Value?.Init(blockCellFinder);
+            }
+        }
+
         public CellConvertor? GetConvertor(string? convertorName)
         {
-            if (_convertors == null)
-            {
-                return null;
-            }
             if (convertorName == null)
             {
                 return null;
             }
-            if (_convertors.TryGetValue(convertorName, out CellConvertor? streamCellConvertor))
+            if (_convertorMap.TryGetValue(convertorName, out CellConvertor? cellConvertor))
             {
-                return streamCellConvertor;
+                return cellConvertor;
             }
-            else
-            {
-                var schemaConvertor = _schemaLog?.Convertors.FirstOrDefault(c => c.Name == convertorName);
-                if (schemaConvertor == null)
-                {
-                    return null;
-                }
-                streamCellConvertor = CreateConvertor(_logSource, schemaConvertor);
-                if (streamCellConvertor == null)
-                {
-                    return null;
-                }
-                _convertors.Add(convertorName, streamCellConvertor);
-                return streamCellConvertor;
-            }
+            return null;
         }
 
-        private CellConvertor? CreateConvertor(ILogSource logContent, SchemaLog.SchemaConvertor? schemaConvertor)
+        private CellConvertor? CreateConvertor(SchemaLog.SchemaConvertor? schemaConvertor)
         {
             if (schemaConvertor == null)
             {
@@ -61,35 +48,17 @@ namespace VisualLogger.Convertors
             {
                 return null;
             }
-            var expression = schemaConvertor.Expression;
-            var pattern = @"{(.*?)}";
-            var matches = Regex.Matches(expression, pattern);
-            var regex = new Regex(pattern);
-            foreach (Match match in matches)
-            {
-                if (match.Success && match.Groups.Count >= 1 &&
-                    match.Groups[1].Value != CellConvertor.CELL_VALUE &&
-                    logContent.GetCell(match.Groups[1].Value) is object value)
-                {
-                    var replacement = value.ToString();
-                    if (replacement == null)
-                    {
-                        continue;
-                    }
-                    expression = regex.Replace(expression, replacement, 1);
-                }
-            }
             CellConvertor? streamCellConvertor = schemaConvertor.Type switch
             {
-                SchemaConvertorType.Math => new CellConvertorMath(expression),
-                SchemaConvertorType.Long2Time => new CellConvertorLong2Time(expression),
-                SchemaConvertorType.Time2Time => new CellConvertorTime2Time(expression),
-                SchemaConvertorType.Enum => new CellConvertorEnum(expression),
+                SchemaConvertorType.Math => new CellConvertorMath(schemaConvertor.Expression),
+                SchemaConvertorType.Long2Time => new CellConvertorLong2Time(schemaConvertor.Expression),
+                SchemaConvertorType.Time2Time => new CellConvertorTime2Time(schemaConvertor.Expression),
+                SchemaConvertorType.Enum => new CellConvertorEnum(schemaConvertor.Expression),
                 _ => null,
             };
             if (streamCellConvertor != null && schemaConvertor.ContinueWith != null)
             {
-                streamCellConvertor.ContinueConvertor = CreateConvertor(logContent, schemaConvertor.ContinueWith);
+                streamCellConvertor.ContinueConvertor = CreateConvertor(schemaConvertor.ContinueWith);
             }
             return streamCellConvertor;
         }

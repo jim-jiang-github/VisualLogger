@@ -12,7 +12,7 @@ namespace VisualLogger.Sources
         int TotalRowsCount { get; }
         string[] ColumnNames { get; }
         IEnumerable<string> EnumerateWords { get; }
-        StreamCell? GetCell(string recursivePath);
-        IEnumerable<StreamCell[]> GetRows();
+        LogFilter Filter { get; }
+        IEnumerable<LogRow> GetRows(int start, int length);
     }
 }

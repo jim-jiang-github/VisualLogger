@@ -10,6 +10,7 @@ using VisualLogger.Schemas;
 using VisualLogger.Schemas.Logs;
 using VisualLogger.Schemas.Scenarios;
 using VisualLogger.Sources;
+using VisualLogger.Sources.Binary;
 
 namespace VisualLogger.Scenarios
 {
@@ -90,6 +91,8 @@ namespace VisualLogger.Scenarios
             _schemaLogPath = schemaLogPath;
             _streamLoader = streamLoader;
             SupportedExtensions = supportExtensions;
+            Log.Information("Scenario inited");
+            //LoadLogSource(@"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_75a6889c-ce51-4840-ace1-3ef098034520_20220615-104915\RoomsHost-20220614_132503-pid_3220.log");
             return true;
         }
 
@@ -123,6 +126,8 @@ namespace VisualLogger.Scenarios
                 Log.Information("Reset LogSource");
                 LogSource?.Dispose();
                 LogSource = null;
+                GC.Collect();
+                OnPropertyChanged(nameof(LogSource));
             }
             Log.Information("Load LogSource from {logFilePath}", logFilePath);
             var stream = _streamLoader.LoadLogStreamFromPath(logFilePath);

@@ -23,6 +23,21 @@ namespace VisualLogger.Convertors
         {
             Expression = expression;
         }
+        internal virtual void Init(IBlockCellFinder blockCellFinder)
+        {
+            var pattern = @"{(.*?)}";
+            var matches = Regex.Matches(Expression, pattern);
+            var regex = new Regex(pattern);
+            foreach (Match match in matches)
+            {
+                if (match.Success && match.Groups.Count >= 1 &&
+                    match.Groups[1].Value != CellConvertor.CELL_VALUE &&
+                    blockCellFinder.GetBlockCellValue(match.Groups[1].Value) is string replacement)
+                {
+                    Expression = regex.Replace(Expression, replacement, 1);
+                }
+            }
+        }
         public object? Convert(object? value)
         {
             value = ConvertInternal(value);

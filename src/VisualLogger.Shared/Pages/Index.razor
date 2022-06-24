@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using VisualLogger.Sources
+@using VisualLogger.Streams
 @implements IDisposable
 @inject Scenario Scenario
 
@@ -25,21 +27,27 @@
                 {
                     <RadzenDataGrid ColumnWidth="100%"
                                 SelectionMode="DataGridSelectionMode.Single"
-                                AllowVirtualization="true" Style="height:100%"
+                                AllowVirtualization="true"
+                                Style="height:100%"
                                 FilterMode="FilterMode.Advanced"
                                 Data="@data"
-                                TItem="string[]"
+                                TItem="LogRow"
                                 IsLoading="@isLoading"
                                 Count="@count"
                                 LoadData="@LoadData">
                         <Columns>
                             @if (Scenario.LogSource != null)
                             {
+                                <RadzenDataGridColumn TItem="LogRow" Title="" Type="typeof(int)">
+                                    <Template>
+                                        @context.Index
+                                    </Template>
+                                </RadzenDataGridColumn>
                                 for (int i = 0; i < Scenario.LogSource.ColumnNames.Length; i++)
                                 {
                                     var columnName = Scenario.LogSource.ColumnNames[i];
                                     var index = i;
-                                    <RadzenDataGridColumn TItem="string[]" Title=@columnName Width=@($"{(i+1)*20}px") Type="typeof(Enum)">
+                                    <RadzenDataGridColumn TItem="LogRow" Title=@columnName Type="typeof(Enum)">
                                         <Template>
                                             @context[index]
                                         </Template>
@@ -56,7 +64,7 @@
 
 
 @code {
-    IEnumerable<string[]>? data;
+    IEnumerable<LogRow>? data;
     int count;
     bool isLoading;
 
@@ -83,7 +91,7 @@
         }
         isLoading = true;
 
-        data = Scenario.LogSource.GetRows().Skip(args.Skip ?? 0).Take(args.Top ?? 0).Select(x => x.Select(cell => cell.ToString()).ToArray());
+        data = Scenario.LogSource.GetRows(args.Skip ?? 0,args.Top ?? 0);
         count = Scenario.LogSource.TotalRowsCount;
         isLoading = false;
     }

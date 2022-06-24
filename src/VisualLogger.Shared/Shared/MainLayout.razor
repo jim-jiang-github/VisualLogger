@@ -5,6 +5,7 @@
 @inject SidebarMenuService SidebarMenuService
 @inject DialogService DialogService
 @inject NotificationService NotificationService
+@inject ContextMenuService ContextMenuService
 
 <RadzenDialog />
 <RadzenNotification />
@@ -16,7 +17,8 @@
         <ChildContent>
             <div class="row justify-content-start align-items-center">
                 <div class="col-5 d-flex align-items-center">
-                    <RadzenSidebarToggle Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
+                    <RadzenSidebarToggle ContextMenu=@(args => ShowContextMenuWithItems(args)) ButtonStyle="ButtonStyle.Secondary"
+                                         Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                     </RadzenSidebarToggle>
                     <RadzenLabel Text="Visual Logger">
                     </RadzenLabel>
@@ -79,7 +81,22 @@
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         Scenario.Init();
     }
-
+    void ShowContextMenuWithItems(MouseEventArgs args)
+    {
+        ContextMenuService.Open(args,
+            new List<ContextMenuItem> {
+                new ContextMenuItem(){ Text = "Context menu item 1", Value = 1 },
+                new ContextMenuItem(){ Text = "Context menu item 2", Value = 2 },
+                new ContextMenuItem(){ Text = "Context menu item 3", Value = 3 },
+             }, OnMenuItemClick);
+    }
+    void OnMenuItemClick(MenuItemEventArgs args)
+    {
+        if (!args.Value.Equals(3) && !args.Value.Equals(4))
+        {
+            ContextMenuService.Close();
+        }
+    }
     void ChangeTheme(object value)
     {
         var url = NavigationManager.GetUriWithQueryParameter("theme", $"{value}");

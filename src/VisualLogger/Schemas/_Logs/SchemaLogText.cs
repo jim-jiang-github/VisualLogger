@@ -39,6 +39,7 @@ namespace VisualLogger.Schemas.Logs
         public void SaveAsDefault_22_2_20()
         {
             Name = "schema_log_text_rcv_windows_22.2.20";
+            EncodingName = "utf-8";
             LogFileLoaderType = LogFileLoaderType.Txt;
             SupportedExtensions = new string[] { "txt", "log" };
             var timeConvertor = new SchemaConvertor()
@@ -87,6 +88,7 @@ namespace VisualLogger.Schemas.Logs
         public void SaveAsDefault_21_4_30()
         {
             Name = "schema_log_text_rcv_android_21.4.30";
+            EncodingName = "utf-8";
             LogFileLoaderType = LogFileLoaderType.Txt;
             SupportedExtensions = new string[] { "txt", "log" };
             var header = new SchemaBlockText()
