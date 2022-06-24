@@ -2,7 +2,7 @@
 @inject Scenario Scenario
 @inject IScenarioOptions ScenarioOptions
 @inject NavigationManager NavigationManager
-@inject SidebarMenuService SidebarMenuService
+@inject MenuSideBarService SidebarMenuService
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject ContextMenuService ContextMenuService
@@ -46,7 +46,7 @@
     <RadzenSidebar @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
         <ChildContent>
             <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-                @foreach (var menu in SidebarMenuService.Menus)
+                @foreach (var menu in SidebarMenuService.MenuItems)
                 {
                     <SidebarMenuItem SidebarMenu=@menu />
                 }

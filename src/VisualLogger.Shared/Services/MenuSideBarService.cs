@@ -7,21 +7,21 @@ using VisualLogger.Shared.Data;
 
 namespace VisualLogger.Shared.Services
 {
-    internal class SidebarMenuService
+    internal class MenuSideBarService
     {
-        public IEnumerable<SidebarMenu> Menus { get; }
+        public IEnumerable<MenuSideBarItem> MenuItems { get; }
 
-        public SidebarMenuService()
+        public MenuSideBarService()
         {
-            Menus = new SidebarMenu[]
+            MenuItems = new MenuSideBarItem[]
             {
-                new SidebarMenu()
+                new MenuSideBarItem()
                 {
                     Name = "Overview",
                     Path = "/",
                     Icon = "&#xe88a"
                 },
-                new SidebarMenu()
+                new MenuSideBarItem()
                 {
                     Name = "XXXX",
                     Path = "/counter",

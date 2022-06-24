@@ -15,7 +15,7 @@ namespace VisualLogger.WinForm
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddWindowsFormsBlazorWebView();
-            serviceCollection.AddVisualLogger();
+            serviceCollection.AddVisualLoggerShared();
 #if DEBUG
             serviceCollection.AddBlazorWebViewDeveloperTools();
 #endif

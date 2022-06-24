@@ -11,7 +11,7 @@ namespace VisualLogger.Extensions
 {
     public static class VisualLoggerCoreServiceCollectionExtensions
     {
-        public static IServiceCollection AddVisualLoggerCore(this IServiceCollection services)
+        public static IServiceCollection AddVisualLogger(this IServiceCollection services)
         {
 
             Log.Logger = new LoggerConfiguration()

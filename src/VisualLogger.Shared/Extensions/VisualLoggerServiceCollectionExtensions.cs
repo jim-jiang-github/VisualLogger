@@ -11,15 +11,16 @@ namespace VisualLogger.Shared.Extensions
 {
     public static class VisualLoggerServiceCollectionExtensions
     {
-        public static IServiceCollection AddVisualLogger(this IServiceCollection services)
+        public static IServiceCollection AddVisualLoggerShared(this IServiceCollection services)
         {
             services.AddLocalization();
-            services.AddVisualLoggerCore();
+            services.AddVisualLogger();
             services.AddScoped<DialogService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
-            services.AddSingleton<SidebarMenuService>();
+            services.AddSingleton<MenuSideBarService>();
+            services.AddSingleton<MenuTopBarService>();
             services.AddSingleton<IScenarioOptions, ScenarioOptions>();
             return services;
         }

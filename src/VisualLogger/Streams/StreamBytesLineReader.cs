@@ -27,7 +27,7 @@ namespace VisualLogger.Streams
         {
             get
             {
-                return 1024;
+                return 1024 * 4;
             }
         }
 
@@ -107,6 +107,7 @@ namespace VisualLogger.Streams
             _preamble = encoding.GetPreamble();
             _checkPreamble = (_preamble.Length > 0);
             _closable = !leaveOpen;
+            ResetReadLinePosition();
         }
 
         public void Close()
@@ -138,6 +139,8 @@ namespace VisualLogger.Streams
                 }
             }
         }
+
+        private Func<ValueTuple<long, int>?> ReadLinePositionFunc { get; set; }
 
         public virtual Encoding CurrentEncoding
         {
@@ -203,6 +206,23 @@ namespace VisualLogger.Streams
             if (changedEncoding)
             {
                 decoder = encoding.GetDecoder();
+                ResetReadLinePosition();
+            }
+        }
+
+        private void ResetReadLinePosition()
+        {
+            if (encoding.EncodingName == "Unicode (Big-Endian)")
+            {
+                ReadLinePositionFunc = ReadLinePositionUnicodeBE;
+            }
+            else if (encoding.EncodingName == "Unicode")
+            {
+                ReadLinePositionFunc = ReadLinePositionUnicode;
+            }
+            else
+            {
+                ReadLinePositionFunc = ReadLinePositionUTF8;
             }
         }
 
@@ -274,9 +294,9 @@ namespace VisualLogger.Streams
             {
                 if (_checkPreamble)
                 {
-                    Contract.Assert(bytePos <= _preamble.Length, "possible bug in _compressPreamble.  Are two threads using this LineStreamReader1 at the same time?");
+                    //Contract.Assert(bytePos <= _preamble.Length, "possible bug in _compressPreamble.  Are two threads using this LineStreamReader1 at the same time?");
                     int len = stream.Read(byteBuffer, bytePos, byteBuffer.Length - bytePos);
-                    Contract.Assert(len >= 0, "Stream.Read returned a negative number!  This is a bug in your stream class.");
+                    //Contract.Assert(len >= 0, "Stream.Read returned a negative number!  This is a bug in your stream class.");
 
                     if (len == 0)
                     {
@@ -295,9 +315,9 @@ namespace VisualLogger.Streams
                 }
                 else
                 {
-                    Contract.Assert(bytePos == 0, "bytePos can be non zero only when we are trying to _checkPreamble.  Are two threads using this LineStreamReader1 at the same time?");
+                    //Contract.Assert(bytePos == 0, "bytePos can be non zero only when we are trying to _checkPreamble.  Are two threads using this LineStreamReader1 at the same time?");
                     byteLen = stream.Read(byteBuffer, 0, byteBuffer.Length);
-                    Contract.Assert(byteLen >= 0, "Stream.Read returned a negative number!  This is a bug in your stream class.");
+                    //Contract.Assert(byteLen >= 0, "Stream.Read returned a negative number!  This is a bug in your stream class.");
 
                     if (byteLen == 0)  // We're at EOF
                         return byteLen;
@@ -327,6 +347,10 @@ namespace VisualLogger.Streams
         //
         public ValueTuple<long, int>? ReadLinePosition()
         {
+            return ReadLinePositionFunc.Invoke();
+        }
+        private ValueTuple<long, int>? ReadLinePositionUnicodeBE()
+        {
             if (stream == null)
                 throw new ObjectDisposedException(null, "ObjectDisposed_ReaderClosed");
 
@@ -344,59 +368,98 @@ namespace VisualLogger.Streams
                 do
                 {
                     byte b = byteBuffer[i];
-                    if (encoding.EncodingName == "Unicode (Big-Endian)")
+                    if (b == 0x0)
                     {
-                        if (b == 0x0)
+                        bytePos = i + 1;
+                        if ((bytePos < byteLen || ReadBuffer() > 0) && (byteBuffer[bytePos] == 0xD || byteBuffer[bytePos] == 0XA))
                         {
-                            bytePos = i + 1;
-                            if ((bytePos < byteLen || ReadBuffer() > 0) && (byteBuffer[bytePos] == 0xD || byteBuffer[bytePos] == 0XA))
-                            {
-                                bytePos++;
-                                if ((bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0x0)
-                                {
-                                    if ((++bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0xA)
-                                    {
-                                        bytePos++;
-                                    }
-                                    else
-                                    {
-                                        bytePos--;
-                                    }
-                                }
-                                return new ValueTuple<long, int>(start, (int)(Position - start));
-                            }
-                        }
-                    }
-                    else if (encoding.EncodingName == "Unicode")
-                    {
-                        if (b == 0xD || b == 0XA)
-                        {
-                            bytePos = i + 1;
+                            bytePos++;
                             if ((bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0x0)
                             {
-                                bytePos++;
-                                if (b == 0xD && (bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0xA)
+                                if ((++bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0xA)
                                 {
-                                    if ((++bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0x0)
-                                    {
-                                        bytePos++;
-                                    }
+                                    bytePos++;
                                 }
-                                return new ValueTuple<long, int>(start, (int)(Position - start));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (b == 0xD || b == 0XA)
-                        {
-                            bytePos = i + 1;
-                            if (b == 0xD && (bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0XA)
-                            {
-                                bytePos++;
+                                else
+                                {
+                                    bytePos--;
+                                }
                             }
                             return new ValueTuple<long, int>(start, (int)(Position - start));
                         }
+                    }
+                    i++;
+                } while (i < byteLen);
+            } while (ReadBuffer() > 0);
+            return new ValueTuple<long, int>(start, (int)(Position - start));
+        }
+        private ValueTuple<long, int>? ReadLinePositionUnicode()
+        {
+            if (stream == null)
+                throw new ObjectDisposedException(null, "ObjectDisposed_ReaderClosed");
+
+            if (bytePos == byteLen)
+            {
+#nullable disable
+                if (ReadBuffer() == 0) return null;
+#nullable enable
+            }
+
+            long start = Position;
+            do
+            {
+                int i = bytePos;
+                do
+                {
+                    byte b = byteBuffer[i];
+                    if (b == 0xD || b == 0XA)
+                    {
+                        bytePos = i + 1;
+                        if ((bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0x0)
+                        {
+                            bytePos++;
+                            if (b == 0xD && (bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0xA)
+                            {
+                                if ((++bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0x0)
+                                {
+                                    bytePos++;
+                                }
+                            }
+                            return new ValueTuple<long, int>(start, (int)(Position - start));
+                        }
+                    }
+                    i++;
+                } while (i < byteLen);
+            } while (ReadBuffer() > 0);
+            return new ValueTuple<long, int>(start, (int)(Position - start));
+        }
+        private ValueTuple<long, int>? ReadLinePositionUTF8()
+        {
+            if (stream == null)
+                throw new ObjectDisposedException(null, "ObjectDisposed_ReaderClosed");
+
+            if (bytePos == byteLen)
+            {
+#nullable disable
+                if (ReadBuffer() == 0) return null;
+#nullable enable
+            }
+
+            long start = Position;
+            do
+            {
+                int i = bytePos;
+                do
+                {
+                    byte b = byteBuffer[i];
+                    if (b == 0xD || b == 0XA)
+                    {
+                        bytePos = i + 1;
+                        if (b == 0xD && (bytePos < byteLen || ReadBuffer() > 0) && byteBuffer[bytePos] == 0XA)
+                        {
+                            bytePos++;
+                        }
+                        return new ValueTuple<long, int>(start, (int)(Position - start));
                     }
                     i++;
                 } while (i < byteLen);

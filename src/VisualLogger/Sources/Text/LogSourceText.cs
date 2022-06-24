@@ -73,9 +73,9 @@ namespace VisualLogger.Sources
                         var cell = block.Cells[i];
                         cellConvertors[i] = _convertorProvider.GetConvertor(cell.ConvertorName);
                         var capture = match.Groups[cell.RegexGroupIndex];
-                        long position = streamPosition + _streamBytesLineReader.CurrentEncoding.GetByteCount(itemContent.AsSpan(0, capture.Index));
+                        long position = startPosition + _streamBytesLineReader.CurrentEncoding.GetByteCount(itemContent.AsSpan(0, capture.Index));
                         int length = _streamBytesLineReader.CurrentEncoding.GetByteCount(itemContent.AsSpan(capture.Index, capture.Length));
-                        var streamCell = CreateCell(position, length, ref streamPosition);
+                        var streamCell = CreateCell(position, length);
                         blockCells[i] = new BlockCellSource(cell.Name, streamCell);
                     }
                     break;
@@ -136,9 +136,9 @@ namespace VisualLogger.Sources
 
                         var capture = match.Groups[column.Cell.RegexGroupIndex];
                         int start = _streamBytesLineReader.CurrentEncoding.GetByteCount(itemContent.AsSpan(0, capture.Index));
-                        long position = streamPosition + start;
+                        long position = startPosition + start;
                         int length = _streamBytesLineReader.CurrentEncoding.GetByteCount(itemContent.AsSpan(capture.Index, capture.Length));
-                        var cell = CreateCell(position, length, ref streamPosition);
+                        var cell = CreateCell(position, length);
                         HandleContentCellValue(column, logSourceReaderText, cell, cellIndex);
                         cells[cellIndex] = cell;
                     }
@@ -152,8 +152,7 @@ namespace VisualLogger.Sources
 
         private CellSource CreateCell(
             long position,
-            int length,
-            ref long streamPosition)
+            int length)
         {
             var streamCell = new CellSource(position, length);
             return streamCell;

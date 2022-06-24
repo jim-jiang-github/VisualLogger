@@ -28,7 +28,7 @@ namespace VisualLogger.WPF
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddWpfBlazorWebView();
-            serviceCollection.AddVisualLogger();
+            serviceCollection.AddVisualLoggerShared();
 #if DEBUG
             serviceCollection.AddBlazorWebViewDeveloperTools();
 #endif

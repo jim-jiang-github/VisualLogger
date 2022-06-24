@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VisualLogger.Shared.Data
 {
-    public class SidebarMenu
+    public class MenuSideBarItem
     {
         public string? Name { get; set; }
         public string? Icon { get; set; }

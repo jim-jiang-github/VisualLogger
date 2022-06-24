@@ -14,6 +14,8 @@ namespace VisualLogger.Sources
         private const string EXCLUDE_CHARS = "1234567890";
         private readonly List<string> _words = new();
 
+        public int MinimumStorable { get; set; } = 5;
+
         public IEnumerable<string> Words
         {
             get
@@ -35,9 +37,10 @@ namespace VisualLogger.Sources
                 {
                     stringBuilder.Append(c);
                 }
-                if (stringBuilder.Length > 0 && (i == text.Length - 1 || !isDelimiterChar && stringBuilder.Length > 0))
+                if (stringBuilder.Length > MinimumStorable && (i == text.Length - 1 || !isDelimiterChar && stringBuilder.Length > 0))
                 {
                     var word = stringBuilder.ToString();
+                    stringBuilder.Clear();
                     if (_words.Contains(word))
                     {
                         continue;
@@ -46,7 +49,6 @@ namespace VisualLogger.Sources
                     {
                         _words.Add(word);
                     }
-                    stringBuilder.Clear();
                 }
             }
         }

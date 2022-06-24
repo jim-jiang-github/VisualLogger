@@ -53,11 +53,11 @@ namespace VisualLogger.Sources
             ref long streamPosition);
         protected void HandleContentCellValue(SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumn schemaColumn, LogSourceReader logSourceReader, CellSource cellSource, int cellIndex)
         {
-            if (schemaColumn.Enumeratable)
-            {
-                var cellValue = logSourceReader.GetValue(cellSource, cellIndex);
-                _wordsCollection.AppendFromString(cellValue);
-            }
+            //if (schemaColumn.Enumeratable)
+            //{
+            //    var cellValue = logSourceReader.GetValue(cellSource, cellIndex);
+            //    _wordsCollection.AppendFromString(cellValue);
+            //}
         }
         #region IBlockCellFinder
         public string? GetBlockCellValue(string recursivePath)

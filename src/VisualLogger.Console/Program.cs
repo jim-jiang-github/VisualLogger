@@ -23,8 +23,8 @@ using VisualLogger.Utils;
 
 Log.Logger = new LoggerConfiguration()
 #if DEBUG
-           .MinimumLevel.Debug()
            .WriteTo.Console()
+           .MinimumLevel.Debug()
 #else
            .MinimumLevel.Information()
 #endif
@@ -130,7 +130,7 @@ Log.Logger = new LoggerConfiguration()
 
 //var dir = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_dd8ae80b-0de0-46ba-b1e5-72b948a2ad01_20220617-112805";
 var xx = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_21262c95-3085-4c8f-9335-6609e5b318b8_20220607-154900 (1)\RoomsHost-20220601_095353-pid_10424.log";
-var dir = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_21262c95-3085-4c8f-9335-6609e5b318b8_20220607-154900 (1)";
+var dir = @"C:\Users\Jim.Jiang\Downloads\WRoomsFeedBack_HostLog_75a6889c-ce51-4840-ace1-3ef098034520_20220615-104915";
 var files = Directory.GetFiles(dir);
 Scenario scenario = new Scenario();
 scenario.Init();
@@ -139,9 +139,8 @@ foreach (var file in files.Skip(1))
 {
     stopwatch.Restart();
     scenario.LoadLogSource(file);
-    
     var arr = scenario.LogSource.GetRows(0, scenario.LogSource.TotalRowsCount).Select(x => x[0].ToString()).ToArray();
-    Log.Debug("Find {path} total:{total} use:{time}ms", file, scenario.LogSource.TotalRowsCount, stopwatch.ElapsedMilliseconds);
+    Log.Information("Find {path} total:{total} use:{time}ms", file, scenario.LogSource.TotalRowsCount, stopwatch.ElapsedMilliseconds);
     for (int i = 0; i < arr.Length; i++)
     {
         string item = arr[i];
