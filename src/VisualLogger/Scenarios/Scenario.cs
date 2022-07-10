@@ -10,7 +10,6 @@ using VisualLogger.Schemas;
 using VisualLogger.Schemas.Logs;
 using VisualLogger.Schemas.Scenarios;
 using VisualLogger.Sources;
-using VisualLogger.Sources.Binary;
 
 namespace VisualLogger.Scenarios
 {
@@ -131,45 +130,9 @@ namespace VisualLogger.Scenarios
             }
             Log.Information("Load LogSource from {logFilePath}", logFilePath);
             var stream = _streamLoader.LoadLogStreamFromPath(logFilePath);
-            LogSource = LoadLogSource(stream, _schemaLogPath);
+            LogSource = ILogSource.LoadLogSource(stream, _schemaLogPath);
             OnPropertyChanged(nameof(LogSource));
             return true;
-        }
-        private ILogSource? LoadLogSource(Stream logFileStream, string schemaLogPath)
-        {
-            var schemaType = Schema.GetSchemaTypeFromJsonFile(schemaLogPath);
-            switch (schemaType)
-            {
-                case SchemaType.LogText:
-                    var logSourceText = LoadLogSource<LogSourceText, SchemaLogText>(logFileStream, schemaLogPath);
-                    return logSourceText;
-                case SchemaType.LogBinary:
-                    var logSourceBinary = LoadLogSource<LogSourceBinary, SchemaLogBinary>(logFileStream, schemaLogPath);
-                    return logSourceBinary;
-            }
-            return null;
-        }
-        private ILogSource? LoadLogSource<TLogSource, TSchemaLog>(Stream logFileStream, string schemaLogPath)
-            where TLogSource : class, ILogSource
-            where TSchemaLog : SchemaLog, new()
-        {
-            var schemaLog = IJsonSerializable.LoadFromJsonFile<TSchemaLog>(schemaLogPath);
-            if (schemaLog == null)
-            {
-                Log.Warning("Can not load schemaLog from {schemaLogPath}", schemaLogPath);
-                return null;
-            }
-            try
-            {
-                var logSourceConstructors = (typeof(TLogSource)).GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
-                var logSource = logSourceConstructors[0].Invoke(new object[] { logFileStream, schemaLog }) as TLogSource;
-                return logSource;
-            }
-            catch (Exception ex)
-            {
-                Log.Warning("Load {LogSource} error {Error}", typeof(TLogSource), ex);
-                return null;
-            }
         }
     }
 }

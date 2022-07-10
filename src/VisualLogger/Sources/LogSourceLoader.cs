@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using VisualLogger.LogFileLoaders.Streams;
 using VisualLogger.Schemas;
 using VisualLogger.Schemas.Logs;
-using VisualLogger.Sources.Binary;
 
 namespace VisualLogger.Sources
 {

@@ -6,26 +6,23 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using VisualLogger.Convertors;
 
 namespace VisualLogger.Sources
 {
-    internal struct ContentSource
+    internal class ContentSource
     {
-        private readonly LogSourceReader _reader;
-
         public string[] ColumnHeadTemplate { get; }
-        public IEnumerable<RowSource> Rows { get; }
-        public ContentSource(LogSourceReader reader, string[] columnHeadTemplate, IEnumerable<RowSource> rows)
+        public IEnumerable<LogRow> Rows { get; }
+        public ContentSource(string[] columnHeadTemplate, IEnumerable<LogRow> rows)
         {
-            _reader = reader;
             ColumnHeadTemplate = columnHeadTemplate;
             Rows = rows;
         }
 
         public IEnumerable<LogRow> GetRows(int start, int length)
         {
-            var reader = _reader;
-            var rows = Rows.Skip(start).Take(length).Select(r => new LogRow(reader, r.Index, r.Cells.ToArray()));
+            var rows = Rows.Skip(start).Take(length);
             return rows;
         }
     }

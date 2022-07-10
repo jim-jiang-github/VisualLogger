@@ -14,19 +14,32 @@ namespace VisualLogger.Shared.Services
     {
         private readonly List<MenuTopBarItem> _menuItems = new List<MenuTopBarItem>();
         public MenuTopBarService(IStringLocalizer<Strings> stringLocalizer,
+            IServiceProvider serviceProvider,
             Scenario scenario,
             IScenarioOptions scenarioOptions)
         {
             IEnumerable<MenuTopBarItem> GetOpenMenuItems()
             {
-                yield return new MenuTopBarItem(stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: async () =>
+                IFilesPicker? filesPicker = serviceProvider.GetService<IFilesPicker>();
+                if (filesPicker != null)
                 {
-                });
-                yield return new MenuTopBarItem(stringLocalizer["MenuBar.File.Open.FromFolder"], clickAction: () =>
+                    yield return new MenuTopBarItem(stringLocalizer["MenuBar.File.Open.FromFiles"], clickAction: async () =>
+                    {
+                        var files = await filesPicker.PickFiles();
+                        scenario.LoadLogFiles(files.ToArray());
+                    });
+                }
+                IFolderPicker? folderPicker = serviceProvider.GetService<IFolderPicker>();
+                if (folderPicker != null)
                 {
-                });
+                    yield return new MenuTopBarItem(stringLocalizer["MenuBar.File.Open.FromFolder"], clickAction: () =>
+                    {
+                        folderPicker.PickFolder();
+                    });
+                }
                 yield return new MenuTopBarItem(stringLocalizer["MenuBar.File.Open.FromWebsite"], clickAction: () =>
                 {
+                    GC.Collect();
                 });
             }
             IEnumerable<MenuTopBarItem> GetFileMenuItems()

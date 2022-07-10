@@ -26,7 +26,7 @@ namespace VisualLogger.Streams
         {
             get
             {
-                return 1024;
+                return 1024 * 4;
             }
         }
 

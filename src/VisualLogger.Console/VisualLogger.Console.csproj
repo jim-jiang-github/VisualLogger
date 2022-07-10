@@ -26,4 +26,10 @@
     <ProjectReference Include="..\VisualLogger\VisualLogger.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="VisualLogger.Reader">
+      <HintPath>..\VisualLogger.Reader\bin\Release\net6.0\VisualLogger.Reader.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

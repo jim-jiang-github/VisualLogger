@@ -2,7 +2,8 @@
 @inject Scenario Scenario
 @inject IScenarioOptions ScenarioOptions
 @inject NavigationManager NavigationManager
-@inject MenuSideBarService SidebarMenuService
+@inject MenuSideBarService MenuSideBarService
+@inject MenuTopBarService MenuTopBarService
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject ContextMenuService ContextMenuService
@@ -17,7 +18,7 @@
         <ChildContent>
             <div class="row justify-content-start align-items-center">
                 <div class="col-5 d-flex align-items-center">
-                    <RadzenSidebarToggle ContextMenu=@(args => ShowContextMenuWithItems(args)) ButtonStyle="ButtonStyle.Secondary"
+                    <RadzenSidebarToggle ContextMenu=@(args => ShowContextMenuWithContent(args)) ButtonStyle="ButtonStyle.Secondary"
                                          Click="@(args => { sidebarExpanded = !sidebarExpanded; bodyExpanded = !bodyExpanded; })">
                     </RadzenSidebarToggle>
                     <RadzenLabel Text="Visual Logger">
@@ -46,7 +47,7 @@
     <RadzenSidebar @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
         <ChildContent>
             <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-                @foreach (var menu in SidebarMenuService.MenuItems)
+                @foreach (var menu in MenuSideBarService.MenuItems)
                 {
                     <SidebarMenuItem SidebarMenu=@menu />
                 }
@@ -58,48 +59,73 @@
 @code {
     bool sidebarExpanded = true;
     bool bodyExpanded = false;
+
     protected override void OnInitialized()
     {
         //TODO Can not inject 'NotificationService' code behind for radzen, this may be a bug???
         MessageCenter.NotificationSuccess += (title, message) =>
         {
-            NotificationService.Notify(new NotificationMessage()
-                {
-                    Severity = NotificationSeverity.Success,
-                    Summary = title,
-                    Detail = message,
-                    Duration = 4000
-                });
+    NotificationService.Notify(new NotificationMessage()
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = title,
+                Detail = message,
+                Duration = 4000
+            });
         };
         //TODO Can not inject 'DialogService' code behind for radzen, this may be a bug???
         ScenarioOptions.ScenarioDialog += () =>
-        {
-            return DialogService.OpenAsync<ScenarioOptionsPage>($"Order ",
-                new Dictionary<string, object>() { { "OrderID", 1 } },
-                new DialogOptions() { Width = "700px", Height = "570px" });
-        };
+    {
+        return DialogService.OpenAsync<ScenarioOptionsPage>($"Order ",
+    new Dictionary<string, object>() { { "OrderID", 1 } },
+    new DialogOptions() { Width = "700px", Height = "570px" });
+    };
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         Scenario.Init();
     }
-    void ShowContextMenuWithItems(MouseEventArgs args)
+    void ShowContextMenuWithContent(MouseEventArgs args)
     {
-        ContextMenuService.Open(args,
-            new List<ContextMenuItem> {
-                new ContextMenuItem(){ Text = "Context menu item 1", Value = 1 },
-                new ContextMenuItem(){ Text = "Context menu item 2", Value = 2 },
-                new ContextMenuItem(){ Text = "Context menu item 3", Value = 3 },
-             }, OnMenuItemClick);
+        ContextMenuService.Open(args, ds =>
+    @<RadzenMenu>
+        @foreach (var item in MenuTopBarService.GetMenuItems())
+        {
+            @LoadMenuItem(item)
+        }
+    </RadzenMenu>
+         );
     }
     void OnMenuItemClick(MenuItemEventArgs args)
     {
-        if (!args.Value.Equals(3) && !args.Value.Equals(4))
+        if (args.Value is MenuTopBarItem menuTopBarItem)
         {
-            ContextMenuService.Close();
+            if (menuTopBarItem.MenuItems == null)
+            {
+                menuTopBarItem.OnClick();
+                ContextMenuService.Close();
+            }
         }
     }
     void ChangeTheme(object value)
     {
         var url = NavigationManager.GetUriWithQueryParameter("theme", $"{value}");
         NavigationManager.NavigateTo(url, true);
+    }
+
+    private RenderFragment LoadMenuItem(MenuTopBarItem menuItem)
+    {
+        if (menuItem.MenuItems != null)
+        {
+            return
+    @<RadzenMenuItem Text=@menuItem.Title Value=@menuItem Click=@OnMenuItemClick>
+        @foreach (var item in menuItem.MenuItems)
+        {
+            @LoadMenuItem(item)
+        }
+    </RadzenMenuItem>;
+        }
+        else
+        {
+            return  @<RadzenMenuItem Text=@menuItem.Title Value=@menuItem Click=@OnMenuItemClick />;
+        }
     }
 }

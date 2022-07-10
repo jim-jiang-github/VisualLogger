@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIKit;
-using VisualLogger.Maui.InterfaceModules;
+using VisualLogger.Shared.InterfaceModules;
 
 namespace VisualLogger.Maui.Platforms.MacCatalyst
 {
@@ -13,7 +13,7 @@ namespace VisualLogger.Maui.Platforms.MacCatalyst
     {
         class PickerDelegate : UIDocumentPickerDelegate
         {
-            public Action<NSUrl[]> PickHandler { get; set; }
+            public Action<NSUrl[]?>? PickHandler { get; set; }
 
             public override void WasCancelled(UIDocumentPickerViewController controller)
                 => PickHandler?.Invoke(null);
@@ -25,7 +25,7 @@ namespace VisualLogger.Maui.Platforms.MacCatalyst
                 => PickHandler?.Invoke(new NSUrl[] { url });
         }
 
-        static void GetFileResults(NSUrl[] urls, TaskCompletionSource<string> tcs)
+        static void GetFileResults(NSUrl[]? urls, TaskCompletionSource<string> tcs)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace VisualLogger.Maui.Platforms.MacCatalyst
             }
         }
 
-        public async Task<string> PickFolder()
+        public async Task<string?> PickFolder()
         {
             var allowedTypes = new string[]
             {
@@ -60,14 +60,14 @@ namespace VisualLogger.Maui.Platforms.MacCatalyst
 
             var parentController = Platform.GetCurrentUIViewController();
 
-            parentController.PresentViewController(picker, true, null);
+            parentController?.PresentViewController(picker, true, null);
 
             return await tcs.Task;
         }
 
         internal class UIPresentationControllerDelegate : UIAdaptivePresentationControllerDelegate
         {
-            Action dismissHandler;
+            Action? dismissHandler;
 
             internal UIPresentationControllerDelegate(Action dismissHandler)
                 => this.dismissHandler = dismissHandler;

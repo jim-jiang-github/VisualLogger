@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualLogger.Maui.InterfaceModules
+namespace VisualLogger.Console
 {
-    public interface IFolderPicker
+    internal class Iterator
     {
-        Task<string> PickFolder();
     }
 }

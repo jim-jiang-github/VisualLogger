@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using VisualLogger.Maui.InterfaceImplModules;
-using VisualLogger.Maui.InterfaceModules;
-using VisualLogger.Maui.Services;
 using VisualLogger.Shared.Data;
 using VisualLogger.Shared.Extensions;
+using VisualLogger.Shared.InterfaceModules;
 
 namespace VisualLogger.Maui
 {
@@ -20,13 +19,12 @@ namespace VisualLogger.Maui
                 });
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddVisualLogger();
-            builder.Services.AddSingleton<MauiLogPicker>();
-            builder.Services.AddSingleton<MenuBarService>();
+            builder.Services.AddVisualLoggerShared();
+            builder.Services.AddSingleton<IFilesPicker, MauiLogPicker>();
 #if WINDOWS
             builder.Services.AddSingleton<IFolderPicker, Platforms.Windows.FolderPicker>();
 #elif MACCATALYST
-		builder.Services.AddSingleton<IFolderPicker, Platforms.MacCatalyst.FolderPicker>();
+		    builder.Services.AddSingleton<IFolderPicker, Platforms.MacCatalyst.FolderPicker>();
 #endif
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

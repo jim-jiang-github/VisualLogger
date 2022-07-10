@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisualLogger.Sources;
-using static VisualLogger.Schemas.Logs.SchemaLog;
 
 namespace VisualLogger.Convertors
 {
@@ -33,7 +32,7 @@ namespace VisualLogger.Convertors
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "StreamCellConvertorMath CSharpScript error");
+                Log.Fatal(ex, "CellConvertorMath CSharpScript error");
                 _runner = null;
             }
         }

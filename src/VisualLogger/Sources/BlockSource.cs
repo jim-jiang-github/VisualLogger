@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualLogger.Convertors;
 
 namespace VisualLogger.Sources
 {
     internal struct BlockSource
     {
-        private readonly LogSourceReader _reader;
         private readonly BlockCellSource[] _blockCells;
 
         public string Name { get; }
         public int Count => _blockCells.Length;
 
-        public string this[int index]
+        public object? this[int index]
         {
             get
             {
-                return _reader.GetValue(_blockCells[index].Cell, index);
+                return _blockCells[index].Cell;
             }
         }
 
@@ -27,10 +27,9 @@ namespace VisualLogger.Sources
             return _blockCells[index].Name;
         }
 
-        internal BlockSource(LogSourceReader reader, string name, BlockCellSource[] blockCells)
+        internal BlockSource(string name, BlockCellSource[] blockCells)
         {
             Name = name;
-            _reader = reader;
             _blockCells = blockCells;
         }
     }

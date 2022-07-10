@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Security.Permissions;
-using System.Runtime.CompilerServices;
-using System.IO;
-using Microsoft.CodeAnalysis.Text;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace VisualLogger.Streams
+namespace VisualLogger.Reader
 {
     // This is designed for character input in a particular Encoding, 
     // whereas the Stream class is designed for byte input and output.  
@@ -27,7 +23,7 @@ namespace VisualLogger.Streams
         {
             get
             {
-                return 1024 * 8;
+                return 1024 * 1;
             }
         }
 

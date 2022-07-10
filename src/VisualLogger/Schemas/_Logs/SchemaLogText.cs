@@ -24,7 +24,6 @@ namespace VisualLogger.Schemas.Logs
         public class SchemaColumnHeadText : SchemaColumnHead
         {
             public string RegexStart { get; set; } = string.Empty;
-            public string RegexEnd { get; set; } = string.Empty;
             public string RegexContent { get; set; } = string.Empty;
         }
         public class SchemaCellText : SchemaCell
@@ -52,7 +51,6 @@ namespace VisualLogger.Schemas.Logs
             ColumnHeadTemplate = new SchemaColumnHeadText
             {
                 RegexStart = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3})",
-                RegexEnd = @"^(?!\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}).*",
                 RegexContent = @"^(\d{2}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}.\d{3}) \<(.*?)\> \[(.*?)\] (.*?) (.*)",
                 Columns = new SchemaColumn[]
                 {
@@ -95,7 +93,7 @@ namespace VisualLogger.Schemas.Logs
             {
                 Name = "Header",
                 RegexStart = @"app: (RoomsController)/(.*?)/(SHA\(.*\))",
-                RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
+                RegexEnd = @"os: (.*?)/(.*?)[\r|\n]",
                 RegexContent = @"app: (RoomsController)/(.*?)/(SHA\(.*\))[\r|\n]*os: (.*?)/(.*?)[\r|\n]",
                 Cells = new SchemaCellText[]
                 {
@@ -111,7 +109,6 @@ namespace VisualLogger.Schemas.Logs
             ColumnHeadTemplate = new SchemaColumnHeadText
             {
                 RegexStart = @"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3})",
-                RegexEnd = @"^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}).*",
                 RegexContent = @"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} [A-Z]{3}) : (.*?) : \[(.*?)\] \[(.*?)\] (.*)",
                 Columns = new SchemaColumn[]
                 {

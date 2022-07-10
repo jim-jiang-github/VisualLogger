@@ -23,40 +23,8 @@
                 </div>
             </RadzenSplitterPane>
             <RadzenSplitterPane Collapsible="false">
-                @if (Scenario.LogSourceLoaded)
-                {
-                    <RadzenDataGrid ColumnWidth="100%"
-                                SelectionMode="DataGridSelectionMode.Single"
-                                AllowVirtualization="true"
-                                Style="height:100%"
-                                FilterMode="FilterMode.Advanced"
-                                Data="@data"
-                                TItem="LogRow"
-                                IsLoading="@isLoading"
-                                Count="@count"
-                                LoadData="@LoadData">
-                        <Columns>
-                            @if (Scenario.LogSource != null)
-                            {
-                                <RadzenDataGridColumn TItem="LogRow" Title="" Type="typeof(int)">
-                                    <Template>
-                                        @context.Index
-                                    </Template>
-                                </RadzenDataGridColumn>
-                                for (int i = 0; i < Scenario.LogSource.ColumnNames.Length; i++)
-                                {
-                                    var columnName = Scenario.LogSource.ColumnNames[i];
-                                    var index = i;
-                                    <RadzenDataGridColumn TItem="LogRow" Title=@columnName Type="typeof(Enum)">
-                                        <Template>
-                                            @context[index]
-                                        </Template>
-                                    </RadzenDataGridColumn>
-                                }
-                            }
-                        </Columns>
-                    </RadzenDataGrid>
-                }
+                <RadzenAutoComplete FilterDelay="100" Data=@strings Change=@(args => OnChange(args, "AutoComplete")) Style="width: 100%;" />
+             
             </RadzenSplitterPane>
         </RadzenSplitter>
     </RadzenSplitterPane>
@@ -65,8 +33,13 @@
 
 @code {
     IEnumerable<LogRow>? data;
+    IEnumerable<string> strings = Enumerable.Range(0, 10000).Select(x => x.ToString());
     int count;
     bool isLoading;
+    string text = "";
+    void OnChange(object value, string name)
+    {
+    }
 
     protected override void OnInitialized()
     {

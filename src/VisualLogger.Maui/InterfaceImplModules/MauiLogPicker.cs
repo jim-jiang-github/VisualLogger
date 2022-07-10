@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VisualLogger.Scenarios;
-using VisualLogger.Maui.InterfaceModules;
 using VisualLogger.Shared.Resources.Languages;
+using VisualLogger.Shared.InterfaceModules;
 
 namespace VisualLogger.Maui.InterfaceImplModules
 {
-    internal class MauiLogPicker
+    internal class MauiLogPicker : IFilesPicker
     {
         private readonly IStringLocalizer<Strings> _stringLocalizer;
         protected readonly IFolderPicker _folderPicker;
         protected readonly Scenario _scenario;
+
         public MauiLogPicker(IStringLocalizer<Strings> stringLocalizer,
             IFolderPicker folderPicker,
             Scenario scenario)
@@ -24,7 +25,7 @@ namespace VisualLogger.Maui.InterfaceImplModules
             _scenario = scenario;
         }
 
-        public async Task<IEnumerable<string>> PickFromFiles()
+        public async Task<IEnumerable<string>> PickFiles()
         {
             var fileTypes = new[] { "zip", "7z", "rar" };
             fileTypes = fileTypes.Concat(_scenario.SupportedExtensions).ToArray();
@@ -40,17 +41,6 @@ namespace VisualLogger.Maui.InterfaceImplModules
             };
             var fileResults = await FilePicker.PickMultipleAsync(pickOptions);
             return fileResults.Select(r => r.FullPath);
-        }
-
-        public async Task<IEnumerable<string>> PickFromFolder()
-        {
-            var folder = await _folderPicker.PickFolder();
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> PickFromWebsite()
-        {
-            throw new NotImplementedException();
         }
     }
 }

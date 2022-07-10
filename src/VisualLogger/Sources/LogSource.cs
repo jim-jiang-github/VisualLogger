@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisualLogger.Convertors;
 using VisualLogger.Schemas.Logs;
-using VisualLogger.Sources.Text;
 using VisualLogger.Streams;
 
 namespace VisualLogger.Sources
@@ -20,38 +20,47 @@ namespace VisualLogger.Sources
         where TColumnHeadSchema : SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumnHead, new()
         where TCellSchema : SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaCell, new()
     {
-        private readonly List<BlockSource> _blockSources;
-        private readonly WordsCollection _wordsCollection;
+
         protected readonly Stream _stream;
         protected readonly SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> _schemaLog;
+        protected readonly Encoding _encoding;
         protected readonly CellConvertorProvider _convertorProvider;
-        protected readonly ContentSource _logContent;
+
+        private readonly List<BlockSource> _blockSources = new();
+        private int _totalCount = 0;
+        private ContentSource? _logContent;
+        private readonly WordsCollection _wordsCollection = new();
+        ~LogSource()
+        {
+
+        }
+
         protected LogSource(Stream stream, SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> schemaLog)
         {
-            _schemaLog = schemaLog;
-            _blockSources = new();
             _stream = stream;
-            _wordsCollection = new WordsCollection();
+            _schemaLog = schemaLog;
+            _encoding = Encoding.GetEncoding(schemaLog.EncodingName);
             _convertorProvider = new CellConvertorProvider(schemaLog);
             Filter = new LogFilter();
-            Init(stream, schemaLog);
-            long streamPosition = 0;
+        }
+        protected void Init()
+        {
             foreach (var block in _schemaLog.Blocks)
             {
-                var blockSource = CreateBlockSource(block, ref streamPosition);
+                var blockSource = CreateBlockSource(block);
                 _blockSources.Add(blockSource);
             }
+            _totalCount = GetTotalCount(this);
+            _logContent = CreateContentSource(this);
             _convertorProvider.Init(this);
-            _logContent = CreateContentSource(this, ref streamPosition);
         }
-        protected abstract void Init(Stream stream, SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema> schemaLog);
         protected abstract BlockSource CreateBlockSource(
-            TBlockSchema block,
-            ref long streamPosition);
+            TBlockSchema block);
+        protected abstract int GetTotalCount(
+            IBlockCellFinder blockCellFinder);
         protected abstract ContentSource CreateContentSource(
-            IBlockCellFinder blockCellSearchable,
-            ref long streamPosition);
-        protected void HandleContentCellValue(SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumn schemaColumn, LogSourceReader logSourceReader, CellSource cellSource, int cellIndex)
+            IBlockCellFinder blockCellFinder);
+        protected void HandleContentCellValue(SchemaLog<TBlockSchema, TColumnHeadSchema, TCellSchema>.SchemaColumn schemaColumn, object cell)
         {
             //if (schemaColumn.Enumeratable)
             //{
@@ -60,12 +69,12 @@ namespace VisualLogger.Sources
             //}
         }
         #region IBlockCellFinder
-        public string? GetBlockCellValue(string recursivePath)
+        public object? GetBlockCellValue(string recursivePath)
         {
             var paths = recursivePath.Split(".");
             return GetBlockCellValue(paths);
         }
-        private string? GetBlockCellValue(IEnumerable<string> paths)
+        private object? GetBlockCellValue(IEnumerable<string> paths)
         {
             if (_blockSources == null)
             {
@@ -103,14 +112,20 @@ namespace VisualLogger.Sources
         }
         #endregion
         #region ILogSource
-        public int TotalRowsCount { get; protected set; }
-        public string[] ColumnNames => _logContent.ColumnHeadTemplate;
+        public int TotalRowsCount => _totalCount;
+        public string[] ColumnNames => _logContent?.ColumnHeadTemplate ?? Array.Empty<string>();
         public IEnumerable<string> EnumerateWords => _wordsCollection.Words;
         public LogFilter Filter { get; }
         public IEnumerable<LogRow> GetRows(int start, int length)
         {
-            var rows = _logContent.GetRows(start, length);
-            return rows;
+            if (_logContent == null)
+            {
+                yield break;
+            }
+            foreach (var row in _logContent.GetRows(start, length))
+            {
+                yield return row;
+            }
         }
         #endregion
         #region IDisposable

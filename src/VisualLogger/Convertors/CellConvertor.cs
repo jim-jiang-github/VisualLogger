@@ -31,7 +31,7 @@ namespace VisualLogger.Convertors
             foreach (Match match in matches)
             {
                 if (match.Success && match.Groups.Count >= 1 &&
-                    match.Groups[1].Value != CellConvertor.CELL_VALUE &&
+                    match.Groups[1].Value != CELL_VALUE &&
                     blockCellFinder.GetBlockCellValue(match.Groups[1].Value) is string replacement)
                 {
                     Expression = regex.Replace(Expression, replacement, 1);

@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualLogger.Maui.InterfaceModules;
+using VisualLogger.Shared.InterfaceModules;
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace VisualLogger.Maui.Platforms.Windows
 {
     internal class FolderPicker : IFolderPicker
     {
-        public async Task<string> PickFolder()
+        public async Task<string?> PickFolder()
         {
             var folderPicker = new WindowsFolderPicker();
             // Might be needed to make it work on Windows 10
             folderPicker.FileTypeFilter.Add("*");
 
+            if (App.Current == null || App.Current.Windows.Count <= 0)
+            {
+                return null;
+            }
+            var mauiWinUIWindow = App.Current.Windows[0].Handler.PlatformView as MauiWinUIWindow;
+            if (mauiWinUIWindow == null)
+            {
+                return null;
+            }
             // Get the current window's HWND by passing in the Window object
-            var hwnd = ((MauiWinUIWindow)App.Current.Windows[0].Handler.PlatformView).WindowHandle;
+            var hwnd = mauiWinUIWindow.WindowHandle;
 
             // Associate the HWND with the file picker
             WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);

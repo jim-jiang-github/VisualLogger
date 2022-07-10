@@ -9,8 +9,8 @@ namespace VisualLogger.Sources
     internal struct BlockCellSource
     {
         public string Name { get; set; }
-        public CellSource Cell { get; set; }
-        internal BlockCellSource(string name, CellSource cell)
+        public object Cell { get; set; }
+        internal BlockCellSource(string name, object cell)
         {
             Name = name;
             Cell = cell;

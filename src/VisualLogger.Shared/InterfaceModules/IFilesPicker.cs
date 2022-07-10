@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualLogger.Sources
+namespace VisualLogger.Shared.InterfaceModules
 {
-    internal interface IBlockCellFinder
+    public interface IFilesPicker
     {
-        object? GetBlockCellValue(string recursivePath);
+        Task<IEnumerable<string>> PickFiles();
     }
 }

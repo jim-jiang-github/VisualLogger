@@ -1,4 +1,5 @@
-﻿using VisualLogger.Maui.Services;
+﻿using VisualLogger.Shared.Data;
+using VisualLogger.Shared.Services;
 
 namespace VisualLogger.Maui
 {
@@ -11,12 +12,16 @@ namespace VisualLogger.Maui
             MainPage = new MainPage();
 
 #if MACCATALYST
-            var menuBarService = serviceProvider.GetService<MenuBarService>();
+            var menuBarService = serviceProvider.GetService<MenuTopBarService>();
+            if (menuBarService==null)
+            {
+                return;
+            }
             LoadMenuItem(menuBarService);
 #endif
         }
 #if MACCATALYST
-        private void LoadMenuItem(MenuBarService menuBarService)
+        private void LoadMenuItem(MenuTopBarService menuBarService)
         {
             foreach (var item in menuBarService.GetMenuItems())
             {
@@ -24,23 +29,19 @@ namespace VisualLogger.Maui
                 {
                     Text = item.Title,
                 };
-                if (item.Items != null)
+                if (item.MenuItems != null)
                 {
-                    foreach (var subItem in item.Items)
+                    foreach (var subItem in item.MenuItems)
                     {
                         menuBarItem.Add(LoadMenuItem(subItem));
                     }
                 }
-                MainPage.MenuBarItems.Add(menuBarItem);
+                MainPage?.MenuBarItems.Add(menuBarItem);
             }
         }
-        private MenuFlyoutItem LoadMenuItem(MenuBarService.MenuItem menuItem)
+        private MenuFlyoutItem LoadMenuItem(MenuTopBarItem menuItem)
         {
-            if (menuItem == null)
-            {
-                return null;
-            }
-            if (menuItem.Items == null)
+            if (menuItem.MenuItems == null)
             {
                 var menuFlyoutItem = new MenuFlyoutItem()
                 {
@@ -55,7 +56,7 @@ namespace VisualLogger.Maui
                 {
                     Text = menuItem.Title,
                 };
-                foreach (var subItem in menuItem.Items)
+                foreach (var subItem in menuItem.MenuItems)
                 {
                     menuBarItem.Add(LoadMenuItem(subItem));
                 }
