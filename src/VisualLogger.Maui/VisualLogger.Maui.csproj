@@ -58,4 +58,8 @@
 	  <MauiIcon Include="Resources\AppIcon\logo.ico" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\VisualLogger.WASM\VisualLogger.WASM.csproj" />
+	</ItemGroup>
+
 </Project>

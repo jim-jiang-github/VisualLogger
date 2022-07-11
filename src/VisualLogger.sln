@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger", "VisualLogge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Reader", "VisualLogger.Reader\VisualLogger.Reader.csproj", "{92CD2822-873F-47F8-B31C-124778842505}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Wasm", "VisualLogger.Wasm\VisualLogger.Wasm.csproj", "{A3F230AA-3B78-483D-AE8C-4F1F35D90BC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualLogger.WASM", "VisualLogger.WASM\VisualLogger.WASM.csproj", "{379E5706-04F1-4995-83D9-B58A1DC64AB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,10 @@ Global
 		{92CD2822-873F-47F8-B31C-124778842505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92CD2822-873F-47F8-B31C-124778842505}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92CD2822-873F-47F8-B31C-124778842505}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3F230AA-3B78-483D-AE8C-4F1F35D90BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3F230AA-3B78-483D-AE8C-4F1F35D90BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3F230AA-3B78-483D-AE8C-4F1F35D90BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3F230AA-3B78-483D-AE8C-4F1F35D90BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{379E5706-04F1-4995-83D9-B58A1DC64AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379E5706-04F1-4995-83D9-B58A1DC64AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379E5706-04F1-4995-83D9-B58A1DC64AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{379E5706-04F1-4995-83D9-B58A1DC64AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

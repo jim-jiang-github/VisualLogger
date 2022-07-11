@@ -24,7 +24,11 @@ public sealed partial class App
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender && OperatingSystem.IsBrowser())
+        if (firstRender && (
+            OperatingSystem.IsBrowser()
+            || OperatingSystem.IsWindows()
+            || OperatingSystem.IsMacCatalyst()
+            ))
         {
             await JSRuntime.InvokeVoidAsync("$.loading");
         }
