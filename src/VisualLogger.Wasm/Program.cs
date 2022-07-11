@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Radzen;
-using VisualLogger;
 using VisualLogger.Shared;
-using VisualLogger.Shared.Data;
 using VisualLogger.Shared.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -12,6 +9,5 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddVisualLoggerShared();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddSingleton<WeatherForecastService>();
 
 await builder.Build().RunAsync();

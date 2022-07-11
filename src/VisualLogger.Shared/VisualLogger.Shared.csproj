@@ -7,16 +7,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\libs\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Remove="wwwroot\libs\font-awesome\fonts\fontawesome-webfont.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\libs\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\libs\font-awesome\fonts\fontawesome-webfont.woff2" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.5" />
+    <PackageReference Include="BootstrapBlazor" Version="6.8.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.5" />
-    <PackageReference Include="Radzen.Blazor" Version="3.18.15" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.6" />
     <PackageReference Include="Serilog" Version="2.11.0" />
   </ItemGroup>
 

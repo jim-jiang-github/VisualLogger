@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VisualLogger.Shared\VisualLogger.Shared.csproj" />
-    <ProjectReference Include="..\VisualLogger.Wasm\VisualLogger.Wasm.csproj" />
   </ItemGroup>
 
 </Project>
