@@ -26,6 +26,24 @@ namespace VisualLogger.Shared.Services
                     Name = "XXXX",
                     Path = "/counter",
                     Icon = "&#xe88a"
+                },
+                new MenuSideBarItem()
+                {
+                    Name = "XXXX",
+                    Path = "/counter",
+                    Icon = "&#xe88a"
+                },
+                new MenuSideBarItem()
+                {
+                    Name = "XXXX",
+                    Path = "/counter",
+                    Icon = "&#xe88a"
+                },
+                new MenuSideBarItem()
+                {
+                    Name = "XXXX",
+                    Path = "/counter",
+                    Icon = "&#xe88a"
                 }
             };
         }

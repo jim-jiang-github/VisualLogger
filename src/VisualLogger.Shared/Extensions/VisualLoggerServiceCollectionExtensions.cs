@@ -15,6 +15,7 @@ namespace VisualLogger.Shared.Extensions
         {
             services.AddLocalization();
             services.AddVisualLogger();
+            services.AddBootstrapBlazor();
             services.AddScoped<DialogService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();

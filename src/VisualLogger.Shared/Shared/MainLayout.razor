@@ -64,22 +64,22 @@
     {
         //TODO Can not inject 'NotificationService' code behind for radzen, this may be a bug???
         MessageCenter.NotificationSuccess += (title, message) =>
-        {
-    NotificationService.Notify(new NotificationMessage()
-            {
-                Severity = NotificationSeverity.Success,
-                Summary = title,
-                Detail = message,
-                Duration = 4000
-            });
-        };
+    {
+        NotificationService.Notify(new NotificationMessage()
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = title,
+                    Detail = message,
+                    Duration = 4000
+                });
+    };
         //TODO Can not inject 'DialogService' code behind for radzen, this may be a bug???
         ScenarioOptions.ScenarioDialog += () =>
-    {
-        return DialogService.OpenAsync<ScenarioOptionsPage>($"Order ",
-    new Dictionary<string, object>() { { "OrderID", 1 } },
-    new DialogOptions() { Width = "700px", Height = "570px" });
-    };
+        {
+    return DialogService.OpenAsync<ScenarioOptionsPage>($"Order ",
+        new Dictionary<string, object>() { { "OrderID", 1 } },
+        new DialogOptions() { Width = "700px", Height = "570px" });
+        };
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         Scenario.Init();
     }
@@ -92,7 +92,7 @@
             @LoadMenuItem(item)
         }
     </RadzenMenu>
-         );
+     );
     }
     void OnMenuItemClick(MenuItemEventArgs args)
     {
