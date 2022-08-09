@@ -1,6 +1,6 @@
 ﻿{
   "MenuBar": {
-    "File": "File",
+    "File": "File…",
     "FileSub": {
       "Open": "Open",
       "OpenSub": {
@@ -18,9 +18,7 @@
     "Help": "Help…"
   },
   "Picker": {
-    "Log": {
-      "Files": "Select log files"
-    }
+    "SelectFiles": "Select files"
   },
   "Hotkeys": {
     "Highlight": "Highlight",

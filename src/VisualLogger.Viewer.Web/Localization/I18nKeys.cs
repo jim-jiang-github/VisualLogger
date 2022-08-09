@@ -16,7 +16,7 @@ namespace VisualLogger.Viewer.Web.Localization
         public class MenuBar
         {
             /// <summary>
-            /// File
+            /// File…
             /// </summary>
             public static string File => I18nInternal?.T("MenuBar.File", false, true) ?? "File";
             public class FileSub
@@ -67,13 +67,10 @@ namespace VisualLogger.Viewer.Web.Localization
         }
         public class Picker
         {
-            public class Log
-            {
-                /// <summary>
-                /// Select log files
-                /// </summary>
-                public static string Files => I18nInternal?.T("Picker.Log.Files", false, true) ?? "Files";
-            }
+            /// <summary>
+            /// Select files
+            /// </summary>
+            public static string SelectFiles => I18nInternal?.T("Picker.SelectFiles", false, true) ?? "SelectFiles";
         }
         public class Hotkeys
         {
