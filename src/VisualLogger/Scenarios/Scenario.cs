@@ -105,6 +105,10 @@ namespace VisualLogger.Scenarios
         }
         public void LoadLogFiles(string[] logFiles)
         {
+            if (logFiles.Length == 0)
+            {
+                return;
+            }
             LoadedLogFiles = logFiles;
             LoadLogSource(logFiles[0]);
             OnPropertyChanged(nameof(LoadedLogFiles));
