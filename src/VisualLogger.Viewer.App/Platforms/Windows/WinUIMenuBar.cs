@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VisualLogger.Viewer.Web;
 using VisualLogger.Viewer.Web.Services;
 
-namespace VisualLogger.Viewer.Platforms.Windows
+namespace VisualLogger.Viewer.App.WinUI
 {
     internal class WinUIMenuBar : Microsoft.UI.Xaml.Controls.MenuBar
     {

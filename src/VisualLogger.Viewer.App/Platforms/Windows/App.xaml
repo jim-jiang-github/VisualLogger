@@ -4,5 +4,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
     xmlns:local="using:VisualLogger.Viewer.App.WinUI">
+    <maui:MauiWinUIApplication.Resources>
+        <DataTemplate x:Key="MauiAppTitleBarContainerTemplate">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <local:WinUIMenuBar 
+                    Height="29" 
+                    Background="#cccccc"
+                    Grid.Column="0">
+                </local:WinUIMenuBar>
 
+                <ContentControl
+                    Grid.Column="1"
+                    IsTabStop="False"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    x:Name="AppTitleBarContentControl">
+                </ContentControl>
+            </Grid>
+        </DataTemplate>
+    </maui:MauiWinUIApplication.Resources>
 </maui:MauiWinUIApplication>
