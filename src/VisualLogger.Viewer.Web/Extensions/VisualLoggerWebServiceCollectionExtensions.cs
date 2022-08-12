@@ -13,7 +13,10 @@ using VisualLogger.Scenarios;
 using VisualLogger.Viewer.Web.Data;
 using VisualLogger.Viewer.Web.Interfaces;
 using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Viewer.Web.Pages;
 using VisualLogger.Viewer.Web.Services;
+using VisualLogger.Viewer.Web.Shared;
+using VisualLogger.Viewer.Web.ViewModels;
 
 namespace VisualLogger.Viewer.Web.Extensions
 {
@@ -21,6 +24,7 @@ namespace VisualLogger.Viewer.Web.Extensions
     {
         public static IServiceCollection AddVisualLoggerWeb(this IServiceCollection services)
         {
+            services.AddMvvm();
             services.AddMasaBlazor(option =>
             {
                 option.DarkTheme = true;
@@ -28,8 +32,10 @@ namespace VisualLogger.Viewer.Web.Extensions
             services.AddHotKeys();
             services.AddSingleton<SearchService>();
             services.AddSingleton<Scenario>();
-            services.AddSingleton<IScenarioOptions, ScenarioOptions>();
             services.AddSingleton<MenuBarService>();
+
+            //services.AddSingleton<MainLayoutViewModel>();
+            services.AddSingleton<ScenarioOptionsViewModel>();
             services.AddI18n();
             return services;
         }

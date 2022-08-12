@@ -23,7 +23,7 @@ namespace VisualLogger.Viewer.App.WinUI
         }
         private void LoadMenuItem(MenuBarService menuBarService)
         {
-            foreach (var item in menuBarService.GetMenuItems())
+            foreach (var item in menuBarService.MenuItems)
             {
                 var menuBarItem = new Microsoft.UI.Xaml.Controls.MenuBarItem()
                 {

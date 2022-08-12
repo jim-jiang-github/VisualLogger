@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger", "VisualLogge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Viewer.Web", "VisualLogger.Viewer.Web\VisualLogger.Viewer.Web.csproj", "{20B4B37B-445F-465E-85F9-D48F3D0DAD0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualLogger.Viewer.App", "VisualLogger.Viewer.App\VisualLogger.Viewer.App.csproj", "{FC570836-D357-4F7F-B294-4A7B243DCE7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualLogger.Viewer.App", "VisualLogger.Viewer.App\VisualLogger.Viewer.App.csproj", "{FC570836-D357-4F7F-B294-4A7B243DCE7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

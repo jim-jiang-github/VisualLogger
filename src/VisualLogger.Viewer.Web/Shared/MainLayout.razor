@@ -112,7 +112,8 @@
                        Dark
                        Absolute
                        Temporary>
-        <MCard Dark Class="mx-auto">
+        <SideBarDrawer />
+       @* <MCard Dark Class="mx-auto">
             <MList Dense Dark Shaped>
                 <MSubheader Dark Style="user-select: none;">REPORTS</MSubheader>
                 <MListItemGroup @bind-Values="model"
@@ -132,7 +133,7 @@
                     }
                 </MListItemGroup>
             </MList>
-        </MCard>
+        </MCard>*@
     </MNavigationDrawer>
     <MMain>
         <MContainer Fluid Style="padding:0;height:calc(100vh - 48px)">
@@ -141,4 +142,5 @@
             </CascadingValue>
         </MContainer>
     </MMain>
+    <ScenarioOptions />
 </MApp>

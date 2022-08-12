@@ -2,6 +2,7 @@
 using VisualLogger.Viewer.Web.Interfaces;
 using VisualLogger.Scenarios;
 using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Viewer.Web.ViewModels;
 
 namespace VisualLogger.Viewer.Web.Services
 {
@@ -32,9 +33,13 @@ namespace VisualLogger.Viewer.Web.Services
 
         private readonly List<MenuBarItem> _menuBarItems = new List<MenuBarItem>();
 
+        public IEnumerable<MenuBarItem> MenuItems => _menuBarItems;
+
+        public IEnumerable<MenuBarItem> AllMenuItems => GetAllMenuItems(MenuItems);
+
         public MenuBarService(IServiceProvider serviceProvider,
             Scenario scenario,
-            IScenarioOptions scenarioOptions)
+            ScenarioOptionsViewModel scenarioOptions)
         {
             IEnumerable<MenuBarItem> GetOpenMenuItems()
             {
@@ -63,9 +68,9 @@ namespace VisualLogger.Viewer.Web.Services
             IEnumerable<MenuBarItem> GetFileMenuItems()
             {
                 yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Open, GetOpenMenuItems());
-                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Scenario, clickAction: async () =>
+                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Scenario, clickAction: () =>
                 {
-                    await scenarioOptions.OpenScenarioDialog();
+                    scenarioOptions.IsOpen = true;
                 });
                 yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Exit, clickAction: () =>
                 {
@@ -80,9 +85,21 @@ namespace VisualLogger.Viewer.Web.Services
             _menuBarItems.Add(new MenuBarItem(I18nKeys.MenuBar.Help));
         }
 
-        public IEnumerable<MenuBarItem> GetMenuItems()
+        private IEnumerable<MenuBarItem> GetAllMenuItems(IEnumerable<MenuBarItem> menuBarItems)
         {
-            return _menuBarItems;
+            List<MenuBarItem> allMenuBarItems = new List<MenuBarItem>();
+            foreach (var menuBarItem in menuBarItems)
+            {
+                if (menuBarItem.MenuItems != null)
+                {
+                    allMenuBarItems.AddRange(GetAllMenuItems(menuBarItem.MenuItems));
+                }
+                else
+                {
+                    allMenuBarItems.Add(menuBarItem);
+                }
+            }
+            return allMenuBarItems;
         }
     }
 }

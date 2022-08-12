@@ -1,12 +1,17 @@
 ﻿using BlazorComponent;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Toolbelt.Blazor.HotKeys;
 using VisualLogger.Viewer.Web.Data;
+using VisualLogger.Viewer.Web.Interfaces;
+using VisualLogger.Viewer.Web.ViewModels;
 
 namespace VisualLogger.Viewer.Web.Shared
 {
     public partial class MainLayout : IHotkeysable
     {
+       
+
         private bool _drawer = false;
         private string[] _links = new string[3] { "Home", "Contacts", "Settings" };
 
@@ -49,6 +54,11 @@ namespace VisualLogger.Viewer.Web.Shared
         {
         }
 
+        public Task OpenScenarioDialog()
+        {
+            return Task.CompletedTask;
+        }
+
         class Item
         {
             public string? Title { get; set; }
@@ -78,17 +88,17 @@ namespace VisualLogger.Viewer.Web.Shared
         {
             get
             {
-                yield return new HotkeyItem(HotKeys, "asd", () => 
+                yield return new HotkeyItem(HotKeys, "asd", () =>
                 {
-                
+
                 });
-                yield return new HotkeyItem(HotKeys, "asd1", () => 
+                yield return new HotkeyItem(HotKeys, "asd1", () =>
                 {
-                
+
                 });
-                yield return new HotkeyItem(HotKeys, "asd2", () => 
-                { 
-                
+                yield return new HotkeyItem(HotKeys, "asd2", () =>
+                {
+
                 });
             }
         }
