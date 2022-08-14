@@ -10,17 +10,17 @@ namespace VisualLogger.Viewer.Web
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            Global.StateHasChanged += Global_StateHasChanged;
+            Global.UIChanged += Global_UIChanged;
         }
 
-        private void Global_StateHasChanged(object? sender, EventArgs e)
+        private void Global_UIChanged(object? sender, EventArgs e)
         {
             StateHasChanged();
         }
 
         public void Dispose()
         {
-            Global.StateHasChanged -= Global_StateHasChanged;
+            Global.UIChanged -= Global_UIChanged;
         }
 
         private async Task CustomErrorHandleAsync(Exception exception)

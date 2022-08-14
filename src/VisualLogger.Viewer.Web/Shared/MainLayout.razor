@@ -32,13 +32,13 @@
                 </MList>
             </ChildContent>
         </MMenu>
-        <MToolbarTitle>@I18nKeys.Main.Title</MToolbarTitle>
+        <MToolbarTitle Style="user-select:none">@I18nKeys.Main.Title</MToolbarTitle>
         <MSpacer></MSpacer>
         <MMenu OffsetY>
             <ActivatorContent>
                 <MTextField SingleLine
                             Rounded
-                            HideDetails="@("auto")"
+                            HideDetails="true"
                             TValue="string"
                             Dense
                             Outlined
@@ -142,5 +142,4 @@
             </CascadingValue>
         </MContainer>
     </MMain>
-    <ScenarioOptions />
 </MApp>

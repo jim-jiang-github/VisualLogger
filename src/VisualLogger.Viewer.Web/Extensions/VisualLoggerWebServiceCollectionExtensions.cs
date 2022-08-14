@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using VisualLogger.Extensions;
+using VisualLogger.Messages;
 using VisualLogger.Scenarios;
 using VisualLogger.Viewer.Web.Data;
 using VisualLogger.Viewer.Web.Interfaces;
@@ -24,6 +26,7 @@ namespace VisualLogger.Viewer.Web.Extensions
     {
         public static IServiceCollection AddVisualLoggerWeb(this IServiceCollection services)
         {
+            services.AddVisualLogger();
             services.AddMvvm();
             services.AddMasaBlazor(option =>
             {
@@ -36,6 +39,32 @@ namespace VisualLogger.Viewer.Web.Extensions
 
             //services.AddSingleton<MainLayoutViewModel>();
             services.AddSingleton<ScenarioOptionsViewModel>();
+            services.AddSingleton<ModelDialogContainerViewModel>();
+            services.AddSingleton((provider) =>
+            {
+                var modelDialog = provider.GetService<ModelDialogContainerViewModel>();
+                if (modelDialog == null)
+                {
+                    return IModelDialog.Default;
+                }
+                else
+                {
+                    return modelDialog;
+                }
+            });
+            services.AddSingleton<NotificationContainerViewModel>();
+            services.AddSingleton((provider) =>
+            {
+                var notification = provider.GetService<NotificationContainerViewModel>();
+                if (notification == null)
+                {
+                    return INotification.Default;
+                }
+                else
+                {
+                    return notification;
+                }
+            });
             services.AddI18n();
             return services;
         }

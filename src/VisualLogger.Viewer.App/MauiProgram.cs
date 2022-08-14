@@ -34,6 +34,7 @@ namespace VisualLogger.Viewer.App
             builder.Services.AddVisualLoggerWeb();
             var build = builder.Build();
             Global.ServiceProvider = build.Services;
+            Global.Init();
             return build;
         }
     }

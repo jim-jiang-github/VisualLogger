@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VisualLogger;
+using VisualLogger.Messages;
 using VisualLogger.Scenarios;
 
 namespace VisualLogger.Extensions
 {
-    public static class VisualLoggerCoreServiceCollectionExtensions
+    public static class VisualLoggerServiceCollectionExtensions
     {
         public static IServiceCollection AddVisualLogger(this IServiceCollection services)
         {
-
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
                        .MinimumLevel.Debug()
@@ -22,8 +22,8 @@ namespace VisualLogger.Extensions
            .MinimumLevel.Information()
 #endif
                        .WriteTo.File("log.txt",
-                           rollingInterval: RollingInterval.Day,
-                           rollOnFileSizeLimit: true)
+                       rollingInterval: RollingInterval.Day,
+                       rollOnFileSizeLimit: true)
                        .CreateLogger();
             services.AddSingleton<Scenario>();
             services.AddSingleton<ScenarioConfig>();
