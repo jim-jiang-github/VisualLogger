@@ -1,6 +1,7 @@
 ﻿using BlazorComponent;
 using Masa.Blazor.Presets;
 using VisualLogger.Messages;
+using VisualLogger.Viewer.Web.Localization;
 
 namespace VisualLogger.Viewer.Web.ViewModels
 {
@@ -21,7 +22,7 @@ namespace VisualLogger.Viewer.Web.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = $"An error occurred.",
+                Title = I18nKeys.Notification.ErrorTitle,
                 Content = error,
                 Dark = true,
                 Duration = 0,
@@ -37,7 +38,7 @@ namespace VisualLogger.Viewer.Web.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = $"A warning was found.",
+                Title = I18nKeys.Notification.WarningTitle,
                 Content = warning,
                 Dark = true,
                 Type = AlertTypes.Warning
@@ -52,7 +53,7 @@ namespace VisualLogger.Viewer.Web.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = $"Attention!",
+                Title = I18nKeys.Notification.InfoTitle,
                 Content = info,
                 Dark = true,
                 Type = AlertTypes.Info

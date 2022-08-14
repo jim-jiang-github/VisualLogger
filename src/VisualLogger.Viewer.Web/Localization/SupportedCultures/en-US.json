@@ -24,6 +24,16 @@
     "Highlight": "Highlight",
     "NextHighlight": "Find next highlight"
   },
+  "Notification": {
+    "ErrorTitle": "An error occurred.",
+    "WarningTitle": "A warning was found.",
+    "InfoTitle": "Attention!"
+  },
+  "Scenario": {
+    "Options": {
+      "Repo": "Enter a git repo."
+    }
+  },
   "Main": {
     "Title": "Visual log viewer"
   },

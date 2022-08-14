@@ -83,6 +83,31 @@ namespace VisualLogger.Viewer.Web.Localization
             /// </summary>
             public static string NextHighlight => I18nInternal?.T("Hotkeys.NextHighlight", false, true) ?? "NextHighlight";
         }
+        public class Notification
+        {
+            /// <summary>
+            /// An error occurred.
+            /// </summary>
+            public static string ErrorTitle => I18nInternal?.T("Notification.ErrorTitle", false, true) ?? "ErrorTitle";
+            /// <summary>
+            /// A warning was found.
+            /// </summary>
+            public static string WarningTitle => I18nInternal?.T("Notification.WarningTitle", false, true) ?? "WarningTitle";
+            /// <summary>
+            /// Attention!
+            /// </summary>
+            public static string InfoTitle => I18nInternal?.T("Notification.InfoTitle", false, true) ?? "InfoTitle";
+        }
+        public class Scenario
+        {
+            public class Options
+            {
+                /// <summary>
+                /// Enter a git repo.
+                /// </summary>
+                public static string Repo => I18nInternal?.T("Scenario.Options.Repo", false, true) ?? "Repo";
+            }
+        }
         public class Main
         {
             /// <summary>
