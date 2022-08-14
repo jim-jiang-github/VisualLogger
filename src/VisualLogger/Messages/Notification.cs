@@ -19,9 +19,17 @@ namespace VisualLogger.Messages
             set => _notifier = value;
         }
 
-        public static void Show(string msg) 
+        public static void Error(string error)
         {
-            NotifierInternal.Show(msg);
+            NotifierInternal.Error(error);
+        }
+        public static void Warning(string warning)
+        {
+            NotifierInternal.Warning(warning);
+        }
+        public static void Info(string info)
+        {
+            NotifierInternal.Info(info);
         }
     }
 }

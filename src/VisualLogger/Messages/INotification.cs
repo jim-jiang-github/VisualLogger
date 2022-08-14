@@ -10,13 +10,24 @@ namespace VisualLogger.Messages
     {
         private class NotificationNone : INotification
         {
-            public void Show(string msg)
+            public void Error(string error)
+            {
+
+            }
+            public void Warning(string warning)
+            {
+
+            }
+            public void Info(string info)
             {
 
             }
         }
 
         public static INotification Default = new NotificationNone();
-        void Show(string msg);
+
+        void Error(string error);
+        void Warning(string warning);
+        void Info(string info);
     }
 }

@@ -13,21 +13,50 @@ namespace VisualLogger.Viewer.Web.ViewModels
             _toast = toast;
         }
 
-        public void Show(string msg)
+        public void Error(string error)
         {
             if (_toast == null)
             {
                 return;
             }
-            var now = DateTime.Now.ToString("HH:mm:ss.fff");
             var config = new ToastConfig()
             {
-                Title = $"Add Toast by Click",
-                Content = $"create time: {now}",
+                Title = $"An error occurred.",
+                Content = error,
                 Dark = true,
+                Duration = 0,
                 Type = AlertTypes.Error
             };
-
+            _toast.AddToast(config);
+        }
+        public void Warning(string warning)
+        {
+            if (_toast == null)
+            {
+                return;
+            }
+            var config = new ToastConfig()
+            {
+                Title = $"A warning was found.",
+                Content = warning,
+                Dark = true,
+                Type = AlertTypes.Warning
+            };
+            _toast.AddToast(config);
+        }
+        public void Info(string info)
+        {
+            if (_toast == null)
+            {
+                return;
+            }
+            var config = new ToastConfig()
+            {
+                Title = $"Attention!",
+                Content = info,
+                Dark = true,
+                Type = AlertTypes.Info
+            };
             _toast.AddToast(config);
         }
     }
