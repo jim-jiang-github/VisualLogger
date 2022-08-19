@@ -29,9 +29,15 @@
     "WarningTitle": "A warning was found.",
     "InfoTitle": "Attention!"
   },
+  "Dialog": {
+    "Button": {
+      "Close": "Close"
+    }
+  },
   "Scenario": {
     "Options": {
-      "Repo": "Enter a git repo."
+      "Repo": "Enter a git repo.",
+      "SelectBranch": "Select a branch."
     }
   },
   "Main": {

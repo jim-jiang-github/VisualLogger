@@ -13,7 +13,8 @@ namespace VisualLogger.Viewer.Web.Data
         }
         public string GetValueByKey(string key)
         {
-            return _i18n?.T(key, false, true) ?? key;
+            var value = _i18n?.T(key, false, true) ?? key;
+            return value;
         }
     }
 }

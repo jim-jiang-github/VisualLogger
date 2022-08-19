@@ -1,0 +1,80 @@
+﻿@inherits MvvmComponentBase<ScenarioOptionsViewModel>
+
+<MDialog Value=@Bind(x => x.IsOpen)
+         ValueChanged="@BindingContext.OnIsOpenChanged"
+         Persistent
+         MaxWidth=800>
+    <MCard Dark>
+        <MToolbar>
+            <ChildContent>
+                <MTextField Dark
+                            @bind-Value="BindingContext.Repo"
+                            HideDetails="true"
+                            Label=@I18nKeys.Scenario.Options.Repo
+                            PrependInnerIcon="mdi-git"
+                            Disabled="@BindingContext.IsLoading"
+                            Loading="@BindingContext.IsLoading">
+                    <ProgressContent>
+                        <MProgressLinear Indeterminate="@BindingContext.IsLoading"
+                                         Absolute>
+                        </MProgressLinear>
+                    </ProgressContent>
+                </MTextField>
+                @if (!string.IsNullOrEmpty(BindingContext.Repo))
+                {
+                    <MButton 
+                        Icon
+                        Color="@(BindingContext.IsLoading?"red":"")"
+                        OnClick="@(async _ =>
+                                  {
+                                      if (BindingContext.IsLoading)
+                                      {
+                                          BindingContext.CancleFetchBranches();
+                                      }
+                                      else
+                                      {
+                                          await BindingContext.FetchBranches();
+                                      }
+                                  })">
+                        <MIcon Large>
+                            @if (BindingContext.IsLoading)
+                            {
+                                @("mdi-stop-circle-outline")
+                            }
+                            else
+                            {
+                                @("mdi-search-web")
+                            }
+                        </MIcon>
+                    </MButton>
+                }
+            </ChildContent>
+        </MToolbar>
+        <MBanner SingleLine @bind-Value="@BindingContext.IsShowBranchList">
+            <ChildContent>
+                <MSelect @bind-Value="e1"
+                         Dark
+                         Dense
+                         Items="_items"
+                         Label=@I18nKeys.Scenario.Options.SelectBranch
+                         ItemText="x => x.Label"
+                         ItemValue="x => x.Value"
+                         HideDetails="true"
+                         PrependIcon="mdi-source-branch-sync"
+                         SingleLine>
+                    <ProgressContent>
+                        <MProgressLinear Indeterminate="true"
+                                         Absolute>
+                        </MProgressLinear>
+                    </ProgressContent>
+                </MSelect>
+            </ChildContent>
+        </MBanner>
+        <MCardActions Class="justify-end">
+            <MButton Text
+                     OnClick="() => BindingContext.IsOpen = false">
+                @I18nKeys.Dialog.Button.Close                
+            </MButton>
+        </MCardActions>
+    </MCard>
+</MDialog>

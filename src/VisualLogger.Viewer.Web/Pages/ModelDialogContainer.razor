@@ -1,6 +1,6 @@
 ﻿@inherits MvvmComponentBase<ModelDialogContainerViewModel>
 <MDialog Value="@Bind(x=>x.IsOpen)"
-         ValueChanged="@BindingContext.IsOpenChanged"
+         ValueChanged="@BindingContext.OnIsOpenChanged"
          Persistent
          MaxWidth="290">
     <MCard Dark>

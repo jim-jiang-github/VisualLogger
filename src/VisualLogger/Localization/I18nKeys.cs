@@ -98,6 +98,16 @@ namespace VisualLogger.Localization
             /// </summary>
             public static string InfoTitle => I18nSourceInternal.GetValueByKey("Notification.InfoTitle");
         }
+        public class Dialog
+        {
+            public class Button
+            {
+                /// <summary>
+                /// Close
+                /// </summary>
+                public static string Close => I18nSourceInternal.GetValueByKey("Dialog.Button.Close");
+            }
+        }
         public class Scenario
         {
             public class Options
@@ -106,6 +116,10 @@ namespace VisualLogger.Localization
                 /// Enter a git repo.
                 /// </summary>
                 public static string Repo => I18nSourceInternal.GetValueByKey("Scenario.Options.Repo");
+                /// <summary>
+                /// Select a branch.
+                /// </summary>
+                public static string SelectBranch => I18nSourceInternal.GetValueByKey("Scenario.Options.SelectBranch");
             }
         }
         public class Main

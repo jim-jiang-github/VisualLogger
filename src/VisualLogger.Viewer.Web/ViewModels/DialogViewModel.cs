@@ -8,7 +8,7 @@ namespace VisualLogger.Viewer.Web.ViewModels
         [Notify]
         private bool _isOpen = false;
 
-        public void IsOpenChanged(bool isOpen)
+        public virtual void OnIsOpenChanged(bool isOpen)
         {
             _isOpen = isOpen;
         }
