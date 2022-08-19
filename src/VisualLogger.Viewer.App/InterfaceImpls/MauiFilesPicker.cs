@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VisualLogger.Scenarios;
 using VisualLogger.Viewer.Web.Interfaces;
-using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Localization;
 
 namespace VisualLogger.Viewer.App.InterfaceImpls
 {

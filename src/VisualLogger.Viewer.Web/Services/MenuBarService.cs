@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using VisualLogger.Viewer.Web.Interfaces;
 using VisualLogger.Scenarios;
-using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Localization;
 using VisualLogger.Viewer.Web.ViewModels;
 
 namespace VisualLogger.Viewer.Web.Services

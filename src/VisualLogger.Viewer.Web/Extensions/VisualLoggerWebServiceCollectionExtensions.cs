@@ -10,11 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using VisualLogger.Extensions;
+using VisualLogger.Localization;
 using VisualLogger.Messages;
 using VisualLogger.Scenarios;
 using VisualLogger.Viewer.Web.Data;
 using VisualLogger.Viewer.Web.Interfaces;
-using VisualLogger.Viewer.Web.Localization;
 using VisualLogger.Viewer.Web.Pages;
 using VisualLogger.Viewer.Web.Services;
 using VisualLogger.Viewer.Web.Shared;
@@ -26,13 +26,15 @@ namespace VisualLogger.Viewer.Web.Extensions
     {
         public static IServiceCollection AddVisualLoggerWeb(this IServiceCollection services)
         {
-            services.AddVisualLogger();
             services.AddMvvm();
+            services.AddHotKeys();
+            services.AddVisualLogger();
             services.AddMasaBlazor(option =>
             {
                 option.DarkTheme = true;
             });
-            services.AddHotKeys();
+            services.AddI18n();
+            services.AddScoped<II18nSource, I18nSource>();
             services.AddSingleton<SearchService>();
             services.AddSingleton<Scenario>();
             services.AddSingleton<MenuBarService>();
@@ -65,15 +67,14 @@ namespace VisualLogger.Viewer.Web.Extensions
                     return notification;
                 }
             });
-            services.AddI18n();
             return services;
         }
 
         public static IServiceCollection AddI18n(this IServiceCollection services)
         {
-            var assemblyDir = $"{nameof(VisualLogger)}.{nameof(Viewer)}.{nameof(Web)}.{nameof(Localization)}.SupportedCultures";
-            var assembly = Assembly.GetExecutingAssembly();
-            var supportCultures = assembly
+            var assemblyDir = $"{nameof(VisualLogger)}.{nameof(Localization)}.SupportedCultures";
+            var assembly = Assembly.GetAssembly(typeof(II18nSource));
+            var supportCultures = assembly?
                 .GetManifestResourceNames()
                 .Where(x => x.Contains(assemblyDir))
                 .Where(x => Path.GetExtension(x) == ".json")

@@ -1,14 +1,14 @@
-﻿using BlazorComponent.I18n;
-using System.Globalization;
-namespace VisualLogger.Viewer.Web.Localization
+﻿using Microsoft.Extensions.DependencyInjection;
+using VisualLogger.Localization;
+namespace VisualLogger.Localization
 {
     /// <summary>
     /// This is auto generate by I18nKeys.tt
     /// </summary>
     public static class I18nKeys
     {
-        private static I18n? _i18nInternal;
-        private static I18n? I18nInternal => _i18nInternal ??= Global.ServiceProvider?.GetService<I18n>();
+        private static II18nSource? _i18nSourceInternal;
+        private static II18nSource I18nSourceInternal => _i18nSourceInternal ??= (Global.ServiceProvider?.GetService<II18nSource>() ?? II18nSource.Default);
         /// <summary>
         /// https://github.com/jim-jiang-github/VisualLogger
         /// </summary>
@@ -18,85 +18,85 @@ namespace VisualLogger.Viewer.Web.Localization
             /// <summary>
             /// File…
             /// </summary>
-            public static string File => I18nInternal?.T("MenuBar.File", false, true) ?? "File";
+            public static string File => I18nSourceInternal.GetValueByKey("MenuBar.File");
             public class FileSub
             {
                 /// <summary>
                 /// Open
                 /// </summary>
-                public static string Open => I18nInternal?.T("MenuBar.FileSub.Open", false, true) ?? "Open";
+                public static string Open => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.Open");
                 public class OpenSub
                 {
                     /// <summary>
                     /// Files…
                     /// </summary>
-                    public static string FormFiles => I18nInternal?.T("MenuBar.FileSub.OpenSub.FormFiles", false, true) ?? "FormFiles";
+                    public static string FormFiles => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.OpenSub.FormFiles");
                     /// <summary>
                     /// Folder…
                     /// </summary>
-                    public static string FromFolder => I18nInternal?.T("MenuBar.FileSub.OpenSub.FromFolder", false, true) ?? "FromFolder";
+                    public static string FromFolder => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.OpenSub.FromFolder");
                     /// <summary>
                     /// Website…
                     /// </summary>
-                    public static string FromWebsite => I18nInternal?.T("MenuBar.FileSub.OpenSub.FromWebsite", false, true) ?? "FromWebsite";
+                    public static string FromWebsite => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.OpenSub.FromWebsite");
                 }
                 /// <summary>
                 /// Scenario…
                 /// </summary>
-                public static string Scenario => I18nInternal?.T("MenuBar.FileSub.Scenario", false, true) ?? "Scenario";
+                public static string Scenario => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.Scenario");
                 /// <summary>
                 /// Exit
                 /// </summary>
-                public static string Exit => I18nInternal?.T("MenuBar.FileSub.Exit", false, true) ?? "Exit";
+                public static string Exit => I18nSourceInternal.GetValueByKey("MenuBar.FileSub.Exit");
             }
             /// <summary>
             /// Tools…
             /// </summary>
-            public static string Tools => I18nInternal?.T("MenuBar.Tools", false, true) ?? "Tools";
+            public static string Tools => I18nSourceInternal.GetValueByKey("MenuBar.Tools");
             public class ToolsSub
             {
                 /// <summary>
                 /// Options…
                 /// </summary>
-                public static string Options => I18nInternal?.T("MenuBar.ToolsSub.Options", false, true) ?? "Options";
+                public static string Options => I18nSourceInternal.GetValueByKey("MenuBar.ToolsSub.Options");
             }
             /// <summary>
             /// Help…
             /// </summary>
-            public static string Help => I18nInternal?.T("MenuBar.Help", false, true) ?? "Help";
+            public static string Help => I18nSourceInternal.GetValueByKey("MenuBar.Help");
         }
         public class Picker
         {
             /// <summary>
             /// Select files
             /// </summary>
-            public static string SelectFiles => I18nInternal?.T("Picker.SelectFiles", false, true) ?? "SelectFiles";
+            public static string SelectFiles => I18nSourceInternal.GetValueByKey("Picker.SelectFiles");
         }
         public class Hotkeys
         {
             /// <summary>
             /// Highlight
             /// </summary>
-            public static string Highlight => I18nInternal?.T("Hotkeys.Highlight", false, true) ?? "Highlight";
+            public static string Highlight => I18nSourceInternal.GetValueByKey("Hotkeys.Highlight");
             /// <summary>
             /// Find next highlight
             /// </summary>
-            public static string NextHighlight => I18nInternal?.T("Hotkeys.NextHighlight", false, true) ?? "NextHighlight";
+            public static string NextHighlight => I18nSourceInternal.GetValueByKey("Hotkeys.NextHighlight");
         }
         public class Notification
         {
             /// <summary>
             /// An error occurred.
             /// </summary>
-            public static string ErrorTitle => I18nInternal?.T("Notification.ErrorTitle", false, true) ?? "ErrorTitle";
+            public static string ErrorTitle => I18nSourceInternal.GetValueByKey("Notification.ErrorTitle");
             /// <summary>
             /// A warning was found.
             /// </summary>
-            public static string WarningTitle => I18nInternal?.T("Notification.WarningTitle", false, true) ?? "WarningTitle";
+            public static string WarningTitle => I18nSourceInternal.GetValueByKey("Notification.WarningTitle");
             /// <summary>
             /// Attention!
             /// </summary>
-            public static string InfoTitle => I18nInternal?.T("Notification.InfoTitle", false, true) ?? "InfoTitle";
+            public static string InfoTitle => I18nSourceInternal.GetValueByKey("Notification.InfoTitle");
         }
         public class Scenario
         {
@@ -105,7 +105,7 @@ namespace VisualLogger.Viewer.Web.Localization
                 /// <summary>
                 /// Enter a git repo.
                 /// </summary>
-                public static string Repo => I18nInternal?.T("Scenario.Options.Repo", false, true) ?? "Repo";
+                public static string Repo => I18nSourceInternal.GetValueByKey("Scenario.Options.Repo");
             }
         }
         public class Main
@@ -113,32 +113,32 @@ namespace VisualLogger.Viewer.Web.Localization
             /// <summary>
             /// Visual log viewer
             /// </summary>
-            public static string Title => I18nInternal?.T("Main.Title", false, true) ?? "Title";
+            public static string Title => I18nSourceInternal.GetValueByKey("Main.Title");
         }
         public class User
         {
             /// <summary>
             /// Namxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxe
             /// </summary>
-            public static string Name => I18nInternal?.T("User.Name", false, true) ?? "Name";
+            public static string Name => I18nSourceInternal.GetValueByKey("User.Name");
             /// <summary>
             /// Agexxxxxxxxxxxxxxxxx
             /// </summary>
-            public static string Age => I18nInternal?.T("User.Age", false, true) ?? "Age";
+            public static string Age => I18nSourceInternal.GetValueByKey("User.Age");
             /// <summary>
             /// Agexxxxxxxxxxxxx1
             /// </summary>
-            public static string Age1 => I18nInternal?.T("User.Age1", false, true) ?? "Age1";
+            public static string Age1 => I18nSourceInternal.GetValueByKey("User.Age1");
             public class User1
             {
                 /// <summary>
                 /// Name1xxxxxxxxxxxx
                 /// </summary>
-                public static string Name1 => I18nInternal?.T("User.User1.Name1", false, true) ?? "Name1";
+                public static string Name1 => I18nSourceInternal.GetValueByKey("User.User1.Name1");
                 /// <summary>
                 /// Agxxxxxxxxxxxxxxxxxxxxe1
                 /// </summary>
-                public static string Age1 => I18nInternal?.T("User.User1.Age1", false, true) ?? "Age1";
+                public static string Age1 => I18nSourceInternal.GetValueByKey("User.User1.Age1");
             }
         }
         public class Goods
@@ -146,31 +146,31 @@ namespace VisualLogger.Viewer.Web.Localization
             /// <summary>
             /// Namexxxxxxxxxxxxxxxxxxxxxxxx
             /// </summary>
-            public static string Name => I18nInternal?.T("Goods.Name", false, true) ?? "Name";
+            public static string Name => I18nSourceInternal.GetValueByKey("Goods.Name");
             /// <summary>
             /// Pricxxxxxxxxxxxxe
             /// </summary>
-            public static string Price => I18nInternal?.T("Goods.Price", false, true) ?? "Price";
+            public static string Price => I18nSourceInternal.GetValueByKey("Goods.Price");
         }
         /// <summary>
         /// Homexxxxxxxxxxxxxxxxxxxxxxxxxx
         /// </summary>
-        public static string Home => I18nInternal?.T("Home", false, true) ?? "Home";
+        public static string Home => I18nSourceInternal.GetValueByKey("Home");
         /// <summary>
         /// Docsxxxxxxxxxxxxxx
         /// </summary>
-        public static string Docs => I18nInternal?.T("Docs", false, true) ?? "Docs";
+        public static string Docs => I18nSourceInternal.GetValueByKey("Docs");
         /// <summary>
         /// Blogxxxxxxxxxxxxxx
         /// </summary>
-        public static string Blog => I18nInternal?.T("Blog", false, true) ?? "Blog";
+        public static string Blog => I18nSourceInternal.GetValueByKey("Blog");
         /// <summary>
         /// Teamxxxxxxxxxxxxxxxxxx
         /// </summary>
-        public static string Team => I18nInternal?.T("Team", false, true) ?? "Team";
+        public static string Team => I18nSourceInternal.GetValueByKey("Team");
         /// <summary>
         /// Searchxxxxxxxxxxxxx
         /// </summary>
-        public static string Search => I18nInternal?.T("Search", false, true) ?? "Search";
+        public static string Search => I18nSourceInternal.GetValueByKey("Search");
     }
 }

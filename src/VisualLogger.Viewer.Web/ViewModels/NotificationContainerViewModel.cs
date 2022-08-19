@@ -1,7 +1,7 @@
 ﻿using BlazorComponent;
 using Masa.Blazor.Presets;
 using VisualLogger.Messages;
-using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Localization;
 
 namespace VisualLogger.Viewer.Web.ViewModels
 {

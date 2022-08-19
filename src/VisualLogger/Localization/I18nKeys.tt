@@ -9,20 +9,20 @@
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-using BlazorComponent.I18n;
-using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
+using VisualLogger.Localization;
 <#
 const string TAB = "    "; 
 #>
-namespace VisualLogger.Viewer.Web.Localization
+namespace VisualLogger.Localization
 {
     /// <summary>
     /// This is auto generate by I18nKeys.tt
     /// </summary>
     public static class I18nKeys
     {
-        private static I18n? _i18nInternal;
-        private static I18n? I18nInternal => _i18nInternal ??= Global.ServiceProvider?.GetService<I18n>();
+        private static II18nSource? _i18nSourceInternal;
+        private static II18nSource I18nSourceInternal => _i18nSourceInternal ??= (Global.ServiceProvider?.GetService<II18nSource>() ?? II18nSource.Default);
 <#
 var nonLocalizationFilePath = this.Host.ResolvePath(@"non-localized.json");
 var nonLocalizationFileContent = File.ReadAllText(nonLocalizationFilePath);
@@ -100,7 +100,7 @@ void WriteI18nProperties(JObject? jObject, string? tab, string? allKeys = null, 
         }
         else 
         {
-            var property = $"public static string {item.Key} => I18nInternal?.T(\"{newAllKeys}\", false, true) ?? \"{item.Key}\";";
+            var property = $"public static string {item.Key} => I18nSourceInternal.GetValueByKey(\"{newAllKeys}\");";
             WriteLine($"{tab}/// <summary>");
             WriteLine($"{tab}/// {item.Value}");
             WriteLine($"{tab}/// </summary>");

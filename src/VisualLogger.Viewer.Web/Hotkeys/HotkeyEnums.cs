@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using VisualLogger.Viewer.Web.Localization;
+using VisualLogger.Localization;
 
 namespace VisualLogger.Viewer.Web.Hotkeys
 {
