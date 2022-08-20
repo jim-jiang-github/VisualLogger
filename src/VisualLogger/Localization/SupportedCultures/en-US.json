@@ -1,0 +1,64 @@
+﻿{
+  "MenuBar": {
+    "File": "File…",
+    "FileSub": {
+      "Open": "Open",
+      "OpenSub": {
+        "FormFiles": "Files…",
+        "FromFolder": "Folder…",
+        "FromWebsite": "Website…"
+      },
+      "Scenario": "Scenario…",
+      "Exit": "Exit"
+    },
+    "Tools": "Tools…",
+    "ToolsSub": {
+      "Options": "Options…"
+    },
+    "Help": "Help…"
+  },
+  "Picker": {
+    "SelectFiles": "Select files"
+  },
+  "Hotkeys": {
+    "Highlight": "Highlight",
+    "NextHighlight": "Find next highlight"
+  },
+  "Notification": {
+    "ErrorTitle": "An error occurred.",
+    "WarningTitle": "A warning was found.",
+    "InfoTitle": "Attention!"
+  },
+  "Dialog": {
+    "Button": {
+      "Close": "Close"
+    }
+  },
+  "Scenario": {
+    "Options": {
+      "Repo": "Enter a git repo.",
+      "SelectBranch": "Select a branch."
+    }
+  },
+  "Main": {
+    "Title": "Visual log viewer"
+  },
+  "User": {
+    "Name": "Namxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxe",
+    "Age": "Agexxxxxxxxxxxxxxxxx",
+    "Age1": "Agexxxxxxxxxxxxx1",
+    "User1": {
+      "Name1": "Name1xxxxxxxxxxxx",
+      "Age1": "Agxxxxxxxxxxxxxxxxxxxxe1"
+    }
+  },
+  "Goods": {
+    "Name": "Namexxxxxxxxxxxxxxxxxxxxxxxx",
+    "Price": "Pricxxxxxxxxxxxxe"
+  },
+  "Home": "Homexxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "Docs": "Docsxxxxxxxxxxxxxx",
+  "Blog": "Blogxxxxxxxxxxxxxx",
+  "Team": "Teamxxxxxxxxxxxxxxxxxx",
+  "Search": "Searchxxxxxxxxxxxxx"
+}

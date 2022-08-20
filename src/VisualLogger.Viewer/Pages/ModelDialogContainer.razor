@@ -1,0 +1,34 @@
+﻿@inherits MvvmComponentBase<ModelDialogContainerViewModel>
+<MDialog Value="@Bind(x=>x.IsOpen)"
+         ValueChanged="@BindingContext.OnIsOpenChanged"
+         Persistent
+         MaxWidth="290">
+    <MCard Dark>
+        <MCardTitle Class="text-h5">
+            @Bind(x=>x.Title)
+        </MCardTitle>
+
+        <MCardText>
+            @Bind(x=>x.Message)
+        </MCardText>
+        <MCardActions>
+            <MSpacer></MSpacer>
+            <MButton Dark
+                     Text
+                     class="ma-1"
+                     Color="grey"
+                     Plain
+                     OnClick="()=> BindingContext.IsOpen = false">
+                Disagree
+            </MButton>
+            <MButton Dark
+                     Text
+                     class="ma-1"
+                     Color="error"
+                     Plain
+                     OnClick="()=> BindingContext.IsOpen = false">
+                Agree
+            </MButton>
+        </MCardActions>
+    </MCard>
+</MDialog>

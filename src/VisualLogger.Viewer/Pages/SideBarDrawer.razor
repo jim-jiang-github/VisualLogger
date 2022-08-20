@@ -1,0 +1,12 @@
+﻿<MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center">
+    <MContainer Fluid>
+        <MCard>
+            @if (OperatingSystem.IsBrowser())
+            {
+                <MAppBar>
+                    <MenuItemsButton />
+                </MAppBar>
+            }
+        </MCard>
+    </MContainer>
+</MRow>

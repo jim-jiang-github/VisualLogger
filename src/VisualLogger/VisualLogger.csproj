@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,25 @@
     <Nullable>enable</Nullable>
 	<WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Localization\non-localized.json" />
+    <None Remove="Localization\SupportedCultures\en-US.json" />
+    <None Remove="Localization\SupportedCultures\zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Localization\non-localized.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\SupportedCultures\en-US.json" />
+    <EmbeddedResource Include="Localization\SupportedCultures\zh-CN.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.4.4" />
@@ -16,6 +35,25 @@
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Localization\I18nKeys.tt">
+      <LastGenOutput>I18nKeys.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Localization\I18nKeys.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>I18nKeys.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

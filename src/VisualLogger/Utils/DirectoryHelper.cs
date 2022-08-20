@@ -41,6 +41,11 @@ namespace VisualLogger.Utils
                     return false;
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Fatal("Directory {directory} delete fail: {ex}", directory, ex);
+                return false;
+            }
             return true;
         }
     }

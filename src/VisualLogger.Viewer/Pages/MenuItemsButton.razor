@@ -1,0 +1,44 @@
+﻿@inject MenuBarService MenuBarService
+
+<MMenu @bind-Value="_showMenu" CloseOnContentClick=false OffsetY>
+    <ActivatorContent>
+        <MButton class="mx-2"
+                 Fab
+                 Small
+                 Dark
+                 @attributes="@context.Attrs"
+                 Color="primary">
+            @if (_showMenu)
+            {
+                <MIcon>
+                    mdi-menu-open
+                </MIcon>
+            }
+            else
+            {
+                <MIcon>
+                    mdi-menu
+                </MIcon>
+            }
+        </MButton>
+    </ActivatorContent>
+    <ChildContent>
+        <MCard Dark>
+            <MSheet Rounded="@("xl")">
+                <div class="pa-4">
+                    <MChipGroup Column>
+                        @foreach (var menuBarItem in MenuBarService.AllMenuItems)
+                        {
+                            <MChip OnClick="menuBarItem.OnClick">
+                                @menuBarItem.Title
+                            </MChip>
+                        }
+                    </MChipGroup>
+                </div>
+            </MSheet>
+        </MCard>
+    </ChildContent>
+</MMenu>
+@code {
+    private bool _showMenu = false;
+}
