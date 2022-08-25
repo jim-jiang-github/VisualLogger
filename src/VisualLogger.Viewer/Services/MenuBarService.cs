@@ -46,7 +46,7 @@ namespace VisualLogger.Viewer.Services
                 IFilesPicker? filesPicker = serviceProvider.GetService<IFilesPicker>();
                 if (filesPicker != null)
                 {
-                    yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.OpenSub.FormFiles, clickAction: async () =>
+                    yield return new MenuBarItem(StringKeys.MenuBar.FileSub.OpenSub.FormFiles, clickAction: async () =>
                     {
                         var files = await filesPicker.PickFiles();
                         scenario.LoadLogFiles(files.ToArray());
@@ -55,34 +55,34 @@ namespace VisualLogger.Viewer.Services
                 IFolderPicker? folderPicker = serviceProvider.GetService<IFolderPicker>();
                 if (folderPicker != null)
                 {
-                    yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.OpenSub.FromFolder, clickAction: () =>
+                    yield return new MenuBarItem(StringKeys.MenuBar.FileSub.OpenSub.FromFolder, clickAction: () =>
                     {
                         folderPicker.PickFolder();
                     });
                 }
-                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.OpenSub.FromWebsite, clickAction: () =>
+                yield return new MenuBarItem(StringKeys.MenuBar.FileSub.OpenSub.FromWebsite, clickAction: () =>
                 {
                     GC.Collect();
                 });
             }
             IEnumerable<MenuBarItem> GetFileMenuItems()
             {
-                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Open, GetOpenMenuItems());
-                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Scenario, clickAction: () =>
+                yield return new MenuBarItem(StringKeys.MenuBar.FileSub.Open, GetOpenMenuItems());
+                yield return new MenuBarItem(StringKeys.MenuBar.FileSub.Scenario, clickAction: () =>
                 {
                     scenarioOptions.IsOpen = true;
                 });
-                yield return new MenuBarItem(I18nKeys.MenuBar.FileSub.Exit, clickAction: () =>
+                yield return new MenuBarItem(StringKeys.MenuBar.FileSub.Exit, clickAction: () =>
                 {
                 });
             }
-            _menuBarItems.Add(new MenuBarItem(I18nKeys.MenuBar.File, GetFileMenuItems().ToArray()));
+            _menuBarItems.Add(new MenuBarItem(StringKeys.MenuBar.File, GetFileMenuItems().ToArray()));
             IEnumerable<MenuBarItem> GetToolsMenuItems()
             {
-                yield return new MenuBarItem(I18nKeys.MenuBar.ToolsSub.Options);
+                yield return new MenuBarItem(StringKeys.MenuBar.ToolsSub.Options);
             }
-            _menuBarItems.Add(new MenuBarItem(I18nKeys.MenuBar.Tools, GetToolsMenuItems()));
-            _menuBarItems.Add(new MenuBarItem(I18nKeys.MenuBar.Help));
+            _menuBarItems.Add(new MenuBarItem(StringKeys.MenuBar.Tools, GetToolsMenuItems()));
+            _menuBarItems.Add(new MenuBarItem(StringKeys.MenuBar.Help));
         }
 
         private IEnumerable<MenuBarItem> GetAllMenuItems(IEnumerable<MenuBarItem> menuBarItems)

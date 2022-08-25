@@ -10,24 +10,23 @@
                 <MTextField Dark
                             @bind-Value="BindingContext.Repo"
                             HideDetails="true"
-                            Label=@I18nKeys.Scenario.Options.Repo
+                            Label=@StringKeys.Scenario.Options.Repo
                             PrependInnerIcon="mdi-git"
-                            Disabled="@BindingContext.IsLoading"
-                            Loading="@BindingContext.IsLoading">
+                            Disabled="@BindingContext.IsRepoLoading"
+                            Loading="@BindingContext.IsRepoLoading">
                     <ProgressContent>
-                        <MProgressLinear Indeterminate="@BindingContext.IsLoading"
+                        <MProgressLinear Indeterminate="@BindingContext.IsRepoLoading"
                                          Absolute>
                         </MProgressLinear>
                     </ProgressContent>
                 </MTextField>
                 @if (!string.IsNullOrEmpty(BindingContext.Repo))
                 {
-                    <MButton 
-                        Icon
-                        Color="@(BindingContext.IsLoading?"red":"")"
-                        OnClick="@(async _ =>
+                    <MButton Icon
+                         Color="@(BindingContext.IsRepoLoading?"red":"")"
+                         OnClick="@(async _ =>
                                   {
-                                      if (BindingContext.IsLoading)
+                                      if (BindingContext.IsRepoLoading)
                                       {
                                           BindingContext.CancleFetchBranches();
                                       }
@@ -37,7 +36,7 @@
                                       }
                                   })">
                         <MIcon Large>
-                            @if (BindingContext.IsLoading)
+                            @if (BindingContext.IsRepoLoading)
                             {
                                 @("mdi-stop-circle-outline")
                             }
@@ -52,18 +51,22 @@
         </MToolbar>
         <MBanner SingleLine @bind-Value="@BindingContext.IsShowBranchList">
             <ChildContent>
-                <MSelect @bind-Value="e1"
+                <MSelect Value="BindingContext.CurrentBranch"
+                         ValueChanged="BindingContext.CloneBranch"
                          Dark
                          Dense
-                         Items="_items"
-                         Label=@I18nKeys.Scenario.Options.SelectBranch
-                         ItemText="x => x.Label"
-                         ItemValue="x => x.Value"
+                         Items="BindingContext.Branches"
+                         Label=@StringKeys.Scenario.Options.SelectBranch
+                         ItemText="x => x"
+                         ItemValue="x => x"
+                         TItem="string"
+                         TItemValue="string"
+                         TValue="string"
                          HideDetails="true"
-                         PrependIcon="mdi-source-branch-sync"
-                         SingleLine>
+                         Loading="@BindingContext.IsBranchLoading"
+                         PrependIcon="mdi-source-branch-sync">
                     <ProgressContent>
-                        <MProgressLinear Indeterminate="true"
+                        <MProgressLinear Indeterminate="@BindingContext.IsBranchLoading"
                                          Absolute>
                         </MProgressLinear>
                     </ProgressContent>
@@ -73,7 +76,7 @@
         <MCardActions Class="justify-end">
             <MButton Text
                      OnClick="() => BindingContext.IsOpen = false">
-                @I18nKeys.Dialog.Button.Close                
+                @StringKeys.Dialog.Button.Close
             </MButton>
         </MCardActions>
     </MCard>

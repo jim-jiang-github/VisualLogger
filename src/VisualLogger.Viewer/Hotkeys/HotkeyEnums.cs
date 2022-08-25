@@ -12,11 +12,11 @@ namespace VisualLogger.Viewer.Hotkeys
         }
         private class HotkeyItemHighlight : HotkeyItem
         {
-            public override string Name => I18nKeys.Hotkeys.Highlight;
+            public override string Name => StringKeys.Hotkeys.Highlight;
         }
         private class HotkeyItemFindNextHighlight : HotkeyItem
         {
-            public override string Name => I18nKeys.Hotkeys.NextHighlight;
+            public override string Name => StringKeys.Hotkeys.NextHighlight;
         }
         public static HotkeyItem Highlight { get; } = new HotkeyItemHighlight();
         public static HotkeyItem FindNextHighlight { get; } = new HotkeyItemHighlight();

@@ -75,7 +75,7 @@ html {
 
 /* toast */
 .m-toast-text.m-toast-detail {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 
 

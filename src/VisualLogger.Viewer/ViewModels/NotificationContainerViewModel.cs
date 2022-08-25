@@ -22,7 +22,7 @@ namespace VisualLogger.Viewer.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = I18nKeys.Notification.ErrorTitle,
+                Title = StringKeys.Notification.ErrorTitle,
                 Content = error,
                 Dark = true,
                 Duration = 0,
@@ -38,7 +38,7 @@ namespace VisualLogger.Viewer.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = I18nKeys.Notification.WarningTitle,
+                Title = StringKeys.Notification.WarningTitle,
                 Content = warning,
                 Dark = true,
                 Type = AlertTypes.Warning
@@ -53,7 +53,7 @@ namespace VisualLogger.Viewer.ViewModels
             }
             var config = new ToastConfig()
             {
-                Title = I18nKeys.Notification.InfoTitle,
+                Title = StringKeys.Notification.InfoTitle,
                 Content = info,
                 Dark = true,
                 Type = AlertTypes.Info

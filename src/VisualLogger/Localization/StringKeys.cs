@@ -3,9 +3,9 @@ using VisualLogger.Localization;
 namespace VisualLogger.Localization
 {
     /// <summary>
-    /// This is auto generate by I18nKeys.tt
+    /// This is auto generate by StringKeys.tt
     /// </summary>
-    public static class I18nKeys
+    public static class StringKeys
     {
         private static II18nSource? _i18nSourceInternal;
         private static II18nSource I18nSourceInternal => _i18nSourceInternal ??= (Global.ServiceProvider?.GetService<II18nSource>() ?? II18nSource.Default);
