@@ -1,3 +1,7 @@
 ﻿{
-  "GithubRepo": "https://github.com/jim-jiang-github/VisualLogger"
+  "Repo": {
+    "UserName": "jim-jiang-github",
+    "RepoName": "VisualLogger",
+    "RepoUrl": "https://github.com/jim-jiang-github/VisualLogger"
+  }
 }

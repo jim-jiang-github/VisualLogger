@@ -14,11 +14,17 @@ namespace VisualLogger.Viewer.ViewModels
     public partial class ScenarioOptionsViewModel : DialogViewModel
     {
         [Notify]
-        private bool _isLoading = false;
+        private bool _isRepoLoading = false;
         [Notify]
         private string _repo = string.Empty;
         [Notify]
         private bool _isShowBranchList = false;
+        [Notify]
+        private List<string> _branches = new();
+        [Notify]
+        private bool _isBranchLoading = false;
+        [Notify]
+        private string _currentBranch = string.Empty;
 
         private CancellationTokenSource? _cancellationTokenSource;
 
@@ -30,11 +36,15 @@ namespace VisualLogger.Viewer.ViewModels
 
         public async Task FetchBranches()
         {
-            _isLoading = true;
+            IsRepoLoading = true;
             _cancellationTokenSource = new CancellationTokenSource();
             if (OperatingSystem.IsBrowser())
             {
                 await Task.Delay(1000);
+                for (int i = 0; i < 10; i++)
+                {
+                    Branches.Add($"asd{i}");
+                }
                 IsShowBranchList = true;
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("Can not support command in blazor!");
@@ -43,16 +53,26 @@ namespace VisualLogger.Viewer.ViewModels
             }
             else
             {
-                var branches = await GitRunner.GetAllOriginBranches(Repo, true, _cancellationTokenSource.Token);
+                Branches = (await GitRunner.GetAllOriginBranches(Repo, true, _cancellationTokenSource.Token)).ToList();
+                IsShowBranchList = Branches.Count() > 0;
             }
-            _isLoading = false;
+            IsRepoLoading = false;
         }
 
         public void CancleFetchBranches()
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = null;
-            _isLoading = false;
+            IsRepoLoading = false;
+            IsShowBranchList = false;
+            IsBranchLoading = false;
+        }
+
+        public async Task CloneBranch(string selectedBranch)
+        {
+            IsBranchLoading = true;
+            await GitRunner.CloneTo(Repo, selectedBranch);
+            IsBranchLoading = false;
         }
 
         public override void OnIsOpenChanged(bool isOpen)

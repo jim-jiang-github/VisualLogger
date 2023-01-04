@@ -9,10 +9,21 @@ namespace VisualLogger.Localization
     {
         private static II18nSource? _i18nSourceInternal;
         private static II18nSource I18nSourceInternal => _i18nSourceInternal ??= (Global.ServiceProvider?.GetService<II18nSource>() ?? II18nSource.Default);
-        /// <summary>
-        /// https://github.com/jim-jiang-github/VisualLogger
-        /// </summary>
-        public static string GithubRepo => "https://github.com/jim-jiang-github/VisualLogger";
+        public class Repo
+        {
+            /// <summary>
+            /// jim-jiang-github
+            /// </summary>
+            public static string UserName => "jim-jiang-github";
+            /// <summary>
+            /// VisualLogger
+            /// </summary>
+            public static string RepoName => "VisualLogger";
+            /// <summary>
+            /// https://github.com/jim-jiang-github/VisualLogger
+            /// </summary>
+            public static string RepoUrl => "https://github.com/jim-jiang-github/VisualLogger";
+        }
         public class MenuBar
         {
             /// <summary>
@@ -97,6 +108,25 @@ namespace VisualLogger.Localization
             /// Attention!
             /// </summary>
             public static string InfoTitle => I18nSourceInternal.GetValueByKey("Notification.InfoTitle");
+        }
+        public class ErrorHandling
+        {
+            /// <summary>
+            /// Oh shit!
+            /// </summary>
+            public static string Title => I18nSourceInternal.GetValueByKey("ErrorHandling.Title");
+            /// <summary>
+            /// The app was terminated unexpectedly. To continue, please reload.
+            /// </summary>
+            public static string Message => I18nSourceInternal.GetValueByKey("ErrorHandling.Message");
+            /// <summary>
+            /// Reload
+            /// </summary>
+            public static string Reload => I18nSourceInternal.GetValueByKey("ErrorHandling.Reload");
+            /// <summary>
+            /// Report
+            /// </summary>
+            public static string Report => I18nSourceInternal.GetValueByKey("ErrorHandling.Report");
         }
         public class Dialog
         {

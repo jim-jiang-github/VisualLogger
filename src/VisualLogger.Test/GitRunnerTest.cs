@@ -38,7 +38,7 @@ namespace VisualLogger.Test
         [TestCase("https://github.com/jim-jiang-github/VisualLogger.git", "dev")]
         public async Task TestCloneTo(string gitRepo, string branch)
         {
-            var result =  GitRunner.CloneTo(gitRepo, branch).Result;
+            var result = await GitRunner.CloneTo(gitRepo, branch);
             Assert.True(result);
         }
     }

@@ -29,6 +29,12 @@
     "WarningTitle": "A warning was found.",
     "InfoTitle": "Attention!"
   },
+  "ErrorHandling": {
+    "Title": "Oh shit!",
+    "Message": "The app was terminated unexpectedly. To continue, please reload.",
+    "Reload": "Reload",
+    "Report": "Report"
+  },
   "Dialog": {
     "Button": {
       "Close": "Close"

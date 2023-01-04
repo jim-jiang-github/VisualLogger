@@ -28,20 +28,23 @@ namespace VisualLogger.Viewer.Extensions
             services.AddMvvm();
             services.AddHotKeys();
             services.AddVisualLogger();
-            services.AddMasaBlazor(option =>
+            services.AddMasaBlazor(options =>
             {
-                option.DarkTheme = true;
+                options.ConfigureTheme(theme =>
+                {
+                    theme.Dark = true;
+                });
             });
             services.AddI18n();
             services.AddScoped<II18nSource, I18nSource>();
-            services.AddSingleton<SearchService>();
-            services.AddSingleton<Scenario>();
-            services.AddSingleton<MenuBarService>();
+            services.AddScoped<SearchService>();
+            services.AddScoped<Scenario>();
+            services.AddScoped<MenuBarService>();
 
-            //services.AddSingleton<MainLayoutViewModel>();
-            services.AddSingleton<ScenarioOptionsViewModel>();
-            services.AddSingleton<ModelDialogContainerViewModel>();
-            services.AddSingleton((provider) =>
+            //services.AddScoped<MainLayoutViewModel>();
+            services.AddScoped<ScenarioOptionsViewModel>();
+            services.AddScoped<ModelDialogContainerViewModel>();
+            services.AddScoped((provider) =>
             {
                 var modelDialog = provider.GetService<ModelDialogContainerViewModel>();
                 if (modelDialog == null)
@@ -53,8 +56,8 @@ namespace VisualLogger.Viewer.Extensions
                     return modelDialog;
                 }
             });
-            services.AddSingleton<NotificationContainerViewModel>();
-            services.AddSingleton((provider) =>
+            services.AddScoped<NotificationContainerViewModel>();
+            services.AddScoped((provider) =>
             {
                 var notification = provider.GetService<NotificationContainerViewModel>();
                 if (notification == null)

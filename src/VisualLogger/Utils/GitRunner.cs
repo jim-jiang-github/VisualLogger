@@ -14,29 +14,62 @@ namespace VisualLogger.Utils
     {
         private const string BRANCH_NAME_HEAD = "refs/heads/";
         private const string GIT_TEMP_FOLDER = "GitTemp";
-        private static readonly string _gitTempDirectory = Path.Combine(Directory.GetCurrentDirectory(), GIT_TEMP_FOLDER);
 
-        public static async Task<bool> CloneTo(string gitRepo, string branch, string folder = "")
+        public static async Task<bool> CloneTo(string gitRepo, string branch, CancellationToken cancellationToken = default)
         {
-            if (!DirectoryHelper.ResetDirectory(_gitTempDirectory))
+            var gitTempDirectory = Path.Combine(Global.CurrentAppDataDirectory, GIT_TEMP_FOLDER);
+            if (!DirectoryHelper.ResetDirectory(gitTempDirectory))
             {
                 return false;
             }
-            var cmd = await Cli.Wrap("git")
-                 .WithWorkingDirectory(_gitTempDirectory)
-                 .WithArguments(args => args
-                 .Add("clone")
-                 .Add(gitRepo)
-                 .Add(folder)
-                 .Add("--depth=1")
-                 .Add("-b")
-                 .Add(branch)
-                 )
-                 .WithStandardOutputPipe(PipeTarget.ToDelegate((msg) =>
-                 {
-
-                 }))
-                 .ExecuteAsync();
+            StringBuilder stringBuilder = new StringBuilder();
+            //try
+            {
+                var cmd = await Cli.Wrap("git")
+                     .WithWorkingDirectory(gitTempDirectory)
+                     .WithArguments(args => args
+                     .Add("clone")
+                     .Add(gitRepo)
+                     .Add("--depth=1")
+                     .Add("-b")
+                     .Add(branch)
+                     )
+                     .WithStandardErrorPipe(PipeTarget.ToDelegate((msg) =>
+                     {
+                         stringBuilder.AppendLine(msg);
+                     }))
+                    //.WithValidation(CommandResultValidation.None)
+                    .ExecuteAsync(cancellationToken);
+                Log.Information("Execute result: {StartTime} {RunTime} {ExitTime} {ExitCode}",
+                    cmd.StartTime,
+                    cmd.RunTime,
+                    cmd.ExitTime,
+                    cmd.ExitCode);
+                if (cmd.ExitCode != 0)
+                {
+                    var errorMsg = stringBuilder.ToString();
+                    Notification.Error(errorMsg);
+                    Log.Error(errorMsg);
+                }
+                else
+                {
+                    Log.Information("Branch: {branch} cloned!", branch);
+                }
+            }
+            //catch (Exception ex)
+            //{
+            //    if (cancellationToken.IsCancellationRequested)
+            //    {
+            //        Log.Information("User canceled!");
+            //    }
+            //    else
+            //    {
+            //        stringBuilder.AppendLine(ex.Message);
+            //        var errorMsg = stringBuilder.ToString();
+            //        Notification.Error(errorMsg);
+            //        Log.Error(errorMsg);
+            //    }
+            //}
             return true;
         }
 

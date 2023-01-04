@@ -1,17 +1,76 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @inject SearchService SearchService;
 
-<MErrorHandler ShowDetail="true" ShowAlert=false>
-    <Router AppAssembly="@typeof(Main).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</MErrorHandler>
+<VisualLoggerErrorBoundary @ref=_errorBoundary>
+    <ChildContent>
+        <Router AppAssembly="@typeof(Main).Assembly">
+            <Found Context="routeData">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p role="alert">Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </ChildContent>
+    <ErrorContent Context="Exception">
+        <MApp>
+            <MCard Dark Flat Style="height:100vh">
+                <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center" Class="ma-12">
+                    <MImage MaxWidth="64"
+                            MaxHeight="52"
+                            Src="images/error.png">
+                    </MImage>
+                </MRow>
+                <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center">
+                    <MCardTitle>@StringKeys.ErrorHandling.Title</MCardTitle>
+                </MRow>
+                <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center">
+                    <MCardSubtitle>@StringKeys.ErrorHandling.Message</MCardSubtitle>
+                </MRow>
+                <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center" Class="ma-12">
+                    <div style="width:150px;text-align:center">
+                        <MButton Color="error">@StringKeys.ErrorHandling.Reload</MButton>
+                    </div>
+                    @if (!_isShowReport)
+                    {
+                        <div style="width:150px;text-align:center">
+                            <MButton OnClick="() => _isShowReport = !_isShowReport"
+                                 Color="primary">@StringKeys.ErrorHandling.Report</MButton>
+                        </div>
+                    }
+                </MRow>
+
+                @if (_isShowReport)
+                {
+                    <MRow Align="AlignTypes.Center" Justify="JustifyTypes.Center">
+                        <MCol Cols="12"
+                          Md="4">
+                            <MCard Class="mx-auto" Outlined>
+                                <MTextarea Label="Default style">
+                                </MTextarea>
+                                <MCardActions>
+                                    <MButton OnClick="() => _isShowReport = !_isShowReport"
+                                         Color="primary">Explore</MButton>
+                                    <MButton Text>Explore</MButton>
+                                </MCardActions>
+                            </MCard>
+                        </MCol>
+                    </MRow>
+                }
+            </MCard>
+        </MApp>
+        @*   <MCard Elevation="2">
+        <MCardTitle>@Exception.Message</MCardTitle>
+        <MCardSubtitle>Subtitle text</MCardSubtitle>
+        <MCardText> Greyhound divisively hello coldly wonderfully marginally far upon excluding. </MCardText>
+        <MCardActions>
+        <MButton Text OnClick="()=>_errorBoundary?.Recover()" Color="primary">Action 1</MButton>
+        <MButton Text Color="primary">Action 2</MButton>
+        </MCardActions>
+        </MCard>*@
+    </ErrorContent>
+</VisualLoggerErrorBoundary>

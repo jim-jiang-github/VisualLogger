@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
+using VisualLogger.Storage;
 using VisualLogger.Viewer.Extensions;
+using VisualLogger.ViewerApp.Data;
 
 namespace VisualLogger.ViewerApp
 {
@@ -20,6 +22,7 @@ namespace VisualLogger.ViewerApp
             builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
             builder.Services.AddVisualLoggerWeb();
+            //builder.Services.AddScoped<IFileStorage, MauiFileStorage>();
             var build = builder.Build();
             Global.ServiceProvider = build.Services;
             Global.Init();

@@ -25,9 +25,9 @@ namespace VisualLogger.Extensions
                        rollingInterval: RollingInterval.Day,
                        rollOnFileSizeLimit: true)
                        .CreateLogger();
-            services.AddSingleton<Scenario>();
-            services.AddSingleton<ScenarioConfig>();
-            services.AddSingleton<AppConfig>();
+            services.AddScoped<Scenario>();
+            services.AddScoped<ScenarioConfig>();
+            services.AddScoped<AppConfig>();
             return services;
         }
     }
